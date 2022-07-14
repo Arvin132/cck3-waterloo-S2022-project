@@ -1,0 +1,3 @@
+C:/Users/kmajdi/Codes/a4/codeForStudents/cck3-waterloo-S2022-project/cmake-build-debug/CMakeFiles/cck3_waterloo_S2022_project.dir
+C:/Users/kmajdi/Codes/a4/codeForStudents/cck3-waterloo-S2022-project/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/kmajdi/Codes/a4/codeForStudents/cck3-waterloo-S2022-project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
