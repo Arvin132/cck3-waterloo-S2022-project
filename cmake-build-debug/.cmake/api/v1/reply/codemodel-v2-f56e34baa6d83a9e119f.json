@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.21"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "cck3_waterloo_S2022_project",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "cck3_waterloo_S2022_project::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-cck3_waterloo_S2022_project-Debug-6bd2004022072f0bcf0c.json",
+					"name" : "cck3_waterloo_S2022_project",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/kmajdi/Codes/a4/codeForStudents/cck3-waterloo-S2022-project/cmake-build-debug",
+		"source" : "C:/Users/kmajdi/Codes/a4/codeForStudents/cck3-waterloo-S2022-project"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
