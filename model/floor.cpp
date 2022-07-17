@@ -8,7 +8,7 @@
 using namespace std;
 
 Floor::Floor(std::istream &in, Observer *initialOb): Subject(), theGrid(vector<vector<Ground>> {}),
-                                                     living(vector<Creature*> {}), occupied(vector<vector<bool>> {}) {
+                                                    occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
     attach(initialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
@@ -52,6 +52,16 @@ Floor::Floor(std::istream &in, Observer *initialOb): Subject(), theGrid(vector<v
 
 Floor::~Floor() { }
 
+void Floor::takeTurn() {
+    for (auto c : living) {
+        c->move();
+    }
+    notifyObservesrs();
+    for (auto c : living) {
+        c->notifyObservesrs();
+    }
+}
+
 void Floor::spawn(Creature *c,int posx, int posy) {
     occupied[posy][posx] = true;
     living.emplace_back(c);
@@ -59,6 +69,7 @@ void Floor::spawn(Creature *c,int posx, int posy) {
     for(auto ob : observers) {
         (*c).attach(ob);
     }
+    c->notifyObservesrs();
 }
 
 void Floor::notifyObservesrs() {

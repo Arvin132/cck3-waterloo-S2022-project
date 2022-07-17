@@ -15,6 +15,7 @@ class Floor: public Subject {
 public:
     Floor(std::istream &in, Observer *initialOb);
     ~Floor();
+    void takeTurn();
     void notifyObservesrs() override;
     void spawn(Creature *c, int posx, int posy);
     Ground getState(int posx, int posy);

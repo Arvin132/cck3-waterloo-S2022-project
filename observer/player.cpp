@@ -33,27 +33,27 @@ void Player::move()  {
     int newY = recentY;
 
     switch (command) {
-        case 'u':
-            d = Direction::N;
-            newX++;
-            break;
         case 'd':
+            d = Direction::N;
+            newY++;
+            break;
+        case 'u':
             d = Direction::S;
-            newX -= 1;
+            newY -= 1;
             break;
         case 'r':
             d = Direction::E;
-            newY++;
+            newX++;
             break;
         case 'l':
             d = Direction::W;
-            newY += -1;
+            newX += -1;
             break;
     }
 
     if (fl->getState(newX, newY) != Ground::empty) {
-        move();
-        return;
+        return move();
+        
     }
 
     

@@ -51,7 +51,7 @@ std::ostream &operator<<(std::ostream &out, TextDisplay td) {
         for (int i = 0; i < td.width; i++) {
             out << td.display[j][i];
         }
-        // out <<"capacity " << td.display[j].size() << endl;
+        out << endl;
     }
     return out;
 }

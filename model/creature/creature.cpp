@@ -1,8 +1,16 @@
 #include "creature.h"
+#include "observer.h"
 #include "subject.h"
 
-Creature::Creature(int hp, int atk, int def, int gold): hp(hp), atk(atk), def(def)
+Creature::Creature(int hp, int atk, int def, int gold): Subject(), hp(hp), atk(atk), def(def)
                                                         , gold(gold) { }
+
+void Creature::notifyObservesrs() {
+    for (auto i : observers) {
+        i->notify(*this);
+    }
+}
+
 
 Creature::~Creature() { }
 

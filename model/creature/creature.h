@@ -16,6 +16,7 @@ class Creature: public Subject {
       char rep;
     public:
       virtual ~Creature();
+      void notifyObservesrs() override;
       void virtual attack(Creature *other, int atkModifier) = 0;
       void virtual beAttackedBy(Creature *who, int defModifier) = 0;
       void virtual move() = 0;
