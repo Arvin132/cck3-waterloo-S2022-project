@@ -8,11 +8,11 @@
 
 using namespace std;
 
-EventHandler::EventHandler(): display(new TextDisplay()), currentFloor(nullptr),
+EventHandler::EventHandler(): tDisplay(new TextDisplay()), currentFloor(nullptr),
                               p(new Player()){}
 
 EventHandler::~EventHandler() {
-    delete display;
+    delete tDisplay;
     delete p;
 }
 
@@ -21,10 +21,8 @@ void EventHandler::initFloor(string readFile) {
     if (currentFloor != nullptr) {
         delete currentFloor;
     }
-    currentFloor = new Floor(f);
-    currentFloor->attach(display);
-    currentFloor->notifyObservesrs();
-    std::cout << *display;
+    currentFloor = new Floor(f, tDisplay);
+    std::cout << *tDisplay;
 }
 
 

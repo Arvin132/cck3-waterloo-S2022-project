@@ -2,15 +2,18 @@
 #include <string>
 #include <iomanip>
 #include "floor.h"
-#include "Observer.h"
+#include "subject.h"
+#include "observer.h"
 #include "creature.h"
 using namespace std;
 
-Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {})
-/*, living(vector<Creature> {})*/ {
+Floor::Floor(std::istream &in, Observer *initialOb): Subject(), theGrid(vector<vector<Ground>> {}),
+                                                     living(vector<Creature*> {}), occupied(vector<vector<bool>> {}) {
+    attach(initialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
+        occupied.emplace_back(vector<bool> {});
         string s;
         getline(in ,s);
         for (int i = 0; i < width; i++) {
@@ -35,18 +38,26 @@ Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {})
                     theGrid[j].emplace_back(Ground::door);
                     break;
                 default :
+                    theGrid[j].emplace_back(Ground::nothing);
                     break;
             }
+            occupied[j].emplace_back(false);
+
+            recentX = i;
+            recentY = j;
+            notifyObservesrs();
         }
     }
 }
 
 Floor::~Floor() { }
 
-void Floor::spawn(Creature &c) {
+void Floor::spawn(Creature *c,int posx, int posy) {
+    occupied[posy][posx] = true;
     living.emplace_back(c);
+    c->setFloor(this);
     for(auto ob : observers) {
-        c.attach(ob);
+        (*c).attach(ob);
     }
 }
 
@@ -56,30 +67,31 @@ void Floor::notifyObservesrs() {
     }
 }
 
-bool Floor::validMove(int posx, int posy, Direction d) {
-    try {
-        switch(d) {
-            case Direction::N:
-                return (theGrid[posx][posy + 1] == Ground::empty) ? true : false;
-            case Direction::E:
-                return (theGrid[posx + 1][posy] == Ground::empty) ? true : false;
-            case Direction::S:
-                return (theGrid[posx][posy - 1] == Ground::empty) ? true : false;
-            case Direction::W:
-                return (theGrid[posx - 1][posy] == Ground::empty) ? true : false;
-            default:
-                return false;
-        }
-    } catch (out_of_range &e) {
-        return false;
-    }
-}
 
 Ground Floor::getState(int posx, int posy) {
     try {
         return theGrid[posy][posx];
-    } catch (std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        return Ground::empty;
+    } catch (...) {
+        return Ground::Vwall;
     }
+}
+
+void Floor::gotMoved(int posx, int posy, Direction d) {
+    occupied[posy][posx] = false;
+    switch(d) {
+        case Direction::N :
+            occupied[posy + 1][posx] = true;
+        case Direction::E :
+            occupied[posy][posx + 1] = true;
+        case Direction::S :
+            occupied[posy - 1][posx] = true;
+        case Direction::W :
+            occupied[posy][posx - 1] = true;
+
+        recentX = posx;
+        recentY = posy;
+        notifyObservesrs();
+    }
+
+    
 }

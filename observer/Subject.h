@@ -9,9 +9,14 @@ class Observer;
 
 class Subject {
     protected:
+      int recentX;
+      int recentY;
       std::vector<Observer*> observers;
     public:
+      virtual ~Subject();
       virtual void notifyObservesrs() = 0;
+      int getRecentX();
+      int getRecentY();
       void attach(Observer *ob);
       void detach(Observer *ob);
 };

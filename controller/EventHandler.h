@@ -10,7 +10,7 @@ class TextDisplay;
 class Floor;
 
 class EventHandler {
-    TextDisplay *display;
+    TextDisplay *tDisplay;
     Floor *currentFloor;
     Player *p;
 public:
