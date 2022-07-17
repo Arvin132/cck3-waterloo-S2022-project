@@ -1,0 +1,60 @@
+#include "textDisplay.h"
+#include "floor.h"
+#include "creature.h"
+#include <vector>
+#include <iostream>
+using namespace std;
+
+TextDisplay::TextDisplay(): Observer(), display(vector<vector<char>> {}) {
+    for (int j = 0; j < heigth; j++) {
+        display.emplace_back(vector<char> {});
+        for (int i = 0; i < width; i++) {
+            display[j].emplace_back(' ');
+        }
+    }
+}
+
+void TextDisplay::notify(Creature &who) {}
+
+void TextDisplay::notify(Floor &who) {
+    for(int i = 0; i < width; i++) {
+        for (int j = 0; j < heigth; j++) {
+            Ground state = who.getState(i, j);
+            switch (state) {
+                case Ground::empty:
+                    display[j][i] = '.';
+                    break;
+                case Ground::Vwall:
+                    display[j][i] = '|';
+                    break;
+                case Ground::Hwall:
+                    display[j][i] = '-';
+                    break;
+                case Ground::path:
+                    display[j][i] = '#';
+                    break;
+                case Ground::door:
+                    display[j][i] = '+';
+                    break;
+                case Ground::nothing:
+                    display[j][i] = ' ';
+                    break;
+                case Ground::occupied:
+                case Ground::item:
+                    cerr << "Make the floor empty before going into the next one";
+                    return;
+            }
+        }
+    }
+}
+
+
+std::ostream &operator<<(std::ostream &out, TextDisplay td) {
+    for (int j = 0; j < td.heigth; j++) {
+        for (int i = 0; i < td.width; i++) {
+            out << td.display[j][i];
+        }
+        out <<"capacity " << td.display[j].size() << endl;
+    }
+    return out;
+}
