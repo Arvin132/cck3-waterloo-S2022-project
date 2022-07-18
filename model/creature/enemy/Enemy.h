@@ -8,11 +8,10 @@
 
 class Enemy: public Creature {
     public:
+      ~Enemy();
       void virtual attack(Creature *other, int atkModifier);
       void virtual beAttackedBy(Creature *who, int defModifier);
-      void virtual move();
-      void virtual modifyHP(int amount);
-      void virtual modifyGold(int amount);
+      virtual void move();
 };
 
 

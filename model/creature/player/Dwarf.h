@@ -4,9 +4,9 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_DWARF_H
 #define CCK3_WATERLOO_S2022_PROJECT_DWARF_H
+#include "Player.h"
 
-
-class Dwarf {
+class Dwarf: public Player {
 
 };
 
