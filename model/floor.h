@@ -3,11 +3,10 @@
 #include "subject.h"
 #include "creature.h"
 
-enum Ground {nothing =0, empty, Vwall, Hwall, path, door};
+enum Ground {nothing =0, empty, Vwall, Hwall, path, door, occupied, item};
 
 class Floor: public Subject {
     std::vector<std::vector<Ground>> theGrid;
-    std::vector<std::vector<bool>> occupied;
     std::vector<Creature*> living;
     const int width = 79;
     const int heigth = 25;

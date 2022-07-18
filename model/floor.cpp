@@ -8,12 +8,11 @@
 using namespace std;
 
 Floor::Floor(std::istream &in, Observer *initialOb): Subject(), theGrid(vector<vector<Ground>> {}),
-                                                    occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
+                                                    living(vector<Creature*> {}) {
     attach(initialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
-        occupied.emplace_back(vector<bool> {});
         string s;
         getline(in ,s);
         for (int i = 0; i < width; i++) {
@@ -41,7 +40,6 @@ Floor::Floor(std::istream &in, Observer *initialOb): Subject(), theGrid(vector<v
                     theGrid[j].emplace_back(Ground::nothing);
                     break;
             }
-            occupied[j].emplace_back(false);
 
             recentX = i;
             recentY = j;
@@ -63,7 +61,6 @@ void Floor::takeTurn() {
 }
 
 void Floor::spawn(Creature *c,int posx, int posy) {
-    occupied[posy][posx] = true;
     living.emplace_back(c);
     c->setFloor(this);
     for(auto ob : observers) {
@@ -88,16 +85,15 @@ Ground Floor::getState(int posx, int posy) {
 }
 
 void Floor::gotMoved(int posx, int posy, Direction d) {
-    occupied[posy][posx] = false;
     switch(d) {
         case Direction::N :
-            occupied[posy + 1][posx] = true;
+            theGrid[posy + 1][posx] = Ground::occupied;
         case Direction::E :
-            occupied[posy][posx + 1] = true;
+            theGrid[posy][posx + 1] = Ground::occupied;
         case Direction::S :
-            occupied[posy - 1][posx] = true;
+            theGrid[posy - 1][posx] = Ground::occupied;
         case Direction::W :
-            occupied[posy][posx - 1] = true;
+            theGrid[posy][posx - 1] = Ground::occupied;
 
         recentX = posx;
         recentY = posy;
