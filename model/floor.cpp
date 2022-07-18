@@ -8,11 +8,12 @@
 using namespace std;
 
 Floor::Floor(std::istream &in, Observer *initialOb): Subject(), theGrid(vector<vector<Ground>> {}),
-                                                    living(vector<Creature*> {}) {
+                                                    occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
     attach(initialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
+        occupied.emplace_back(vector<bool> {});
         string s;
         getline(in ,s);
         for (int i = 0; i < width; i++) {
@@ -40,6 +41,7 @@ Floor::Floor(std::istream &in, Observer *initialOb): Subject(), theGrid(vector<v
                     theGrid[j].emplace_back(Ground::nothing);
                     break;
             }
+            occupied[j].emplace_back(false);
 
             recentX = i;
             recentY = j;
@@ -61,6 +63,7 @@ void Floor::takeTurn() {
 }
 
 void Floor::spawn(Creature *c,int posx, int posy) {
+    occupied[posy][posx] = true;
     living.emplace_back(c);
     c->setFloor(this);
     for(auto ob : observers) {
@@ -85,15 +88,16 @@ Ground Floor::getState(int posx, int posy) {
 }
 
 void Floor::gotMoved(int posx, int posy, Direction d) {
+    occupied[posy][posx] = false;
     switch(d) {
         case Direction::N :
-            theGrid[posy + 1][posx] = Ground::occupied;
+            occupied[posy + 1][posx] = true;
         case Direction::E :
-            theGrid[posy][posx + 1] = Ground::occupied;
+            occupied[posy][posx + 1] = true;
         case Direction::S :
-            theGrid[posy - 1][posx] = Ground::occupied;
+            occupied[posy - 1][posx] = true;
         case Direction::W :
-            theGrid[posy][posx - 1] = Ground::occupied;
+            occupied[posy][posx - 1] = true;
 
         recentX = posx;
         recentY = posy;
@@ -101,4 +105,9 @@ void Floor::gotMoved(int posx, int posy, Direction d) {
     }
 
     
+}
+
+
+bool Floor::isOccupied(int posx, int posy) {
+    return occupied[posy][posx];
 }
