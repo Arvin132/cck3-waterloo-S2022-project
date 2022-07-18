@@ -4,10 +4,21 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_SUBJECT_H
 #define CCK3_WATERLOO_S2022_PROJECT_SUBJECT_H
-
+#include <vector>
+class Observer;
 
 class Subject {
-
+    protected:
+      int recentX;
+      int recentY;
+      std::vector<Observer*> observers;
+    public:
+      virtual ~Subject();
+      virtual void notifyObservesrs() = 0;
+      int getRecentX();
+      int getRecentY();
+      void attach(Observer *ob);
+      void detach(Observer *ob);
 };
 
 

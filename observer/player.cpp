@@ -51,9 +51,9 @@ void Player::move()  {
             break;
     }
 
-    if (fl->getState(newX, newY) != Ground::empty || fl->getState(newX, newY) != Ground::path
-        || fl->getState(newX, newY) != Ground::door) {
+    if (fl->getState(newX, newY) != Ground::empty) {
         return move();
+        
     }
 
     
@@ -61,8 +61,6 @@ void Player::move()  {
     recentX = newX;
     recentY = newY;
 }
-
-
 void Player::modifyHP(int amount)  {
     hp += amount;
 }
