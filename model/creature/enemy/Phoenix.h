@@ -4,9 +4,9 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_PHOENIX_H
 #define CCK3_WATERLOO_S2022_PROJECT_PHOENIX_H
+#include "Enemy.h"
 
-
-class Phoenix {
+class Phoenix: public Enemy {
 
 };
 

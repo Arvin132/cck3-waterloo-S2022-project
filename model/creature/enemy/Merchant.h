@@ -4,9 +4,9 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_MERCHANT_H
 #define CCK3_WATERLOO_S2022_PROJECT_MERCHANT_H
+#include "Enemy.h"
 
-
-class Merchant {
+class Merchant : public Enemy {
 
 };
 

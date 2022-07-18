@@ -17,17 +17,19 @@ class Creature: public Subject {
       int gold;
       Floor *fl;
       char rep;
+      
+      void virtual modifyHP(int amount);
+      void virtual modifyGold(int amount);
+
     public:
       virtual ~Creature();
-      void notifyObservesrs() override;
-      char getRep();
-      void setFloor(Floor *fl);
-      void setStartingPosition(int posx, int posy);
+      virtual void notifyObservesrs() override;
+      virtual char getRep();
+      void virtual modifyHP(int amount);
+      void virtual modifyGold(int amount);
       void virtual attack(Creature *other, int atkModifier) = 0;
       void virtual beAttackedBy(Creature *who, int defModifier) = 0;
       void virtual move() = 0;
-      void virtual modifyHP(int amount) = 0;
-      void virtual modifyGold(int amount) = 0;
       friend class Floor;
 };
 

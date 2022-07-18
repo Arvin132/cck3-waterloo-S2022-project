@@ -4,9 +4,9 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_ELVES_H
 #define CCK3_WATERLOO_S2022_PROJECT_ELVES_H
+#include "Player.h"
 
-
-class Elves {
+class Elves: public Player {
 
 };
 

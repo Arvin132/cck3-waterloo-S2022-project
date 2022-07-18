@@ -4,9 +4,9 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_ORC_H
 #define CCK3_WATERLOO_S2022_PROJECT_ORC_H
+#include "Player.h"
 
-
-class Orc {
+class Orc: public Player {
 
 };
 

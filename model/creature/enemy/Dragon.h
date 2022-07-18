@@ -4,9 +4,9 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_DRAGON_H
 #define CCK3_WATERLOO_S2022_PROJECT_DRAGON_H
+#include "Enemy.h"
 
-
-class Dragon {
+class Dragon: public Enemy {
 
 };
 

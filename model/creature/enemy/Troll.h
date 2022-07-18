@@ -4,9 +4,9 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_TROLL_H
 #define CCK3_WATERLOO_S2022_PROJECT_TROLL_H
+#include "Enemy.h"
 
-
-class Troll {
+class Troll: public Enemy {
 
 };
 
