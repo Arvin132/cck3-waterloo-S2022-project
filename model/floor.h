@@ -14,13 +14,14 @@ class Floor: public Subject {
     const int heigth = 25;
 
 public:
-    Floor(std::istream &in, Observer *initialOb);
+    Floor(std::istream &in);
     ~Floor();
     void takeTurn();
     void notifyObservesrs() override;
     void spawn(Creature *c, int posx, int posy);
     Ground getState(int posx, int posy);
     bool isOccupied(int posx, int posy);
+    Creature *whatCreature(int posx, int posy);
     //Item *whatItem(int posx, int posy);
     //void Interact(Player *who, Item *what);
     void gotMoved(int posx, int posy, Direction d);
