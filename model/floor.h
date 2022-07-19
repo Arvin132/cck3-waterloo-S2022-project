@@ -14,7 +14,7 @@ class Floor: public Subject {
     const int heigth = 25;
 
 public:
-    Floor(std::istream &in, Observer *initialOb);
+    Floor(std::istream &in);
     ~Floor();
     void takeTurn();
     void notifyObservesrs() override;

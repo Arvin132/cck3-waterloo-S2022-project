@@ -7,9 +7,8 @@
 #include "creature.h"
 using namespace std;
 
-Floor::Floor(std::istream &in, Observer *initialOb): Subject(), theGrid(vector<vector<Ground>> {}),
-                                                    occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
-    attach(initialOb);
+Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {}),
+                                occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
@@ -64,6 +63,7 @@ void Floor::takeTurn() {
 
 void Floor::spawn(Creature *c,int posx, int posy) {
     occupied[posy][posx] = true;
+    c->setStartingPosition(posx, posy);
     living.emplace_back(c);
     c->setFloor(this);
     for(auto ob : observers) {

@@ -9,7 +9,7 @@
 using namespace std;
 
 EventHandler::EventHandler(): tDisplay(new TextDisplay()), currentFloor(nullptr),
-                              p(new Player()){}
+                              p(new Player(&cin, 10, 10, 10, 10)){}
 
 EventHandler::~EventHandler() {
     delete tDisplay;
@@ -21,9 +21,19 @@ void EventHandler::initFloor(string readFile) {
     if (currentFloor != nullptr) {
         delete currentFloor;
     }
-    currentFloor = new Floor(f, tDisplay);
+    currentFloor = new Floor(f);
+}
+
+void EventHandler::setup() {
+    currentFloor->spawn(p, 10, 5);
     std::cout << *tDisplay;
 }
+
+void EventHandler::nextTurn() {
+    currentFloor->takeTurn();
+    std::cout << *tDisplay;;
+}
+
 
 
 
