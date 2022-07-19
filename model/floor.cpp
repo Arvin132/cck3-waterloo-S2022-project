@@ -8,7 +8,7 @@
 using namespace std;
 
 Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {}),
-                                                    occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
+                                occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
