@@ -5,6 +5,7 @@
 #include "creature.h"
 #include "player.h"
 #include "floor.h"
+#include <cmath>
 
 Player::Player(std::istream *input, int hp, int atk, int def, int gold) : Creature(hp, atk, def, gold), input(input) {
     rep = '@';
@@ -12,13 +13,26 @@ Player::Player(std::istream *input, int hp, int atk, int def, int gold) : Creatu
 
 
 void Player::attack(Creature *other, int atkModifier) {
+    atk += atkModifier;
+    other->beAttackedBy(this, 0);
 
+    atk -= atkModifier;
 }
 
 
 void Player::beAttackedBy(Creature *who, int defModifier) {
+    def += defModifier;
 
+    int damage = ceil(100 / (100 + def) * who->getAtk());
+
+    hp -= damage;
+
+    if (hp <= 0) {
+        // fear grows on me
+        return fl->died(this);
+    }
 }
+
 void Player::move()  {
     char command = ' ';
     *input >> command;

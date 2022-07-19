@@ -28,12 +28,10 @@ void EventHandler::initFloor(string readFile) {
     if (currentFloor != nullptr) {
         delete currentFloor;
     }
-    currentFloor = new Floor(f);
-    currentFloor->attach(tDisplay);
+    currentFloor = new Floor(f, p, tDisplay);
 }
 
 void EventHandler::setup() {
-    currentFloor->spawn(p, 10, 5);
     std::cout << *tDisplay;
 }
 

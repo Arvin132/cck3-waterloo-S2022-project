@@ -23,8 +23,9 @@ class Creature: public Subject {
 
     public:
       virtual ~Creature();
-      virtual void notifyObservesrs() override;
-      virtual char getRep();
+      void virtual notifyObservesrs() override;
+      char virtual getRep();
+      int virtual getAtk();
       void virtual modifyHP(int amount);
       void virtual modifyGold(int amount);
       void virtual attack(Creature *other, int atkModifier) = 0;

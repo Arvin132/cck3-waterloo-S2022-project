@@ -7,8 +7,9 @@
 #include "creature.h"
 using namespace std;
 
-Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {}),
-                                occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
+Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGrid(vector<vector<Ground>> {}),
+                                           occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
+    observers.emplace_back(intialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
@@ -47,6 +48,8 @@ Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {}),
             notifyObservesrs();
         }
     }
+
+    spawn(p, 10, 10);
 }
 
 Floor::~Floor() { }
@@ -63,12 +66,12 @@ void Floor::takeTurn() {
 
 void Floor::spawn(Creature *c,int posx, int posy) {
     occupied[posy][posx] = true;
-    c->setStartingPosition(posx, posy);
     living.emplace_back(c);
-    c->setFloor(this);
     for(auto ob : observers) {
         (*c).attach(ob);
     }
+    c->setStartingPosition(posx, posy);
+    c->setFloor(this);
     c->notifyObservesrs();
 }
 
@@ -77,7 +80,6 @@ void Floor::notifyObservesrs() {
         i->notify(*this);
     }
 }
-
 
 Ground Floor::getState(int posx, int posy) {
     try {
@@ -107,7 +109,24 @@ void Floor::gotMoved(int posx, int posy, Direction d) {
     
 }
 
+Creature *Floor::whatCreature(int posx, int posy) {
+    for (auto c : living) {
+        if (c->getRecentX() == posx && c->getRecentY() == posy) {
+            return c;
+        }
+    }
+}
 
 bool Floor::isOccupied(int posx, int posy) {
     return occupied[posy][posx];
+}
+
+void Floor::died(Creature *who) {
+    for (auto it = living.begin(); it != living.end(); ++it) {
+        if (*it == who) {
+            occupied[who->getRecentY()][who->getRecentX()] = false;
+            living.erase(it);
+            delete who;
+        }
+    }
 }

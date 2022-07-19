@@ -18,11 +18,19 @@ void Enemy::move() {
         char command = 'l';
         Direction d = Direction::W;
         int newX = recentX - 1;
-        int newY = recentY;
     }
 
-    
+    if (fl->getState(newX, newY) != Ground::empty || fl->getState(newX, newY) != Ground::path
+        || fl->getState(newX, newY) != Ground::door) {
+        return ;
+    }
+
     fl->gotMoved(recentX, recentY, d);
     recentX = newX;
     recentY = newY;
 }
+
+
+
+void  Enemy::attack(Creature *other, int atkModifier) {}
+void  Enemy::beAttackedBy(Creature *who, int defModifier) {}
