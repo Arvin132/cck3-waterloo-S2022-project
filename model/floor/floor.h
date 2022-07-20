@@ -7,25 +7,30 @@
 enum Ground {nothing =0, empty, Vwall, Hwall, path, door, item};
 
 struct Pos {
-    int x;
-    int y;
+    int x, y;
 };
 
 struct Block {
     Pos pos;
+    int *roomLabel;
     Ground type;
 };
 
 class Floor;
 
 class Chamber {
+    int label;
     Floor *floor;
     std::vector<Block*> blocks;
 public:
     Chamber(Floor *ownedBy);
-    void addBlock(Block *b);
+    ~Chamber();
+    void addBlock(int h, int w, Ground type);
+    int getLabel();
+    void setLabel(int label);
     Block* getSpawnPos();
 };
+
 
 
 class Floor: public Subject {
@@ -35,7 +40,7 @@ class Floor: public Subject {
     std::vector<Chamber> chambers;
     // std::vector<Item> items;
     const int width = 79;
-    const int heigth = 25;
+    const int height = 25;
     void initChambers();
 public:
     Floor(std::istream &in);
