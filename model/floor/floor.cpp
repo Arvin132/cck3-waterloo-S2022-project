@@ -111,3 +111,9 @@ void Floor::gotMoved(int posx, int posy, Direction d) {
 bool Floor::isOccupied(int posx, int posy) {
     return occupied[posy][posx];
 }
+
+Chamber::Chamber(Floor *ownedBy): floor{ownedBy}, blocks{std::vector<Block*>()}{}
+
+void Chamber::addBlock(Block *b) {
+    blocks.emplace_back(b);
+}
