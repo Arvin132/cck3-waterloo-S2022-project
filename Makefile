@@ -1,17 +1,27 @@
-CXX = g++
-CXXFLAGS = -std=c++14 -Wall -MMD -g -Werror=vla
-EXEC = cc3K
-SOURCES = $(wildcard *.cpp) $(wildcard **/*.cpp) 
-OBJECTS = ${SOURCES:.cpp=.o}
-DEPENDS = ${OBJECTS:.o=.d}
+CXX			:= g++
+CXXFLAGS	:= -std=c++14 -Wall -Wextra -Werror=vla
 
-${EXEC}: ${OBJECTS}
-	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC}
+EXEC		:= sorcery
+SRCS_DIR	:= ./src
+BUILD_DIR	:= ./build
+SRCS 		:= $(shell find $(SRCS_DIR) -name *.cpp)
+OBJS		:= $(SRCS:$(SRCS_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+DEPS		:= $(OBJS:.o=.d)
 
--include ${DEPENDS}
+DIR_GUARD	= @mkdir -p $(@D)
+
+$(EXEC): $(OBJS)
+	$(DIR_GUARD)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
+
+$(BUILD_DIR)/%.o: $(SRCS_DIR)/%.cpp
+	$(DIR_GUARD)
+	$(CXX) $(CXXFLAGS) -c $< -MMD -o $@
+
+-include $(DEPS)
 
 .PHONY: clean
 
 clean:
-	rm ${OBJECTS} ${EXEC} ${DEPENDS}
-
+	$(RM) -r $(BUILD_DIR)
+	$(RM) $(EXEC)

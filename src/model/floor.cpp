@@ -49,7 +49,7 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGri
         }
     }
 
-    spawn(p, 10, 10);
+    spawn(p, 10, 5);
 }
 
 Floor::~Floor() { }
@@ -93,20 +93,22 @@ void Floor::gotMoved(int posx, int posy, Direction d) {
     occupied[posy][posx] = false;
     switch(d) {
         case Direction::N :
-            occupied[posy + 1][posx] = true;
+            occupied[posy - 1][posx] = true;
+            break;
         case Direction::E :
             occupied[posy][posx + 1] = true;
+            break;
         case Direction::S :
-            occupied[posy - 1][posx] = true;
+            occupied[posy + 1][posx] = true;
+            break;
         case Direction::W :
             occupied[posy][posx - 1] = true;
-
-        recentX = posx;
-        recentY = posy;
-        notifyObservesrs();
+            break;
     }
 
-    
+    recentX = posx;
+    recentY = posy;
+    notifyObservesrs();
 }
 
 Creature *Floor::whatCreature(int posx, int posy) {
@@ -115,6 +117,7 @@ Creature *Floor::whatCreature(int posx, int posy) {
             return c;
         }
     }
+    return nullptr;
 }
 
 bool Floor::isOccupied(int posx, int posy) {

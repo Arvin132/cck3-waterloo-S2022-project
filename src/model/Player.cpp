@@ -26,7 +26,7 @@ void Player::beAttackedBy(Creature *who, int defModifier) {
     int damage = ceil(100 / (100 + def) * who->getAtk());
 
     hp -= damage;
-
+    
     if (hp <= 0) {
         // fear grows on me
         return fl->died(this);
@@ -37,6 +37,11 @@ void Player::move()  {
     char command = ' ';
     *input >> command;
     Direction d = Direction::E;
+
+    if (input->eof() || command == 'q') {
+        finished = true;
+        return;
+    }
 
     if (command != 'u' && command != 'r'
         && command != 'd' && command != 'l') {
@@ -65,13 +70,14 @@ void Player::move()  {
             break;
     }
 
-    if (fl->getState(newX, newY) != Ground::empty || fl->getState(newX, newY) != Ground::path
-        || fl->getState(newX, newY) != Ground::door) {
+    if ((fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
+        && fl->getState(newX, newY) != Ground::door) || fl->isOccupied(newX, newY)) {
         return move();
     }
 
     
     fl->gotMoved(recentX, recentY, d);
+    
     recentX = newX;
     recentY = newY;
 }
@@ -84,3 +90,5 @@ void Player::modifyHP(int amount)  {
 void Player::modifyGold(int amount) {
     gold += amount;
 }
+
+bool Player::isFinished() { return finished; }

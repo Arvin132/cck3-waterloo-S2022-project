@@ -7,8 +7,13 @@
 #include "creature.h"
 
 class Enemy: public Creature {
+    void virtual modifyHP(int amount) override;
+    void virtual modifyGold(int amount) override; 
+    protected:
+      Enemy(int hp, int atk, int def);
     public:
-      ~Enemy();
+      
+      virtual ~Enemy();
       void virtual attack(Creature *other, int atkModifier);
       void virtual beAttackedBy(Creature *who, int defModifier);
       virtual void move();

@@ -18,16 +18,14 @@ class Creature: public Subject {
       Floor *fl;
       char rep;
       
-      void virtual modifyHP(int amount);
-      void virtual modifyGold(int amount);
+      void virtual modifyHP(int amount) = 0;
+      void virtual modifyGold(int amount) = 0;
 
     public:
       virtual ~Creature();
       void virtual notifyObservesrs() override;
       char virtual getRep();
       int virtual getAtk();
-      void virtual modifyHP(int amount);
-      void virtual modifyGold(int amount);
       void virtual attack(Creature *other, int atkModifier) = 0;
       void virtual beAttackedBy(Creature *who, int defModifier) = 0;
       void virtual move() = 0;

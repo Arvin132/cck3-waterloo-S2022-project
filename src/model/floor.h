@@ -1,7 +1,7 @@
 #ifndef __FLOOR_H__
 #define __FLOOR_H__
 #include "subject.h"
-#include "player.h"
+#include "Player.h"
 #include "creature.h"
 
 enum Ground {nothing =0, empty, Vwall, Hwall, path, door, item};

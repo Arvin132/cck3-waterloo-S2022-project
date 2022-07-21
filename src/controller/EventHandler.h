@@ -19,6 +19,7 @@ public:
     void initFloor(std::string readFile);
     void setup();
     void nextTurn();
+    bool gameFinished();
 };
 
 

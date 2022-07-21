@@ -11,12 +11,6 @@ void Creature::notifyObservesrs() {
     }
 }
 
-void  Creature::modifyHP(int amount) {
-    hp += amount;
-}
-void Creature::modifyGold(int amount) {
-    gold += amount;
-}
 
 Creature::~Creature() { }
 
