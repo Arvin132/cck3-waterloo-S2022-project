@@ -1,10 +1,9 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
 #include "floor.h"
-#include "subject.h"
-#include "observer.h"
-#include "creature.h"
+#include "../observer/Subject.h"
+#include "../observer/Observer.h"
+#include "./creature/creature.h"
 using namespace std;
 
 Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {}),

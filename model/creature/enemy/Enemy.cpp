@@ -2,9 +2,10 @@
 // Created by kmajdi on 2022-07-14.
 //
 #include "floor.h"
+#include "../creature.h"
 #include "Enemy.h"
 
-Enemy::~Enemy() { };
+Enemy::~Enemy(int hp, int atk, int def): Creature(hp, atk, def, 0, false) { };
 
 void Enemy::move() {
     char command = 'r';

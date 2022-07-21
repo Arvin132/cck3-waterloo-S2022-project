@@ -1,11 +1,12 @@
 #include "textDisplay.h"
-#include "floor.h"
-#include "creature.h"
+#include "../controller/EventHandler.h"
+#include "../model/creature/creature.h"
+#include "../model/creature/player/Player.h"
 #include <vector>
 #include <iostream>
 using namespace std;
 
-TextDisplay::TextDisplay(): Observer(), display(vector<vector<char>> {}) {
+TextDisplay::TextDisplay(Floor *floor): Observer(), display(vector<vector<char>> {}), floor{floor} {
     for (int j = 0; j < heigth; j++) {
         display.emplace_back(vector<char> {});
         for (int i = 0; i < width; i++) {
@@ -53,5 +54,14 @@ std::ostream &operator<<(std::ostream &out, TextDisplay td) {
         }
         out << endl;
     }
+    Player::OutTicket ot = td.eventHandler->p->getOutTicket();
+    out << "HP: " << ot.hp << endl;
+    out << "Atk: " << ot.atk << endl;
+    out << "Def: " << ot.def << endl;
+    out << "Action: ";
+    for (auto h: td.eventHandler->outLog()){
+        out << h << " ";
+    }
+    out << endl;
     return out;
 }

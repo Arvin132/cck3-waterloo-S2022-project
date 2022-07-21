@@ -2,14 +2,14 @@
 // Created by kmajdi on 2022-07-14.
 //
 #include <fstream>
-#include "eventHandler.h"
-#include "textDisplay.h"
-#include "floor.h"
+#include "EventHandler.h"
+#include "../view/textDisplay.h"
+#include "../model/floor.h"
 
 using namespace std;
 
 EventHandler::EventHandler(): tDisplay(new TextDisplay()), currentFloor(nullptr),
-                              p(new Player(&cin, 10, 10, 10, 10)){}
+                              p(new Player(&cin, 10, 10, 10, 10)), log{vector<string>("Player character has spawned. ")}{}
 
 EventHandler::~EventHandler() {
     delete tDisplay;
@@ -34,6 +34,8 @@ void EventHandler::nextTurn() {
     std::cout << *tDisplay;;
 }
 
-
-
-
+std::vector <std::string> EventHandler::outLog() {
+    vector<string> tempLog = log;
+    log.clear();
+    return tempLog;
+}

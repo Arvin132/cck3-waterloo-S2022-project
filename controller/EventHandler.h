@@ -12,13 +12,15 @@ class Floor;
 class EventHandler {
     TextDisplay *tDisplay;
     Floor *currentFloor;
-    Player *p;
+    std::vector<std::string> log;
 public:
+    Player *p;
     EventHandler();
     ~EventHandler();
     void initFloor(std::string readFile);
     void setup();
     void nextTurn();
+    std::vector<std::string> outLog();
 };
 
 

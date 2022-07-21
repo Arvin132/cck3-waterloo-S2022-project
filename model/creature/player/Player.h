@@ -15,7 +15,13 @@ class Player: public Creature {
         void virtual beAttackedBy(Creature *who, int defModifier) override;
         void virtual move() override;
         void virtual modifyHP(int amount) override;
-        void virtual modifyGold(int amount) override; 
+        void virtual modifyGold(int amount) override;
+        struct OutTicket{
+            int atk;
+            int def;
+            int hp;
+        };
+        OutTicket getOutTicket();
 };
 
 

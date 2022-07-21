@@ -2,9 +2,9 @@
 // Created by kmajdi on 2022-07-14.
 //
 #include <iostream>
-#include "creature.h"
-#include "player.h"
-#include "floor.h"
+#include "../creature.h"
+#include "Player.h"
+#include "../../floor.h"
 
 Player::Player(std::istream *input, int hp, int atk, int def, int gold) : Creature(hp, atk, def, gold), input(input) {
     rep = '@';
@@ -69,4 +69,12 @@ void Player::modifyHP(int amount)  {
 
 void Player::modifyGold(int amount) {
     gold += amount;
+}
+
+OutTicket Player::getOutTicket() {
+    OutTicket ot;
+    ot.atk = atk;
+    ot.def = def;
+    ot.hp = hp;
+    return ot;
 }
