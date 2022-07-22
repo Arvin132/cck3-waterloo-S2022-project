@@ -13,7 +13,7 @@ using namespace std;
 using namespace std;
 
 EventHandler::EventHandler(): tDisplay(new TextDisplay()), currentFloor(nullptr),
-                              p(new Player(&cin, 10, 10, 10, 10)){}
+                              p(new Player(&cin, 10, 100, 10, 10)){}
 
 EventHandler::~EventHandler() {
     delete tDisplay;

@@ -126,10 +126,12 @@ bool Floor::isOccupied(int posx, int posy) {
 
 void Floor::died(Creature *who) {
     for (auto it = living.begin(); it != living.end(); ++it) {
+        std::cout << *it << endl;
         if (*it == who) {
             occupied[who->getRecentY()][who->getRecentX()] = false;
             living.erase(it);
             delete who;
+            break;
         }
     }
 }

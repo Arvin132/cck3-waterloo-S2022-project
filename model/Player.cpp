@@ -31,6 +31,8 @@ void Player::beAttackedBy(Creature *who, int defModifier) {
         // fear grows on me
         return fl->died(this);
     }
+
+    def -= defModifier;
 }
 
 void Player::move()  {
@@ -70,11 +72,16 @@ void Player::move()  {
             break;
     }
 
-    if ((fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
-        && fl->getState(newX, newY) != Ground::door) || fl->isOccupied(newX, newY)) {
+    if (fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
+        && fl->getState(newX, newY) != Ground::door) {
         return move();
     }
 
+    if (fl->isOccupied(newX, newY)) {
+        Creature *other = fl->whatCreature(newX, newY);
+        attack(other, 0);
+        return;
+    }
     
     fl->gotMoved(recentX, recentY, d);
     
