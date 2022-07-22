@@ -20,6 +20,7 @@ public:
     void setup();
     void nextTurn();
     bool gameFinished();
+    bool isPlayer(Creature *other);
 };
 
 

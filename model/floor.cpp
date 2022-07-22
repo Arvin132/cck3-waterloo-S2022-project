@@ -123,7 +123,14 @@ Creature *Floor::whatCreature(int posx, int posy) {
 }
 
 bool Floor::isOccupied(int posx, int posy) {
+    if (posx < 0 || posy < 0 || posx >= width || posy >= heigth) {
+        return false;
+    }
     return occupied[posy][posx];
+}
+
+bool Floor::isPlayer(Creature *other) {
+    return (other == living[0]);
 }
 
 void Floor::died(Creature *who) {

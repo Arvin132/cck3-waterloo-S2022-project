@@ -4,35 +4,58 @@
 #include "floor.h"
 #include "math.h"
 #include "Enemy.h"
+#include "randomGen.h"
 
 Enemy::Enemy(int hp, int atk, int def): Creature(hp, atk, def, 0) {}
 
 Enemy::~Enemy() { };
 
+Direction directionOfCommand(int d, int *newX, int *newY) {
+    switch (d) {
+        case 0:
+            *newY -= 1;
+            return Direction::N;
+        case 1:
+            *newY += 1;
+            return Direction::S;
+        case 2:
+            *newX += 1;
+            return Direction::E;
+        case 3:
+            *newX -= 1;
+            return Direction::W;
+    }
+}
+
 void Enemy::move() {
-    Direction d = Direction::E;
 
-    int newX = recentX + 1;
-
-    if (fl->getState(newX, recentY) != Ground::empty && fl->getState(newX, recentY) != Ground::path
-        && fl->getState(newX, recentY) != Ground::door) {
-        d = Direction::W;
-        newX = recentX - 1;
+    for (int i = recentX - 1; i <= recentX + 1 ;i++) {
+        for (int j = recentY - 1; j <= recentY + 1; j++) {
+            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatCreature(i, j))) {
+                attack(fl->whatCreature(i, j), 0);
+                return;
+            }
+        }
     }
 
-    if (fl->getState(newX, recentY) != Ground::empty && fl->getState(newX, recentY) != Ground::path
-        && fl->getState(newX, recentY) != Ground::door) {
-        return ;
-    }
+    int command = randomGen(0, 4);
+    int newX = recentX;
+    int newY = recentY;
+    Direction d = directionOfCommand(command, &newX, &newY);
+    int count = 0;
 
-    if (fl->isOccupied(newX, recentY)) {
-        Creature *other = fl->whatCreature(newX, recentY);
-        attack(other, 0);
-        return;
+    while((fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
+           && fl->getState(newX, newY) != Ground::door) || fl->isOccupied(newX, newY)) {
+        command = randomGen(0, 4);
+        d = directionOfCommand(command, &newX, &newY);
+        count++;
+
+        if(count > 30) { return; }
     }
 
     fl->gotMoved(recentX, recentY, d);
     recentX = newX;
+    recentY = newY;
 }
 
 void Enemy::modifyHP(int amount)  {
@@ -60,6 +83,7 @@ void Enemy::beAttackedBy(Creature *who, int defModifier) {
     int damage = ceil((something / (100 + def)) * who->getAtk());
 
     hp -= damage;
+    std::cout << "got attacked for " << damage << " Damage" << std::endl;
 
     if (hp <= 0) {
         // fear grows on me

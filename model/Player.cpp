@@ -23,9 +23,11 @@ void Player::attack(Creature *other, int atkModifier) {
 void Player::beAttackedBy(Creature *who, int defModifier) {
     def += defModifier;
 
-    int damage = ceil(100 / (100 + def) * who->getAtk());
+    double something = 100;
+    int damage = ceil((something / (100 + def)) * who->getAtk());
 
     hp -= damage;
+    std::cout << "got attacked for " << damage << " Damage" << std::endl;
     if (hp <= 0) {
         // fear grows on me
         return fl->died(this);

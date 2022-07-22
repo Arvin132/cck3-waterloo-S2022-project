@@ -23,6 +23,7 @@ public:
     Ground getState(int posx, int posy);
     bool isOccupied(int posx, int posy);
     Creature *whatCreature(int posx, int posy);
+    bool isPlayer(Creature *);
     //Item *whatItem(int posx, int posy);
     //void Interact(Player *who, Item *what);
     void gotMoved(int posx, int posy, Direction d);
