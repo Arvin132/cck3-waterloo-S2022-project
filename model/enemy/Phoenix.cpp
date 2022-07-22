@@ -3,3 +3,8 @@
 //
 
 #include "Phoenix.h"
+
+
+Phoenix::Phoenix():Enemy(50, 35, 20) {
+    rep = 'X';
+}

@@ -7,7 +7,10 @@
 #include "Enemy.h"
 
 class Dragon: public Enemy {
-
+    public:
+        Dragon();
+        void move() override;
+        void beAttackedBy(Creature *who, int defModifier) override;
 };
 
 

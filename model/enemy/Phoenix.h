@@ -7,7 +7,8 @@
 #include "Enemy.h"
 
 class Phoenix: public Enemy {
-
+    public:
+        Phoenix();
 };
 
 

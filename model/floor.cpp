@@ -7,8 +7,9 @@
 #include "creature.h"
 using namespace std;
 
-Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {}),
-                                occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
+Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGrid(vector<vector<Ground>> {}),
+                                           occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
+    observers.emplace_back(intialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
@@ -47,13 +48,17 @@ Floor::Floor(std::istream &in): Subject(), theGrid(vector<vector<Ground>> {}),
             notifyObservesrs();
         }
     }
+
+    spawn(p, 10, 5);
 }
 
 Floor::~Floor() { }
 
 void Floor::takeTurn() {
     for (auto c : living) {
-        c->move();
+        if (c) {
+            c->move();
+        }
     }
     notifyObservesrs();
     for (auto c : living) {
@@ -63,12 +68,12 @@ void Floor::takeTurn() {
 
 void Floor::spawn(Creature *c,int posx, int posy) {
     occupied[posy][posx] = true;
-    c->setStartingPosition(posx, posy);
     living.emplace_back(c);
-    c->setFloor(this);
     for(auto ob : observers) {
         (*c).attach(ob);
     }
+    c->setStartingPosition(posx, posy);
+    c->setFloor(this);
     c->notifyObservesrs();
 }
 
@@ -77,7 +82,6 @@ void Floor::notifyObservesrs() {
         i->notify(*this);
     }
 }
-
 
 Ground Floor::getState(int posx, int posy) {
     try {
@@ -91,23 +95,68 @@ void Floor::gotMoved(int posx, int posy, Direction d) {
     occupied[posy][posx] = false;
     switch(d) {
         case Direction::N :
-            occupied[posy + 1][posx] = true;
+            occupied[posy - 1][posx] = true;
+            break;
         case Direction::E :
             occupied[posy][posx + 1] = true;
+            break;
         case Direction::S :
-            occupied[posy - 1][posx] = true;
+            occupied[posy + 1][posx] = true;
+            break;
         case Direction::W :
             occupied[posy][posx - 1] = true;
-
-        recentX = posx;
-        recentY = posy;
-        notifyObservesrs();
+            break;
+        case Direction::NE :
+            occupied[posy - 1][posx + 1] = true;
+            break;
+        case Direction::NW :
+            occupied[posy - 1][posx - 1] = true;
+            break;
+        case Direction::SE :
+            occupied[posy + 1][posx + 1] = true;
+            break;
+        case Direction::SW :
+            occupied[posy + 1][posx - 1] = true;
+            break;
+        case Direction::Nothing:
+            return;
     }
 
-    
+    recentX = posx;
+    recentY = posy;
+    notifyObservesrs();
 }
 
+Creature *Floor::whatCreature(int posx, int posy) {
+    for (auto c : living) {
+        if (c->getRecentX() == posx && c->getRecentY() == posy) {
+            return c;
+        }
+    }
+    return nullptr;
+}
 
 bool Floor::isOccupied(int posx, int posy) {
+    if (posx < 0 || posy < 0 || posx >= width || posy >= heigth) {
+        return false;
+    }
     return occupied[posy][posx];
+}
+
+bool Floor::isPlayer(Creature *other) {
+    return (other == living[0]);
+}
+
+void Floor::died(Creature *who) {
+    for (auto it = living.begin(); it != living.end(); ++it) {
+        if (*it == who) {
+            occupied[who->getRecentY()][who->getRecentX()] = false;
+            recentX = who->getRecentX();
+            recentY = who->getRecentY();
+            *it = nullptr;
+            living.erase(it);
+            delete who;
+            break;
+        }
+    }
 }

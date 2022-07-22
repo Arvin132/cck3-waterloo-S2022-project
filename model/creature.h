@@ -3,7 +3,7 @@
 #include "subject.h"
 class Floor;
 
-enum Direction {N=0, E, S, W};
+enum Direction {N=0, E, S, W, NE, NW, SE, SW, Nothing};
 
 class Creature: public Subject {
     private:
@@ -11,24 +11,20 @@ class Creature: public Subject {
       void setStartingPosition(int posx, int posy);
     protected:
       Creature(int hp, int atk, int def, int gold);
-      int hp;
-      int atk;
-      int def;
-      int gold;
+      int maxHp, atk, def, gold;
       Floor *fl;
       char rep;
-      
-      void virtual modifyHP(int amount);
-      void virtual modifyGold(int amount);
+      int curHp;
 
     public:
       virtual ~Creature();
-      virtual void notifyObservesrs() override;
-      virtual char getRep();
-      void virtual modifyHP(int amount);
-      void virtual modifyGold(int amount);
+      void virtual notifyObservesrs() override;
+      char virtual getRep();
+      int virtual getAtk();
       void virtual attack(Creature *other, int atkModifier) = 0;
       void virtual beAttackedBy(Creature *who, int defModifier) = 0;
+      void virtual modifyHP(int amount) = 0;
+      void virtual modifyGold(int amount) = 0;
       void virtual move() = 0;
       friend class Floor;
 };

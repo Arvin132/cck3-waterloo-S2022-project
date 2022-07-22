@@ -7,7 +7,8 @@
 #include "Enemy.h"
 
 class Werewolf: public Enemy {
-
+    public:
+        Werewolf();
 };
 
 

@@ -3,3 +3,7 @@
 //
 
 #include "Werewolf.h"
+
+Werewolf::Werewolf(): Enemy(120, 30, 5) {
+
+}

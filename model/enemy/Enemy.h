@@ -6,9 +6,16 @@
 #define CCK3_WATERLOO_S2022_PROJECT_ENEMY_H
 #include "creature.h"
 
+Direction directionOfCommand(int d, int *newX, int *newY);
+
 class Enemy: public Creature {
+    
+    protected:
+      Enemy(int hp, int atk, int def);
     public:
-      ~Enemy();
+      virtual ~Enemy();
+      void virtual modifyHP(int amount) override;
+      void virtual modifyGold(int amount) override; 
       void virtual attack(Creature *other, int atkModifier);
       void virtual beAttackedBy(Creature *who, int defModifier);
       virtual void move();

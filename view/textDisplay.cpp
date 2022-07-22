@@ -23,7 +23,7 @@ void TextDisplay::notify(Floor &who) {
     int j = who.getRecentY();
     Ground state = who.getState(i, j);
     switch (state) {
-        case Ground::empty:
+        case Ground::empty: case Ground::item:
             display[j][i] = '.';
             break;
         case Ground::Vwall:

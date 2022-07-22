@@ -7,7 +7,9 @@
 #include "Enemy.h"
 
 class Troll: public Enemy {
-
+    public:
+        Troll();
+        void move() override;
 };
 
 

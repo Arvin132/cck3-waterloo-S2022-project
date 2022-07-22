@@ -7,7 +7,11 @@
 #include "Enemy.h"
 
 class Merchant : public Enemy {
-
+    inline static bool isAgro;
+    public:
+        Merchant();
+        void move() override;
+        void beAttackedBy(Creature *who, int defModifier) override;
 };
 
 

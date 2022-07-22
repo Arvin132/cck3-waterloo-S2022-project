@@ -15,5 +15,6 @@ int main() {
 	e.setup();
 	while(true) {
 		e.nextTurn();
+		if (e.gameFinished()) break;
 	}
 }
