@@ -34,6 +34,7 @@ void EventHandler::setup() {
     std::cout << "HP: " << p->curHp << endl;
     std::cout << "ATK: " << p->atk << endl;
     std::cout << "Def: " << p->def << endl;
+    std::cout << "Gold: " << p->gold << endl;
 }
 
 void EventHandler::nextTurn() {
@@ -42,6 +43,7 @@ void EventHandler::nextTurn() {
     std::cout << "HP: " << p->curHp << endl;
     std::cout << "ATK: " << p->atk << endl;
     std::cout << "Def: " << p->def << endl;
+    std::cout << "Gold: " << p->gold << endl;
 }
 
 bool EventHandler::gameFinished() {
