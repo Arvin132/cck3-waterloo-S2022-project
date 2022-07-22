@@ -13,10 +13,14 @@ Merchant::Merchant(): Enemy(30, 70, 5) {
 }
 
 void Merchant::move() {
+    std::cout << isAgro << std::endl;
     if (isAgro) {
-        for (int i = recentX - 1; i <= recentX + 1 ;i++) {
+        for (int i = recentX - 1; i <= recentX + 1; i++) {
+        std::cout << "merchant wants to attack1" << std::endl;
             for (int j = recentY - 1; j <= recentY + 1; j++) {
+            std::cout << fl->isPlayer(fl->whatCreature(i, j)) << std::endl;
                 if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatCreature(i, j))) {
+                    std::cout << "merchant wants to attack3" << std::endl;
                     attack(fl->whatCreature(i, j), 0);
                     return;
                 }

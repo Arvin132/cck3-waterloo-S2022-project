@@ -30,6 +30,7 @@ void EventHandler::initFloor(string readFile) {
 
 void EventHandler::setup() {
     currentFloor->spawn(new Goblin, 5, 4);
+    currentFloor->spawn(new Goblin, 10, 4);
     std::cout << *tDisplay;
     std::cout << "HP: " << p->curHp << endl;
     std::cout << "ATK: " << p->atk << endl;
