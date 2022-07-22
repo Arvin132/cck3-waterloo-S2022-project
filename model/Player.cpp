@@ -19,9 +19,7 @@ void Player::attack(Creature *other, int atkModifier) {
     atk += atkModifier;
     
     
-    std::string damage;
-    std::stringstream s{damage};
-    s << other->beAttackedBy(this, 0);
+    std::string damage = std::to_string(other->beAttackedBy(this, 0));
     log = log + ("PC attacked and dealt " + damage + " Damage to " + std::string{other->getRep()} + ". ");
 
     atk -= atkModifier;
@@ -33,9 +31,7 @@ int Player::beAttackedBy(Creature *who, int defModifier) {
 
     double something = 100;
     int damage = ceil((something / (100 + def)) * who->getAtk());
-    std::string damageStr;
-    std::stringstream s{damageStr};
-    s << damage;
+    std::string damageStr = std::to_string(damage);
     log = log + (std::string{who->getRep()} + " attacked and dealt " + damageStr + " Damage to PC. ");
     curHp -= damage;
     if (curHp <= 0) {

@@ -23,9 +23,9 @@ EventHandler::~EventHandler() {
 
 void EventHandler::report() {
     cout << *tDisplay;
-    cout << "Race: " << p->race;
-    cout << " Gold" << p->gold;
-    cout << right << "Floor" << floorNum << endl;
+    cout << left << "Race: " << p->race;
+    cout << " Gold " << p->gold;
+    cout << right << " Floor " << floorNum << endl;
     cout << "HP: " << p->curHp << endl;
     cout << "Atk: " << p->atk << endl;
     cout << "Def: " << p->def << endl;

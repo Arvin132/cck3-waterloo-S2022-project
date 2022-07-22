@@ -143,8 +143,8 @@ bool Floor::isOccupied(int posx, int posy) {
     return occupied[posy][posx];
 }
 
-bool Floor::isPlayer(Creature *other) {
-    return (other == living[0]);
+bool Floor::isPlayer(Creature *who) {
+    return (who == living[0]);
 }
 
 void Floor::died(Creature *who) {
