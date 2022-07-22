@@ -6,29 +6,15 @@
 #include "floor.h"
 #include "randomGen.h"
 
-Direction directionOfCommand(int d, int *newX, int *newY) {
-    switch (d) {
-        case 0:
-            *newY -= 1;
-            return Direction::N;
-        case 1:
-            *newY += 1;
-            return Direction::S;
-        case 2:
-            *newX += 1;
-            return Direction::E;
-        case 3:
-            *newX -= 1;
-            return Direction::W;
-    }
-}
+
 
 Troll::Troll(): Enemy(120, 25, 15) {
     rep = 'T';
 }
 
 void Troll::move() {
-    hp += 5;
+    modifyHP(5);
+
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {
         for (int j = recentY - 1; j <= recentY + 1; j++) {
             if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatCreature(i, j))) {

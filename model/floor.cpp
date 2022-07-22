@@ -106,6 +106,20 @@ void Floor::gotMoved(int posx, int posy, Direction d) {
         case Direction::W :
             occupied[posy][posx - 1] = true;
             break;
+        case Direction::NE :
+            occupied[posy - 1][posx + 1] = true;
+            break;
+        case Direction::NW :
+            occupied[posy - 1][posx - 1] = true;
+            break;
+        case Direction::SE :
+            occupied[posy + 1][posx + 1] = true;
+            break;
+        case Direction::SW :
+            occupied[posy + 1][posx - 1] = true;
+            break;
+        case Direction::Nothing:
+            return;
     }
 
     recentX = posx;

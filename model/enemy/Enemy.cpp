@@ -45,6 +45,8 @@ void Enemy::move() {
 
     while((fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
            && fl->getState(newX, newY) != Ground::door) || fl->isOccupied(newX, newY)) {
+        newX = recentX;
+        newY = recentY;
         command = randomGen(0, 4);
         d = directionOfCommand(command, &newX, &newY);
         count++;

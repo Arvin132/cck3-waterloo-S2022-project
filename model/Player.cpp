@@ -7,7 +7,8 @@
 #include "floor.h"
 #include <cmath>
 
-Player::Player(std::istream *input, int hp, int atk, int def, int gold) : Creature(hp, atk, def, gold), input(input) {
+Player::Player(std::istream *input, std::ostream *output, int hp, int atk, int def, int gold) : Creature(hp, atk, def, gold)
+                                                                                                , input(input), output(output) {
     rep = '@';
 }
 
@@ -36,56 +37,84 @@ void Player::beAttackedBy(Creature *who, int defModifier) {
     def -= defModifier;
 }
 
+Direction whatDir(std::string command, int &newX, int &newY) {
+    if (command == "no") {
+        newY--;
+        return Direction::N;
+    } else if (command == "so") {
+        newY++;
+        return Direction::S;
+    } else if (command == "ea") {
+        newX++;
+        return Direction::E;
+    } else if (command == "we") {
+        newX--;
+        return Direction::W;
+    } else if (command == "ne") {
+        newX++;
+        newY--;
+        return Direction::NE;
+    } else if (command == "nw") {
+        newX--;
+        newY--;
+        return Direction::NW;
+    } else if (command == "se") {
+        newX++;
+        newY++;
+        return Direction::SE;
+    } else if (command == "sw") {
+        newX--;
+        newY++;
+        return Direction::SW;
+    } else {
+        return Direction::Nothing;
+    }
+}
+
 void Player::move()  {
-    char command = ' ';
+    std::string command = " ";
     *input >> command;
     Direction d = Direction::E;
 
-    if (input->eof() || command == 'q') {
+    if (input->eof() || command == "q") {
         finished = true;
         return;
     }
-
-    if (command != 'u' && command != 'r'
-        && command != 'd' && command != 'l') {
-            return move();
-    }
-
     int newX = recentX;
     int newY = recentY;
+    
+    if (command == "a") {
+        *input >> command;
+        d = whatDir(command, newX, newY);
 
-    switch (command) {
-        case 'd':
-            d = Direction::N;
-            newY++;
-            break;
-        case 'u':
-            d = Direction::S;
-            newY -= 1;
-            break;
-        case 'r':
-            d = Direction::E;
-            newX++;
-            break;
-        case 'l':
-            d = Direction::W;
-            newX += -1;
-            break;
+        if (d == Direction::Nothing) {
+            *output << "Please Give valid input" << std::endl;
+            return move();
+        }
+
+        if (fl->isOccupied(newX, newY)) {
+            Creature *other = fl->whatCreature(newX, newY);
+            attack(other, 0);
+            return;
+        } else {
+            *output << "No creature in the specified position to attack " << std::endl;
+            return move();
+        }
+    } else {
+        d = whatDir(command, newX, newY);
+        if (d == Direction::Nothing) {
+            *output << "Please Give valid input" << std::endl;
+            return move();
+        }
     }
-
-    if (fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
-        && fl->getState(newX, newY) != Ground::door) {
+    
+    if ((fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
+        && fl->getState(newX, newY) != Ground::door) || fl->isOccupied(newX, newY)) {
+        *output << "Invalid Move" << std::endl;
         return move();
     }
 
-    if (fl->isOccupied(newX, newY)) {
-        Creature *other = fl->whatCreature(newX, newY);
-        attack(other, 0);
-        return;
-    }
-    
     fl->gotMoved(recentX, recentY, d);
-    
     recentX = newX;
     recentY = newY;
 }

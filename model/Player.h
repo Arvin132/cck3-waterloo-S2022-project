@@ -10,10 +10,11 @@ class EventHandler;
 
 class Player: public Creature {
     std::istream *input;
+    std::ostream *output;
     
     bool finished = false;
     public:
-        Player(std::istream *input, int hp, int atk, int def, int gold);
+        Player(std::istream *input, std::ostream *output, int hp, int atk, int def, int gold);
         void virtual attack(Creature *other, int atkModifier) override;
         void virtual beAttackedBy(Creature *who, int defModifier) override;
         void virtual modifyHP(int amount) override;

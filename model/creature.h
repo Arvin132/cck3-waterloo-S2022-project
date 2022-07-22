@@ -3,7 +3,7 @@
 #include "subject.h"
 class Floor;
 
-enum Direction {N=0, E, S, W};
+enum Direction {N=0, E, S, W, NE, NW, SE, SW, Nothing};
 
 class Creature: public Subject {
     private:

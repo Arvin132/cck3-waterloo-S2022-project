@@ -6,22 +6,7 @@
 #include "floor.h"
 #include "randomGen.h"
 
-Direction directionOfCommand(int d, int *newX, int *newY) {
-    switch (d) {
-        case 0:
-            *newY -= 1;
-            return Direction::N;
-        case 1:
-            *newY += 1;
-            return Direction::S;
-        case 2:
-            *newX += 1;
-            return Direction::E;
-        case 3:
-            *newX -= 1;
-            return Direction::W;
-    }
-}
+
 
 Merchant::Merchant(): Enemy(30, 70, 5) {
     rep = 'M';
@@ -66,10 +51,10 @@ void Merchant::beAttackedBy(Creature *who, int defModifier) {
     double something = 100;
     int damage = ceil((something / (100 + def)) * who->getAtk());
 
-    hp -= damage;
+    curHp -= damage;
     std::cout << "got attacked for " << damage << " Damage" << std::endl;
 
-    if (hp <= 0) {
+    if (curHp <= 0) {
         // fear grows on me
         return fl->died(this);
     }
