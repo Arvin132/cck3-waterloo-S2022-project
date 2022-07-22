@@ -14,21 +14,25 @@ void Enemy::move() {
 
     int newX = recentX + 1;
 
-    // if ((fl->getState(newX, recentY) != Ground::empty && fl->getState(newX, recentY) != Ground::path
-    //     && fl->getState(newX, recentY) != Ground::door) || fl->isOccupied(newX, recentY)) {
-    //     d = Direction::W;
-    //     newX = recentX - 1;
-    // }
+    if (fl->getState(newX, recentY) != Ground::empty && fl->getState(newX, recentY) != Ground::path
+        && fl->getState(newX, recentY) != Ground::door) {
+        d = Direction::W;
+        newX = recentX - 1;
+    }
 
-    // if ((fl->getState(newX, recentY) != Ground::empty && fl->getState(newX, recentY) != Ground::path
-    //     && fl->getState(newX, recentY) != Ground::door) || fl->isOccupied(newX, recentY)) {
-    //     return ;
-    // }
+    if (fl->getState(newX, recentY) != Ground::empty && fl->getState(newX, recentY) != Ground::path
+        && fl->getState(newX, recentY) != Ground::door) {
+        return ;
+    }
 
-    
+    if (fl->isOccupied(newX, recentY)) {
+        Creature *other = fl->whatCreature(newX, recentY);
+        attack(other, 0);
+        return;
+    }
 
-    // fl->gotMoved(recentX, recentY, d);
-    // recentX = newX;
+    fl->gotMoved(recentX, recentY, d);
+    recentX = newX;
 }
 
 void Enemy::modifyHP(int amount)  {
@@ -56,7 +60,6 @@ void Enemy::beAttackedBy(Creature *who, int defModifier) {
     int damage = ceil((something / (100 + def)) * who->getAtk());
 
     hp -= damage;
-    std::cout << "got attacked and have hp left " << hp << std::endl;
 
     if (hp <= 0) {
         // fear grows on me

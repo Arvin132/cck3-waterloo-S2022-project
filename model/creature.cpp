@@ -16,7 +16,8 @@ Creature::~Creature() { }
 
 char Creature::getRep() { return rep; }
 
-int Creature::getAtk() {return atk; }
+int Creature::getAtk() { return atk; }
+
 void Creature::setFloor(Floor *fl) {
     this->fl = fl;
 }

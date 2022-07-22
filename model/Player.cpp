@@ -26,7 +26,6 @@ void Player::beAttackedBy(Creature *who, int defModifier) {
     int damage = ceil(100 / (100 + def) * who->getAtk());
 
     hp -= damage;
-    
     if (hp <= 0) {
         // fear grows on me
         return fl->died(this);

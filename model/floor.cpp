@@ -56,7 +56,9 @@ Floor::~Floor() { }
 
 void Floor::takeTurn() {
     for (auto c : living) {
-        c->move();
+        if (c) {
+            c->move();
+        }
     }
     notifyObservesrs();
     for (auto c : living) {
@@ -126,9 +128,11 @@ bool Floor::isOccupied(int posx, int posy) {
 
 void Floor::died(Creature *who) {
     for (auto it = living.begin(); it != living.end(); ++it) {
-        std::cout << *it << endl;
         if (*it == who) {
             occupied[who->getRecentY()][who->getRecentX()] = false;
+            recentX = who->getRecentX();
+            recentY = who->getRecentY();
+            *it = nullptr;
             living.erase(it);
             delete who;
             break;
