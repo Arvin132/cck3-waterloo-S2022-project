@@ -136,6 +136,87 @@ Creature *Floor::whatCreature(int posx, int posy) {
     return nullptr;
 }
 
+int* minVal(int* cur, int* other){
+    if (*cur > *other){
+        return other;
+    }
+    return cur;
+}
+
+void Floor::initChambers() {
+    vector<vector<int*>> tempMap  = vector<vector<int*>>();
+    vector<int*> labels = vector<int*>();
+    chambers = vector<Chamber>();
+    int* offLabel = new int(200000);
+    int inLabel = 0;
+    for (int h = 0; h < heigth; h++){
+        tempMap.emplace_back(vector<int*>());
+        for (int i = 0; i < width; i++){
+            if (theGrid[h][i] == Ground::empty || theGrid[h][i] == Ground::item){
+                if ((h == 0 && i == 0)
+                || (!(h == 0 && i == 0) && (
+                        (h == 0 && *tempMap[h][i-1] == 200000)
+                        || (i == 0 && *tempMap[h-1][i] == 200000)))){
+                    tempMap[h].emplace_back(new int(inLabel));
+                    inLabel++;
+                }
+                else {
+                    tempMap[h].emplace_back(new int(inLabel));
+                    if (h != 0 && *tempMap[h - 1][i] < 200000) {
+                        if (i != 0 && *tempMap[h - 1][i - 1] < 200000) {
+                            tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i - 1]);
+                        }
+                        tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i]);
+                        if (i != width - 1) {
+                            tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i + 1]);
+                        }
+                    }
+                    if (i != 0) {
+                        tempMap[h][i] = minVal(tempMap[h][i - 1], tempMap[h][i - 1]);
+                    }
+
+                    if (h != 0) {
+                        if (i != 0) {
+                            *tempMap[h - 1][i - 1] = *minVal(tempMap[h][i], tempMap[h - 1][i - 1]);
+                        }
+                        *tempMap[h - 1][i] = *minVal(tempMap[h][i], tempMap[h - 1][i]);
+                        if (i != width - 1) {
+                            *tempMap[h - 1][i + 1] = *minVal(tempMap[h][i], tempMap[h - 1][i + 1]);
+                        }
+                    }
+                    if (i != 0) {
+                        *tempMap[h][i - 1] = *minVal(tempMap[h][i], tempMap[h][i - 1]);
+                    }
+                    inLabel++;
+                }
+            }
+            else {
+                tempMap[h].emplace_back(offLabel);
+            }
+        }
+    }
+
+    for (int h = 0; h < heigth; h++){
+        for (int i = 0; i < width; i++){
+            if (*tempMap[h][i] < 200000){
+                bool isAdded = false;
+                for (int j = 0; j < chambers.size(); j++){
+                    if (*tempMap[h][i] == chambers[j].getLabel()){
+                        chambers[j].addBlock(h, i, theGrid[h][i]);
+                        isAdded = true;
+                        break;
+                    }
+                }
+                if (!isAdded){
+                    Chamber curChamber(this);
+                    curChamber.setLabel(*tempMap[h][i]);
+                    chambers.emplace_back(this);
+                }
+            }
+        }
+    }
+}
+
 bool Floor::isOccupied(int posx, int posy) {
     if (posx < 0 || posy < 0 || posx >= width || posy >= heigth) {
         return false;
@@ -160,4 +241,24 @@ void Floor::died(Creature *who) {
             break;
         }
     }
+}
+
+Chamber::Chamber(Floor *owner): floor{owner}, blocks{std::vector<Block*>()}{}
+
+void Chamber::addBlock(int h, int w, Ground type) {
+    Pos pos;
+    pos.x = h;
+    pos.y = w;
+    Block *block = new Block;
+    block->pos = pos;
+    block->type = type;
+    blocks.emplace_back(block);
+}
+
+int Chamber::getLabel(){
+    return label;
+}
+
+void Chamber::setLabel(int label) {
+    this->label = label;
 }
