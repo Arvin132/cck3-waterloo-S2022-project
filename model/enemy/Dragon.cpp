@@ -19,7 +19,7 @@ void Dragon::move() {
     }
 }
 
-void Dragon::beAttackedBy(Creature *who, int defModifier) {
+int Dragon::beAttackedBy(Creature *who, int defModifier) {
 
     def += defModifier;
     double something = 100;
@@ -30,8 +30,10 @@ void Dragon::beAttackedBy(Creature *who, int defModifier) {
 
     if (curHp <= 0) {
         // fear grows on me
-        return fl->died(this);
+        fl->died(this);
+        return damage;
     }
 
     def -= defModifier;
+    return damage;
 }

@@ -83,19 +83,21 @@ void Enemy::attack(Creature *other, int atkModifier) {
 }
 
 
-void Enemy::beAttackedBy(Creature *who, int defModifier) {
+int Enemy::beAttackedBy(Creature *who, int defModifier) {
 
     def += defModifier;
     double something = 100;
     int damage = ceil((something / (100 + def)) * who->getAtk());
 
     curHp -= damage;
-    std::cout << "got attacked for " << damage << " Damage" << std::endl;
 
     if (curHp <= 0) {
         // fear grows on me
-        return fl->died(this);
+        fl->died(this);
+        return damage;
     }
 
+    
     def -= defModifier;
+    return damage;
 }

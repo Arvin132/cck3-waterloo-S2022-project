@@ -22,7 +22,7 @@ class Creature: public Subject {
       char virtual getRep();
       int virtual getAtk();
       void virtual attack(Creature *other, int atkModifier) = 0;
-      void virtual beAttackedBy(Creature *who, int defModifier) = 0;
+      int virtual beAttackedBy(Creature *who, int defModifier) = 0;
       void virtual modifyHP(int amount) = 0;
       void virtual modifyGold(int amount) = 0;
       void virtual move() = 0;

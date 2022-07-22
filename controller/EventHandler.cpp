@@ -5,6 +5,7 @@
 using namespace std;
 
 #include <fstream>
+#include <iomanip>
 #include "eventHandler.h"
 #include "textDisplay.h"
 #include "floor.h"
@@ -20,6 +21,17 @@ EventHandler::~EventHandler() {
     delete p;
 }
 
+void EventHandler::report() {
+    cout << *tDisplay;
+    cout << "Race: " << p->race;
+    cout << " Gold" << p->gold;
+    cout << right << "Floor" << floorNum << endl;
+    cout << "HP: " << p->curHp << endl;
+    cout << "Atk: " << p->atk << endl;
+    cout << "Def: " << p->def << endl;
+    cout << "Action: " << p->report() << endl;
+}
+
 void EventHandler::initFloor(string readFile) {
     ifstream f {readFile};
     if (currentFloor != nullptr) {
@@ -31,20 +43,12 @@ void EventHandler::initFloor(string readFile) {
 void EventHandler::setup() {
     currentFloor->spawn(new Goblin, 5, 4);
     currentFloor->spawn(new Goblin, 10, 4);
-    std::cout << *tDisplay;
-    std::cout << "HP: " << p->curHp << endl;
-    std::cout << "ATK: " << p->atk << endl;
-    std::cout << "Def: " << p->def << endl;
-    std::cout << "Gold: " << p->gold << endl;
+    report();
 }
 
 void EventHandler::nextTurn() {
     currentFloor->takeTurn();
-    std::cout << *tDisplay;
-    std::cout << "HP: " << p->curHp << endl;
-    std::cout << "ATK: " << p->atk << endl;
-    std::cout << "Def: " << p->def << endl;
-    std::cout << "Gold: " << p->gold << endl;
+    report();
 }
 
 bool EventHandler::gameFinished() {

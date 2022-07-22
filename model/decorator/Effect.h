@@ -8,14 +8,14 @@
 
 class ModAtk: public Decorator {
     void attack(Creature *other, int atkModifier) override;
-    void beAttackedBy(Creature *who, int defModifier) override;
+    int beAttackedBy(Creature *who, int defModifier) override;
 };
 
 
 
 class ModDef: public Decorator {
     void attack(Creature *other, int atkModifier) override;
-    void beAttackedBy(Creature *who, int defModifier) override;
+    int beAttackedBy(Creature *who, int defModifier) override;
 };
 
 

@@ -11,7 +11,7 @@ class Merchant : public Enemy {
     public:
         Merchant();
         void move() override;
-        void beAttackedBy(Creature *who, int defModifier) override;
+        int beAttackedBy(Creature *who, int defModifier) override;
 };
 
 

@@ -50,7 +50,7 @@ void Merchant::move() {
     recentY = newY;
 }
 
-void Merchant::beAttackedBy(Creature *who, int defModifier) {
+int Merchant::beAttackedBy(Creature *who, int defModifier) {
     isAgro = true;
     
     def += defModifier;
@@ -62,8 +62,10 @@ void Merchant::beAttackedBy(Creature *who, int defModifier) {
 
     if (curHp <= 0) {
         // fear grows on me
-        return fl->died(this);
+        fl->died(this);
+        return damage;
     }
 
     def -= defModifier;
+    return damage;
 }

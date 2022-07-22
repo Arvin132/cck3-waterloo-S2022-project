@@ -10,7 +10,7 @@ class Dragon: public Enemy {
     public:
         Dragon();
         void move() override;
-        void beAttackedBy(Creature *who, int defModifier) override;
+        int beAttackedBy(Creature *who, int defModifier) override;
 };
 
 

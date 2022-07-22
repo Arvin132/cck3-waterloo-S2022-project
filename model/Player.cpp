@@ -2,6 +2,7 @@
 // Created by kmajdi on 2022-07-14.
 //
 #include <iostream>
+#include <sstream>
 #include "creature.h"
 #include "player.h"
 #include "floor.h"
@@ -10,32 +11,42 @@
 Player::Player(std::istream *input, std::ostream *output, int hp, int atk, int def, int gold) : Creature(hp, atk, def, gold)
                                                                                                 , input(input), output(output) {
     rep = '@';
+    race = "Humen";
 }
 
 
 void Player::attack(Creature *other, int atkModifier) {
     atk += atkModifier;
-    other->beAttackedBy(this, 0);
+    
+    
+    std::string damage;
+    std::stringstream s{damage};
+    s << other->beAttackedBy(this, 0);
+    log = log + ("PC attacked and dealt " + damage + " Damage to " + std::string{other->getRep()} + ". ");
 
     atk -= atkModifier;
 }
 
 
-void Player::beAttackedBy(Creature *who, int defModifier) {
+int Player::beAttackedBy(Creature *who, int defModifier) {
     def += defModifier;
 
     double something = 100;
     int damage = ceil((something / (100 + def)) * who->getAtk());
-
+    std::string damageStr;
+    std::stringstream s{damageStr};
+    s << damage;
+    log = log + (std::string{who->getRep()} + " attacked and dealt " + damageStr + " Damage to PC. ");
     curHp -= damage;
-    std::cout << "got attacked for " << damage << " Damage" << std::endl;
     if (curHp <= 0) {
         // fear grows on me
         finished = true;
-        return fl->died(this);
+        fl->died(this);
+        return damage;
     }
-
+    
     def -= defModifier;
+    return damage;
 }
 
 Direction whatDir(std::string command, int &newX, int &newY) {
@@ -126,6 +137,12 @@ void Player::modifyHP(int amount)  {
     if (curHp > maxHp) {
         curHp = maxHp;
     }
+}
+
+std::string Player::report() { 
+    std::string retVal = log;
+    log.clear();
+    return retVal;
 }
 
 void Player::modifyGold(int amount) {

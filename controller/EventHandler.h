@@ -13,12 +13,15 @@ class EventHandler {
     TextDisplay *tDisplay;
     Floor *currentFloor;
     Player *p;
+    int floorNum = 0;
+
 public:
     EventHandler();
     ~EventHandler();
     void initFloor(std::string readFile);
     void setup();
     void nextTurn();
+    void report();
     bool gameFinished();
     bool isPlayer(Creature *other);
 };
