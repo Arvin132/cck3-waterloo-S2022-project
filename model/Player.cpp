@@ -31,6 +31,7 @@ void Player::beAttackedBy(Creature *who, int defModifier) {
     std::cout << "got attacked for " << damage << " Damage" << std::endl;
     if (curHp <= 0) {
         // fear grows on me
+        finished = true;
         return fl->died(this);
     }
 

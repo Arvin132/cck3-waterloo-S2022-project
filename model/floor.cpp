@@ -153,6 +153,7 @@ void Floor::died(Creature *who) {
             occupied[who->getRecentY()][who->getRecentX()] = false;
             recentX = who->getRecentX();
             recentY = who->getRecentY();
+            notifyObservesrs();
             *it = nullptr;
             living.erase(it);
             delete who;
