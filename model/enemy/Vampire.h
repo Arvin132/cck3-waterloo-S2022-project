@@ -7,7 +7,9 @@
 #include "Enemy.h"
 
 class Vampire: public Enemy {
-
+    public:
+        Vampire();
+        void attack(Creature *other, int atkModifier) override;
 };
 
 

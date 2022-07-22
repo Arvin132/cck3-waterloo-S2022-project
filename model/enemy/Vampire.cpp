@@ -3,3 +3,15 @@
 //
 
 #include "Vampire.h"
+
+Vampire::Vampire():Enemy(50, 25, 25) {
+    rep = 'V';
+}
+
+void Vampire::attack(Creature *other, int atkModifier) {
+    atk += atkModifier;
+    other->beAttackedBy(this, 0);
+    hp += atk / 2;
+
+    atk -= atkModifier;
+}

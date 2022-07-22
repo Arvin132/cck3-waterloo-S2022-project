@@ -6,7 +6,7 @@
 #include "Enemy.h"
 #include "randomGen.h"
 
-Enemy::Enemy(int hp, int atk, int def): Creature(hp, atk, def, 0) {}
+Enemy::Enemy(int curHp, int atk, int def): Creature(curHp, atk, def, 0) {}
 
 Enemy::~Enemy() { };
 
@@ -28,7 +28,6 @@ Direction directionOfCommand(int d, int *newX, int *newY) {
 }
 
 void Enemy::move() {
-
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {
         for (int j = recentY - 1; j <= recentY + 1; j++) {
             if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatCreature(i, j))) {
@@ -59,11 +58,17 @@ void Enemy::move() {
 }
 
 void Enemy::modifyHP(int amount)  {
-    hp += amount;
+    curHp += amount;
+    if (curHp > maxHp) {
+        curHp = maxHp;
+    }
 }
 
 void Enemy::modifyGold(int amount) {
     gold += amount;
+    if (gold < 0) {
+        gold = 0;
+    }
 }
 
 
@@ -82,10 +87,10 @@ void Enemy::beAttackedBy(Creature *who, int defModifier) {
     double something = 100;
     int damage = ceil((something / (100 + def)) * who->getAtk());
 
-    hp -= damage;
+    curHp -= damage;
     std::cout << "got attacked for " << damage << " Damage" << std::endl;
 
-    if (hp <= 0) {
+    if (curHp <= 0) {
         // fear grows on me
         return fl->died(this);
     }

@@ -9,6 +9,7 @@
 class Goblin : public Enemy {
     public:
       Goblin();
+      void attack(Creature *other, int atkModifier) override;
 };
 
 

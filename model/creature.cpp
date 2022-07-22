@@ -2,8 +2,10 @@
 #include "observer.h"
 #include "subject.h"
 
-Creature::Creature(int hp, int atk, int def, int gold): Subject(), hp(hp), atk(atk), def(def)
-                                                        , gold(gold) { }
+Creature::Creature(int hp, int atk, int def, int gold): Subject(), maxHp(hp), atk(atk), def(def)
+                                                        , gold(gold) { 
+    curHp = maxHp;
+}
 
 void Creature::notifyObservesrs() {
     for (auto i : observers) {

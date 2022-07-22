@@ -26,9 +26,9 @@ void Player::beAttackedBy(Creature *who, int defModifier) {
     double something = 100;
     int damage = ceil((something / (100 + def)) * who->getAtk());
 
-    hp -= damage;
+    curHp -= damage;
     std::cout << "got attacked for " << damage << " Damage" << std::endl;
-    if (hp <= 0) {
+    if (curHp <= 0) {
         // fear grows on me
         return fl->died(this);
     }
@@ -92,11 +92,17 @@ void Player::move()  {
 
 
 void Player::modifyHP(int amount)  {
-    hp += amount;
+    curHp += amount;
+    if (curHp > maxHp) {
+        curHp = maxHp;
+    }
 }
 
 void Player::modifyGold(int amount) {
     gold += amount;
+    if (gold < 0) {
+        gold = 0;
+    }
 }
 
 bool Player::isFinished() { return finished; }
