@@ -9,8 +9,8 @@
 
 using namespace std;
 
-Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGrid(vector<vector<Ground>> {}),
-                                           occupied(vector<vector<bool>> {}), living(vector<Life*> {}) {
+Floor::Floor(std::istream &in, Player *p, Observer *intialOb, string PlayerRace): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
+                                                                                  occupied(vector<vector<bool>> {}), living(vector<Life*> {}) {
     observers.emplace_back(intialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
@@ -167,6 +167,8 @@ Ground Floor::getState(int posx, int posy) {
 int Floor::getRecentX() { return recentX; }
 int Floor::getRecentY() { return recentY; }
 
+string Floor::getPlayerRace() { return PlayerRace; }
+
 void Floor::gotMoved(int posx, int posy, Direction d) {
     occupied[posy][posx] = false;
     switch(d) {
@@ -223,8 +225,14 @@ Item *Floor::whatItem(int posx, int posy) {
 }
 
 void Floor::Interact(Player *who, Item *what) {
-    what->effect(who);
     who->beEffectedBy(what);
+    for (auto it = living.begin(); it != living.end(); ++it) {
+        if ((*it)->getCreature() == who) {
+            what->effect(*it);
+            break;
+        }
+    }
+    
     for (auto it = items.begin(); it != items.end(); ++it) {
         if (*it == what) {
             recentX = what->getRecentX();

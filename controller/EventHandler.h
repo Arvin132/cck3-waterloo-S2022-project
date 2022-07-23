@@ -12,9 +12,8 @@ class Floor;
 class EventHandler {
     TextDisplay *tDisplay;
     Floor *currentFloor;
-    std::string PlayerRace;
     int floorNum = 1;
-    bool isFinished;
+    bool isFinished = false;
 public:
     EventHandler();
     ~EventHandler();

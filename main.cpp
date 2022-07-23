@@ -13,7 +13,7 @@ int main(int args, char *argv[]) {
 	e.initFloor(string {"cc3kfloor.txt"}, string {"welcome.txt"});
 	e.setup();
 	while(true) {
-		e.nextTurn();
 		if (e.gameFinished()) break;
+		e.nextTurn();
 	}
 }

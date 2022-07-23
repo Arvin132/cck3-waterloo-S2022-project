@@ -36,7 +36,11 @@ PotionPH::PotionPH(): Potion() {
 
 void PotionPH::effect(Life *who) {
     hasBeenDrunk = true;
-    who->modifyHP(-10);
+    if (fl->getPlayerRace() == "Elf") {
+        who->modifyHP(10);
+    } else {
+        who->modifyHP(-10);
+    }
 }
 
 string PotionPH::getDescription() {
@@ -74,7 +78,11 @@ PotionWA::PotionWA(): Potion() {
 
 void PotionWA::effect(Life *who) {
     hasBeenDrunk = true;
-    fl->replace(who , new ModAtk(who, -5));
+    if (fl->getPlayerRace() == "Elf") {
+        fl->replace(who , new ModAtk(who, 5));
+    } else {
+        fl->replace(who , new ModAtk(who, -5));
+    }
 } 
 
 string PotionWA::getDescription() {
@@ -110,7 +118,12 @@ PotionWD::PotionWD(): Potion() {
 
 void PotionWD::effect(Life *who) {
     hasBeenDrunk = true;
-    fl->replace(who , new ModDef(who, -5));
+
+    if (fl->getPlayerRace() == "Elf") {
+        fl->replace(who , new ModDef(who, 5));
+    } else {
+        fl->replace(who , new ModDef(who, -5));
+    }
 } 
 
 string PotionWD::getDescription() {
