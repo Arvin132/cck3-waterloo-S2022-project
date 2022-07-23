@@ -1,10 +1,10 @@
 //
 // Created by kmajdi on 2022-07-14.
 //
-#include "floor.h"
+#include "../floor.h"
 #include "math.h"
 #include "Enemy.h"
-#include "randomGen.h"
+#include "../randomGen.h"
 
 Enemy::Enemy(int curHp, int atk, int def): Creature(curHp, atk, def, 0) {}
 

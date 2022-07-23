@@ -4,9 +4,11 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_DECORATOR_H
 #define CCK3_WATERLOO_S2022_PROJECT_DECORATOR_H
+
 #include "life.h"
 #include <memory>
 #include "creature.h"
+
 
 class Decorator: public Life {
     

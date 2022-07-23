@@ -1,8 +1,8 @@
 //
 // Created by kmajdi on 2022-07-14.
 //
-#include "observer.h"
-#include "subject.h"
+#include "Observer.h"
+#include "Subject.h"
 
 Subject::~Subject() { }
 

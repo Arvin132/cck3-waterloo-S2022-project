@@ -1,7 +1,9 @@
 #ifndef __CREATURE_H_
 #define __CREATURE_H_
+
 #include "life.h"
 #include <string>
+
 
 class Floor;
 

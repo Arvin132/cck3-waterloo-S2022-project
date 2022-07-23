@@ -3,9 +3,8 @@
 // Created by kmajdi on 2022-07-14.
 //
 
-#include "eventHandler.h"
+#include "EventHandler.h"
 #include <string>
-#include <iostream>
 
 using namespace std;
 

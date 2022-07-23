@@ -1,6 +1,6 @@
 #ifndef __TEXT_D__
 #define __TEXT_D__
-#include "observer.h"
+#include "../model/Observer.h"
 #include <vector>
 #include <iostream>
 
