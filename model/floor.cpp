@@ -5,6 +5,8 @@
 #include "subject.h"
 #include "observer.h"
 #include "creature.h"
+#include "gold.h"
+#include "potion.h"
 using namespace std;
 
 Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGrid(vector<vector<Ground>> {}),
@@ -77,6 +79,30 @@ void Floor::spawn(Creature *c,int posx, int posy) {
     c->notifyObservesrs();
 }
 
+void Floor::spawn(Gold *what, int posx, int posy) {
+    theGrid[posy][posx] = Ground::gold;
+    items.emplace_back(what);   
+    for(auto ob : observers) {
+        (*what).attach(ob);
+    }
+
+    what->recentX = posx;
+    what->recentY = posy;
+    what->notifyObservesrs();
+}
+
+void Floor::spawn(Potion *what, int posx, int posy) {
+    theGrid[posy][posx] = Ground::potion;
+    items.emplace_back(what);   
+    for(auto ob : observers) {
+        (*what).attach(ob);
+    }
+    what->recentX = posx;
+    what->recentY = posy;
+    what->fl = this;
+    what->notifyObservesrs();
+}
+
 void Floor::notifyObservesrs() {
     for (auto i : observers) {
         i->notify(*this);
@@ -136,6 +162,30 @@ Creature *Floor::whatCreature(int posx, int posy) {
     return nullptr;
 }
 
+Item *Floor::whatItem(int posx, int posy) {
+    for (auto i : items) {
+        if (i->getRecentX() == posx && i->getRecentY() == posy) {
+            return i;
+        }
+    }
+    return nullptr;
+}
+
+void Floor::Interact(Player *who, Item *what) {
+    what->effect(who);
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        if (*it == what) {
+            recentX = what->getRecentX();
+            recentY = what->getRecentY();
+            theGrid[recentY][recentX] = Ground::empty;
+            notifyObservesrs();
+            items.erase(it);
+            delete what;
+            break;
+        }
+    }
+}
+
 bool Floor::isOccupied(int posx, int posy) {
     if (posx < 0 || posy < 0 || posx >= width || posy >= heigth) {
         return false;
@@ -161,3 +211,4 @@ void Floor::died(Creature *who) {
         }
     }
 }
+

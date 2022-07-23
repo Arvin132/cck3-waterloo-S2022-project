@@ -1,6 +1,7 @@
 #include "textDisplay.h"
 #include "floor.h"
 #include "creature.h"
+#include "item.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -17,6 +18,11 @@ TextDisplay::TextDisplay(): Observer(), display(vector<vector<char>> {}) {
 void TextDisplay::notify(Creature &who) {
     display[who.getRecentY()][who.getRecentX()] = who.getRep();
 }
+
+void TextDisplay::notify(Item &who) {
+    display[who.getRecentY()][who.getRecentX()] = who.getRep();
+}
+
 
 void TextDisplay::notify(Floor &who) {
     int i = who.getRecentX();

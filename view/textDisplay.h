@@ -11,8 +11,9 @@ class TextDisplay: public Observer {
     const int heigth = 25;
   public:
     TextDisplay();
-    void virtual notify(Creature &who) override;
-    void virtual notify(Floor &who) override;
+    void notify(Creature &who) override;
+    void notify(Floor &who) override;
+    void notify(Item &who) override;
     friend std::ostream &operator<<(std::ostream &out, TextDisplay td);
 };
 

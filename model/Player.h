@@ -19,6 +19,7 @@ class Player: public Creature {
         Player(std::istream *input, std::ostream *output, int hp, int atk, int def, int gold);
         void virtual attack(Creature *other, int atkModifier) override;
         int virtual beAttackedBy(Creature *who, int defModifier) override;
+        void virtual beEffectedBy(Item *what);
         void virtual modifyHP(int amount) override;
         void virtual modifyGold(int amount) override;
         std::string report();

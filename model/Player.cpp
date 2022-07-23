@@ -5,6 +5,7 @@
 #include <sstream>
 #include "creature.h"
 #include "player.h"
+#include "item.h"
 #include "floor.h"
 #include <cmath>
 
@@ -108,6 +109,23 @@ void Player::move()  {
             *output << "No creature in the specified position to attack " << std::endl;
             return move();
         }
+    } else if (command == "u") {
+        *input >> command;
+        d = whatDir(command, newX, newY);
+
+        if (d == Direction::Nothing) {
+            *output << "Please Give valid input" << std::endl;
+            return move();
+        }
+
+        if (fl->getState(newX, newY) == Ground::potion) {
+            Item *what = fl->whatItem(newX, newY);
+            fl->Interact(this, what);
+            return;
+        } else {
+            *output << "No Potion is in that Direction for you to consume " << std::endl;
+            return move();
+        }
     } else {
         d = whatDir(command, newX, newY);
         if (d == Direction::Nothing) {
@@ -117,9 +135,13 @@ void Player::move()  {
     }
     
     if ((fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
-        && fl->getState(newX, newY) != Ground::door) || fl->isOccupied(newX, newY)) {
+        && fl->getState(newX, newY) != Ground::door && fl->getState(newX, newY) != Ground::gold) || fl->isOccupied(newX, newY)) {
         *output << "Invalid Move" << std::endl;
         return move();
+    }
+
+    if (fl->getState(newX, newY) == Ground::gold) {
+        fl->Interact(this, fl->whatItem(newX, newY));
     }
 
     fl->gotMoved(recentX, recentY, d);
@@ -133,6 +155,10 @@ void Player::modifyHP(int amount)  {
     if (curHp > maxHp) {
         curHp = maxHp;
     }
+}
+
+void Player::beEffectedBy(Item *what) {
+    log += "PC" + what->getDescription();
 }
 
 std::string Player::report() { 
