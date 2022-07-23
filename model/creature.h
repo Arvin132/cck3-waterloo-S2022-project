@@ -28,13 +28,13 @@ class Creature: public Life {
       int getDef() override;
       int getGold() override;
       int getHP() override;
-      std::string virtual report() = 0;
       void virtual modifyHP(int amount) override;
       void virtual modifyGold(int amount) override;
       int getRecentX() override;
       int getRecentY() override;
       Creature *getCreature() override;
       void virtual attack(Life *other, int atkModifier);
+      std::string virtual report() = 0;
       friend class Floor;
 };
 

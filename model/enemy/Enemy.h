@@ -4,7 +4,7 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_ENEMY_H
 #define CCK3_WATERLOO_S2022_PROJECT_ENEMY_H
-#include "../creature.h"
+#include "creature.h"
 
 Direction directionOfCommand(int d, int *newX, int *newY);
 

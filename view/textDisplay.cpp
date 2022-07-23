@@ -16,6 +16,33 @@ TextDisplay::TextDisplay(): Observer(), display(vector<vector<char>> {}) {
     }
 }
 
+char TextDisplay::welcomeScreen(istream &input) {
+    string s;
+    while(!input.fail()) {
+        getline(input, s);
+        cout << s << endl;
+    }
+    char race;
+    
+    while(cin >> race) {
+        switch(race) {
+            case 'H': case 'h':
+                return 'h';
+            case 'o': case 'O':
+                return 'o';
+            case 'd': case 'D':
+                return 'd';
+            case 'E': case 'e':
+                return 'e';
+            default:
+                cout << "please give valid input" << endl;
+                continue;
+        }
+    }
+
+    return '\0';
+}
+
 void TextDisplay::notify(Creature &who) {
     display[who.getRecentY()][who.getRecentX()] = who.getRep();
 }

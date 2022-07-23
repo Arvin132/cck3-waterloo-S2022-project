@@ -1,6 +1,6 @@
 #ifndef __TEXT_D__
 #define __TEXT_D__
-#include "../model/Observer.h"
+#include "Observer.h"
 #include <vector>
 #include <iostream>
 
@@ -14,6 +14,7 @@ class TextDisplay: public Observer {
     void notify(Creature &who) override;
     void notify(Floor &who) override;
     void notify(Item &who) override;
+    char welcomeScreen(std::istream &input);
     friend std::ostream &operator<<(std::ostream &out, TextDisplay td);
 };
 

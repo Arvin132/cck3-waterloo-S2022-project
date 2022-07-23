@@ -35,9 +35,9 @@ public:
 };
 
 class Floor: public Subject {
+    std::string PlayerRace;
     std::vector<std::vector<Ground>> theGrid;
     std::vector<std::vector<bool>> occupied;
-
     std::vector<Life*> living;
     std::vector<Item*> items;
     std::vector<Chamber> chambers;
@@ -47,11 +47,12 @@ class Floor: public Subject {
     const int heigth = 25;
     void initChambers();
 public:
-    Floor(std::istream &in, Player *p, Observer *intialOb);
+    Floor(std::istream &in, Player *p, Observer *intialOb, std::string PlayerRace);
     ~Floor();
     int getRecentX() override;
     int getRecentY() override;
     Life *getPlayer();
+    std::string getPlayerRace();
     Ground getState(int posx, int posy);
     void takeTurn();
     void notifyObservesrs() override;

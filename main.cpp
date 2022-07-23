@@ -8,12 +8,12 @@
 
 using namespace std;
 
-int main() {
+int main(int args, char *argv[]) {
 	EventHandler e{};
-	e.initFloor(string {"cc3kfloor.txt"});
+	e.initFloor(string {"cc3kfloor.txt"}, string {"welcome.txt"});
 	e.setup();
 	while(true) {
-		e.nextTurn();
 		if (e.gameFinished()) break;
+		e.nextTurn();
 	}
 }

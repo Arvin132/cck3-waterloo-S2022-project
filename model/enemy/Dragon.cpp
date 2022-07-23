@@ -4,7 +4,7 @@
 
 #include "Dragon.h"
 #include "floor.h"
-#include "math.h"
+#include <cmath>
 
 Dragon::Dragon(): Enemy(150, 20, 20) {}
 
