@@ -3,8 +3,8 @@
 //
 
 #include "Troll.h"
-#include "../floor.h"
-#include "../randomGen.h"
+#include "floor.h"
+#include "randomGen.h"
 
 
 

@@ -243,6 +243,9 @@ void Floor::replace(Life *what, Life *with) {
         if (*it == what) {
             *it = with;
             break;
+        }
+    }
+}
 
 int* minVal(int* cur, int* other){
     if (*cur > *other){
@@ -260,7 +263,7 @@ void Floor::initChambers() {
     for (int h = 0; h < heigth; h++){
         tempMap.emplace_back(vector<int*>());
         for (int i = 0; i < width; i++){
-            if (theGrid[h][i] == Ground::empty || theGrid[h][i] == Ground::item){
+            if (theGrid[h][i] == Ground::empty || theGrid[h][i] == Ground::potion || theGrid[h][i] == Ground::gold){
                 if ((h == 0 && i == 0) ||
                         (!(h == 0 && i == 0) &&
                             ((h == 0 && *tempMap[h][i-1] == 200000) ||
@@ -355,7 +358,7 @@ void Floor::died(Life *who) {
 }
 
 
-Chamber::Chamber(Floor *owner, int label): floor{owner}, label{label}, blocks{std::vector<Block*>()}{}
+Chamber::Chamber(Floor *owner, int label): label{label}, floor{owner}, blocks{std::vector<Block*>()}{}
 
 void Chamber::addBlock(int h, int w, Ground type) {
     Pos pos;

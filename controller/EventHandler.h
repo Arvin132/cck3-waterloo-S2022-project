@@ -18,7 +18,7 @@ class EventHandler {
 public:
     EventHandler();
     ~EventHandler();
-    void initFloor(std::string readFile);
+    void initFloor(std::string readFile, std::string welcomeFile);
     void setup();
     void nextTurn();
     void report();

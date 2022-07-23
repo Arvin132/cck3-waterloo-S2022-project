@@ -7,8 +7,8 @@ using namespace std;
 #include <fstream>
 #include "eventHandler.h"
 #include "textDisplay.h"
-#include "../model/floor.h"
-#include "../model/enemy/Goblin.h"
+#include "floor.h"
+#include "Goblin.h"
 
 using namespace std;
 
@@ -31,12 +31,16 @@ void EventHandler::report() {
     cout << "Action: " << p->getCreature()->report() << endl;
 }
 
-void EventHandler::initFloor(string readFile) {
-    ifstream f {readFile};
+
+
+void EventHandler::initFloor(string readFile, string welcomeFile) {
+    ifstream f1 {welcomeFile};
+    PlayerRace = tDisplay->welcomeScreen(f1);
+    ifstream f2 {readFile};
     if (currentFloor != nullptr) {
         delete currentFloor;
     }
-    currentFloor = new Floor(f, new Player(&cin, &cout, &isFinished, 100, 50, 10, 10), tDisplay);
+    currentFloor = new Floor(f2, new Player(&cin, &cout, &isFinished, 100, 50, 10, 10), tDisplay);
 }
 
 void EventHandler::setup() {
