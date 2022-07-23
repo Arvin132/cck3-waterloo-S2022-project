@@ -4,7 +4,7 @@
 
 Gold::Gold(int amount): Item() , amount(amount){
     rep = 'G';
-    description = "Picked up " + std::to_string(amount) + " Gold";
+    description = " Picked up " + std::to_string(amount) + " Gold";
 } 
 
 void Gold::effect(Creature *who) {
