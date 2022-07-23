@@ -1,6 +1,5 @@
 #include "textDisplay.h"
-#include "floor.h"
-#include "creature.h"
+#include "../model/floor.h"
 #include <vector>
 #include <iostream>
 using namespace std;

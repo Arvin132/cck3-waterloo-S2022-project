@@ -3,8 +3,8 @@
 //
 
 #include "Merchant.h"
-#include "floor.h"
-#include "randomGen.h"
+#include "../floor.h"
+#include "../randomGen.h"
 
 
 

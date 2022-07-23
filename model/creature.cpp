@@ -1,6 +1,6 @@
 #include "creature.h"
-#include "observer.h"
-#include "subject.h"
+#include "Observer.h"
+#include "Subject.h"
 
 Creature::Creature(int hp, int atk, int def, int gold): Subject(), maxHp(hp), atk(atk), def(def)
                                                         , gold(gold) { 

@@ -1,6 +1,6 @@
 #ifndef __CREATURE_H_
 #define __CREATURE_H_
-#include "subject.h"
+#include "Subject.h"
 class Floor;
 
 enum Direction {N=0, E, S, W, NE, NW, SE, SW, Nothing};

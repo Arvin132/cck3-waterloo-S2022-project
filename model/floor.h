@@ -1,6 +1,6 @@
 #ifndef __FLOOR_H__
 #define __FLOOR_H__
-#include "subject.h"
+#include "Subject.h"
 #include "Player.h"
 #include "creature.h"
 
@@ -17,15 +17,18 @@ struct Block {
 };
 
 class Chamber {
-        int label;
-        Floor *floor;
-        std::vector<Block*> blocks;
-        Chamber(Floor *owner);
-        void addBlock(int h, int w, Ground type);
-        int getLabel();
-        void setLabel(int label);
-        Block* getSpawnPos();
-        friend class Floor;
+    int label;
+    Floor *floor;
+    std::vector<Block*> blocks;
+
+    void addBlock(int h, int w, Ground type);
+    int getLabel();
+    void setLabel(int label);
+    Block* getSpawnPos();
+
+public:
+    Chamber(Floor *owner, int label);
+    friend class Floor;
 };
 
 class Floor: public Subject {
