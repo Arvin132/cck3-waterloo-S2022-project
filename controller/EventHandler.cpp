@@ -67,9 +67,7 @@ void EventHandler::initFloor(string readFile, string welcomeFile) {
 }
 
 void EventHandler::setup() {
-    currentFloor->spawn(new Goblin, 5, 4);
-    currentFloor->spawn(new Goblin, 10, 4);
-    report();
+    currentFloor->setup();
 }
 
 void EventHandler::nextTurn() {

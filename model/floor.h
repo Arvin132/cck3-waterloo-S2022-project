@@ -54,6 +54,7 @@ public:
     Life *getPlayer();
     std::string getPlayerRace();
     Ground getState(int posx, int posy);
+    void setup();
     void takeTurn();
     void notifyObservesrs() override;
     void spawn(Creature *c, int posx, int posy);

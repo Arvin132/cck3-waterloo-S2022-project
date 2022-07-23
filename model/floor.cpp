@@ -4,8 +4,10 @@
 #include "Subject.h"
 #include "Observer.h"
 #include "creature.h"
+#include "Goblin.h"
 #include "gold.h"
 #include "potion.h"
+#include "randomGen.h"
 
 using namespace std;
 
@@ -100,6 +102,12 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb, string PlayerRace)
 
 Floor::~Floor() { }
 
+void Floor::setup() {
+    Block* bl = chambers[1].getSpawnPos();
+    cout << bl->pos.x << "X" << bl->pos.y << endl;
+    spawn(new Goblin(), bl->pos.x, bl->pos.y);
+}
+
 void Floor::takeTurn() {
     for (auto c : living) {
         if (c) {
@@ -113,7 +121,7 @@ void Floor::takeTurn() {
 }
 
 
-void Floor::spawn(Creature *c,int posx, int posy) {
+void Floor::spawn(Creature *c, int posx, int posy) {
     occupied[posy][posx] = true;
     living.emplace_back(c);
     for(auto ob : observers) {
@@ -376,6 +384,17 @@ void Chamber::addBlock(int h, int w, Ground type) {
     block->pos = pos;
     block->type = type;
     blocks.emplace_back(block);
+}
+
+Block *Chamber::getSpawnPos() {
+    int r = randomGen(0, blocks.size());
+
+    while(floor->getState(blocks[r]->pos.x, blocks[r]->pos.y) != Ground::empty &&
+          floor->isOccupied(blocks[r]->pos.x, blocks[r]->pos.y)) {
+        r = randomGen(0 , blocks.size());
+    }
+
+    return blocks[r];
 }
 
 int Chamber::getLabel(){
