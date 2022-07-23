@@ -39,6 +39,9 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGri
                 case '+' :
                     theGrid[j].emplace_back(Ground::door);
                     break;
+                case '0':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionRH(), i, j);
                 default :
                     theGrid[j].emplace_back(Ground::nothing);
                     break;
