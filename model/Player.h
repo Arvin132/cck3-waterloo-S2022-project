@@ -6,6 +6,7 @@
 #define CCK3_WATERLOO_S2022_PROJECT_PLAYER_H
 #include <iostream>
 #include "creature.h"
+class Item;
 class EventHandler;
 
 class Player: public Creature {

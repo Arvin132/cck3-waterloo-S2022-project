@@ -7,6 +7,7 @@
 #include "creature.h"
 #include "gold.h"
 #include "potion.h"
+
 using namespace std;
 
 Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGrid(vector<vector<Ground>> {}),
@@ -42,6 +43,43 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGri
                 case '0':
                     theGrid[j].emplace_back(Ground::potion);
                     spawn(new PotionRH(), i, j);
+                    break;
+                case '1':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionBA(), i, j);
+                    break;
+                case '2':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionBD(), i, j);
+                    break;
+                case '3':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionPH(), i, j);
+                    break;
+                case '4':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionWA(), i, j);
+                    break;
+                case '5':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionWD(), i, j);
+                    break;
+                case '6':
+                    theGrid[j].emplace_back(Ground::gold);
+                    spawn(new Gold(1), i ,j);
+                    break;
+                case '7':
+                    theGrid[j].emplace_back(Ground::gold);
+                    spawn(new Gold(2), i, j);
+                    break;
+                case '8':
+                    theGrid[j].emplace_back(Ground::gold);
+                    spawn(new Gold(4), i, j);
+                    break;
+                case '9':
+                    theGrid[j].emplace_back(Ground::gold);
+                    spawn(new Gold(6), i, j);
+                    break;
                 default :
                     theGrid[j].emplace_back(Ground::nothing);
                     break;
@@ -55,6 +93,9 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGri
     }
 
     spawn(p, 10, 5);
+    for (auto it : items) {
+        it->notifyObservesrs();
+    }
 }
 
 Floor::~Floor() { }
@@ -176,6 +217,7 @@ Item *Floor::whatItem(int posx, int posy) {
 
 void Floor::Interact(Player *who, Item *what) {
     what->effect(who);
+    who->beEffectedBy(what);
     for (auto it = items.begin(); it != items.end(); ++it) {
         if (*it == what) {
             recentX = what->getRecentX();

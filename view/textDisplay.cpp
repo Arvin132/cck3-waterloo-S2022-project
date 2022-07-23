@@ -29,7 +29,7 @@ void TextDisplay::notify(Floor &who) {
     int j = who.getRecentY();
     Ground state = who.getState(i, j);
     switch (state) {
-        case Ground::empty: case Ground::item:
+        case Ground::empty:
             display[j][i] = '.';
             break;
         case Ground::Vwall:
@@ -44,10 +44,10 @@ void TextDisplay::notify(Floor &who) {
         case Ground::door:
             display[j][i] = '+';
             break;
-        case Ground::nothing:
+        case Ground::nothing: case Ground::gold: 
+        case Ground::potion:
             display[j][i] = ' ';
-            break;
-        
+            break;   
     }
 }
 
