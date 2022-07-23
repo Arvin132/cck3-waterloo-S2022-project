@@ -7,6 +7,6 @@ Gold::Gold(int amount): Item() , amount(amount){
     description = " Picked up " + std::to_string(amount) + " Gold";
 } 
 
-void Gold::effect(Creature *who) {
+void Gold::effect(Life *who) {
     who->modifyGold(amount);
 }

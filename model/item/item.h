@@ -3,7 +3,7 @@
 #include "subject.h"
 #include <string>
 class Floor;
-class Creature;
+class Life;
 
 class Item: public Subject {
     protected:
@@ -15,8 +15,10 @@ class Item: public Subject {
         virtual ~Item();
         void notifyObservesrs() override;
         char getRep();
-        std::string getDescription();
-        virtual void effect(Creature *who) = 0;
+        int getRecentX() override;
+        int getRecentY() override;
+        virtual std::string getDescription();
+        virtual void effect(Life *who) = 0;
         friend class Floor;
 };
 

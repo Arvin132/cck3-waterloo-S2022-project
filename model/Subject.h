@@ -15,8 +15,8 @@ class Subject {
     public:
       virtual ~Subject();
       virtual void notifyObservesrs() = 0;
-      int getRecentX();
-      int getRecentY();
+      int virtual getRecentX() = 0;
+      int virtual getRecentY() = 0;
       void attach(Observer *ob);
       void detach(Observer *ob);
 };

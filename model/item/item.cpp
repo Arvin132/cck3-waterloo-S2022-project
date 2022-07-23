@@ -12,6 +12,9 @@ void Item::notifyObservesrs() {
     }
 }
 
+int Item::getRecentX() { return recentX; }
+int Item::getRecentY() { return recentY; }
+
 char Item::getRep() {
     return rep; 
 }

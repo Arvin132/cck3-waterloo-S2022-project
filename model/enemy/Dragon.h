@@ -9,8 +9,8 @@
 class Dragon: public Enemy {
     public:
         Dragon();
-        void move() override;
-        int beAttackedBy(Creature *who, int defModifier) override;
+        void move(int atkMod) override;
+        int beAttackedBy(Life *who, int defModifier) override;
 };
 
 

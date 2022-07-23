@@ -4,16 +4,27 @@
 
 #ifndef CCK3_WATERLOO_S2022_PROJECT_DECORATOR_H
 #define CCK3_WATERLOO_S2022_PROJECT_DECORATOR_H
+#include "life.h"
+#include <memory>
 #include "creature.h"
 
-class Decorator: public Creature {
-    Creature *next;
+class Decorator: public Life {
+    
+    protected:
+      Decorator(Life *next);
+      Life *next;
     public:
+      virtual ~Decorator();
+      void beEffectedBy(Item *what) override;
       void notifyObservesrs() override;
-      char getRep() override;
       void modifyHP(int amount) override;
       void modifyGold(int amount) override;
-      void move() override;
+      char getRep() override;
+      int getGold() override;
+      int getHP() override;
+      int getRecentX() override;
+      int getRecentY() override;
+      Creature *getCreature() override;
 };
 
 

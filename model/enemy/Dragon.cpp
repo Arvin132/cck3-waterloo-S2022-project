@@ -8,18 +8,18 @@
 
 Dragon::Dragon(): Enemy(150, 20, 20) {}
 
-void Dragon::move() {
+void Dragon::move(int atkMod) {
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {
         for (int j = recentY - 1; j <= recentY + 1; j++) {
-            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatCreature(i, j))) {
-                attack(fl->whatCreature(i, j), 0);
+            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatLife(i, j))) {
+                attack(fl->whatLife(i, j), atkMod);
                 return;
             }
         }
     }
 }
 
-int Dragon::beAttackedBy(Creature *who, int defModifier) {
+int Dragon::beAttackedBy(Life *who, int defModifier) {
 
     def += defModifier;
     double something = 100;

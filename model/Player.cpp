@@ -9,25 +9,22 @@
 #include "floor.h"
 #include <cmath>
 
-Player::Player(std::istream *input, std::ostream *output, int hp, int atk, int def, int gold) : Creature(hp, atk, def, gold)
-                                                                                                , input(input), output(output) {
+Player::Player(std::istream *input, std::ostream *output, bool *gameFinished,
+               int hp, int atk, int def, int gold) : Creature(hp, atk, def, gold), input(input), output(output), gameFinished(gameFinished) {
     rep = '@';
-    race = "Humen";
 }
 
 
-void Player::attack(Creature *other, int atkModifier) {
-    atk += atkModifier;
-    
-    
+void Player::attack(Life *other, int atkMod) {
+    atk += atkMod;
+    char rep = other->getRep();
     std::string damage = std::to_string(other->beAttackedBy(this, 0));
-    log = log + ("PC attacked and dealt " + damage + " Damage to " + std::string{other->getRep()} + ". ");
-
-    atk -= atkModifier;
+    log = log + ("PC attacked and dealt " + damage + " Damage to " + std::string{rep} + ". ");
+    atk -= atkMod;
 }
 
 
-int Player::beAttackedBy(Creature *who, int defModifier) {
+int Player::beAttackedBy(Life *who, int defModifier) {
     def += defModifier;
 
     double something = 100;
@@ -37,7 +34,7 @@ int Player::beAttackedBy(Creature *who, int defModifier) {
     curHp -= damage;
     if (curHp <= 0) {
         // fear grows on me
-        finished = true;
+        *gameFinished = true;
         fl->died(this);
         return damage;
     }
@@ -80,13 +77,13 @@ Direction whatDir(std::string command, int &newX, int &newY) {
     }
 }
 
-void Player::move()  {
+void Player::move(int atkMod)  {
     std::string command = " ";
     *input >> command;
     Direction d = Direction::E;
 
     if (input->eof() || command == "q") {
-        finished = true;
+        *gameFinished = true;
         return;
     }
     int newX = recentX;
@@ -98,16 +95,16 @@ void Player::move()  {
 
         if (d == Direction::Nothing) {
             *output << "Please Give valid input" << std::endl;
-            return move();
+            return move(atkMod);
         }
 
         if (fl->isOccupied(newX, newY)) {
-            Creature *other = fl->whatCreature(newX, newY);
-            attack(other, 0);
+            Life *other = fl->whatLife(newX, newY);
+            attack(other, atkMod);
             return;
         } else {
             *output << "No creature in the specified position to attack " << std::endl;
-            return move();
+            return move(atkMod);
         }
     } else if (command == "u") {
         *input >> command;
@@ -115,7 +112,7 @@ void Player::move()  {
 
         if (d == Direction::Nothing) {
             *output << "Please Give valid input" << std::endl;
-            return move();
+            return move(atkMod);
         }
 
         if (fl->getState(newX, newY) == Ground::potion) {
@@ -124,20 +121,20 @@ void Player::move()  {
             return;
         } else {
             *output << "No Potion is in that Direction for you to consume " << std::endl;
-            return move();
+            return move(atkMod);
         }
     } else {
         d = whatDir(command, newX, newY);
         if (d == Direction::Nothing) {
             *output << "Please Give valid input" << std::endl;
-            return move();
+            return move(atkMod);
         }
     }
     
     if ((fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
         && fl->getState(newX, newY) != Ground::door && fl->getState(newX, newY) != Ground::gold) || fl->isOccupied(newX, newY)) {
         *output << "Invalid Move" << std::endl;
-        return move();
+        return move(atkMod);
     }
 
     if (fl->getState(newX, newY) == Ground::gold) {
@@ -147,14 +144,6 @@ void Player::move()  {
     fl->gotMoved(recentX, recentY, d);
     recentX = newX;
     recentY = newY;
-}
-
-
-void Player::modifyHP(int amount)  {
-    curHp += amount;
-    if (curHp > maxHp) {
-        curHp = maxHp;
-    }
 }
 
 void Player::beEffectedBy(Item *what) {
@@ -167,11 +156,3 @@ std::string Player::report() {
     return retVal;
 }
 
-void Player::modifyGold(int amount) {
-    gold += amount;
-    if (gold < 0) {
-        gold = 0;
-    }
-}
-
-bool Player::isFinished() { return finished; }

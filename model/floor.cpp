@@ -11,7 +11,7 @@
 using namespace std;
 
 Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGrid(vector<vector<Ground>> {}),
-                                           occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
+                                           occupied(vector<vector<bool>> {}), living(vector<Life*> {}) {
     observers.emplace_back(intialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
@@ -103,7 +103,7 @@ Floor::~Floor() { }
 void Floor::takeTurn() {
     for (auto c : living) {
         if (c) {
-            c->move();
+            c->move(0);
         }
     }
     notifyObservesrs();
@@ -111,6 +111,7 @@ void Floor::takeTurn() {
         c->notifyObservesrs();
     }
 }
+
 
 void Floor::spawn(Creature *c,int posx, int posy) {
     occupied[posy][posx] = true;
@@ -153,13 +154,18 @@ void Floor::notifyObservesrs() {
     }
 }
 
+Life *Floor::getPlayer() { return living[0]; }
+
 Ground Floor::getState(int posx, int posy) {
     try {
         return theGrid[posy][posx];
     } catch (...) {
-        return Ground::Vwall;
+        return Ground::nothing;
     }
 }
+
+int Floor::getRecentX() { return recentX; }
+int Floor::getRecentY() { return recentY; }
 
 void Floor::gotMoved(int posx, int posy, Direction d) {
     occupied[posy][posx] = false;
@@ -197,7 +203,7 @@ void Floor::gotMoved(int posx, int posy, Direction d) {
     notifyObservesrs();
 }
 
-Creature *Floor::whatCreature(int posx, int posy) {
+Life *Floor::whatLife(int posx, int posy) {
     for (auto c : living) {
         if (c->getRecentX() == posx && c->getRecentY() == posy) {
             return c;
@@ -231,6 +237,15 @@ void Floor::Interact(Player *who, Item *what) {
     }
 }
 
+void Floor::replace(Life *what, Life *with) {
+    for (auto it = living.begin(); it != living.end(); ++it) {
+        if (*it == what) {
+            *it = with;
+            break;
+        }
+    }
+}
+
 bool Floor::isOccupied(int posx, int posy) {
     if (posx < 0 || posy < 0 || posx >= width || posy >= heigth) {
         return false;
@@ -238,11 +253,11 @@ bool Floor::isOccupied(int posx, int posy) {
     return occupied[posy][posx];
 }
 
-bool Floor::isPlayer(Creature *who) {
+bool Floor::isPlayer(Life *who) {
     return (who == living[0]);
 }
 
-void Floor::died(Creature *who) {
+void Floor::died(Life *who) {
     for (auto it = living.begin(); it != living.end(); ++it) {
         if (*it == who) {
             occupied[who->getRecentY()][who->getRecentX()] = false;

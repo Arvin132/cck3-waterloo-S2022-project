@@ -7,7 +7,7 @@ class Gold: public Item {
     int amount;
     public:
         Gold(int amount);
-        void effect(Creature *who) override;
+        void effect(Life *who) override;
 };
 
 #endif

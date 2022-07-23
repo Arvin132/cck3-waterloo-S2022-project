@@ -7,15 +7,25 @@
 #include "Decorator.h"
 
 class ModAtk: public Decorator {
-    void attack(Creature *other, int atkModifier) override;
-    int beAttackedBy(Creature *who, int defModifier) override;
+    int mod;
+    public:
+        ModAtk(Life *next, int amount);
+        void move(int atkModifier) override;
+        int beAttackedBy(Life *who, int defModifier) override;
+        int getAtk() override;
+        int getDef() override;
 };
 
 
 
 class ModDef: public Decorator {
-    void attack(Creature *other, int atkModifier) override;
-    int beAttackedBy(Creature *who, int defModifier) override;
+    int mod;
+    public:
+        ModDef(Life *next, int amount);
+        void move(int atkModifier) override;
+        int beAttackedBy(Life *who, int defModifier) override;
+        int getAtk() override;
+        int getDef() override;
 };
 
 

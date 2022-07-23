@@ -6,8 +6,6 @@
 
 Subject::~Subject() { }
 
-int Subject::getRecentX() { return recentX; }
-int Subject::getRecentY() { return recentY; }
 
 void Subject::attach(Observer *ob) {
     observers.emplace_back(ob);

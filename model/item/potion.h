@@ -1,7 +1,7 @@
 #ifndef __POTION_H__
 #define __POTION_H__
 #include "item.h"
-class Creature;
+class Life;
 
 class Potion : public Item {
     protected:
@@ -16,7 +16,8 @@ class PotionRH : public Potion {
     public:
         PotionRH();
         bool hasDrunk();
-        void effect(Creature *who) override;
+        void effect(Life *who) override;
+        std::string getDescription() override;
 };
 
 class PotionBA : public Potion {
@@ -24,7 +25,8 @@ class PotionBA : public Potion {
     public:
         PotionBA();
         bool hasDrunk();
-        void effect(Creature *who) override;
+        void effect(Life *who) override;
+        std::string getDescription() override;
 };
 
 class PotionBD : public Potion {
@@ -32,7 +34,8 @@ class PotionBD : public Potion {
     public:
         PotionBD();
         bool hasDrunk();
-        void effect(Creature *who) override;
+        void effect(Life *who) override;
+        std::string getDescription() override;
 };
 
 class PotionPH : public Potion {
@@ -40,7 +43,8 @@ class PotionPH : public Potion {
     public:
         PotionPH();
         bool hasDrunk();
-        void effect(Creature *who) override;
+        void effect(Life *who) override;
+        std::string getDescription() override;
 };
 
 
@@ -49,7 +53,8 @@ class PotionWA : public Potion {
     public:
         PotionWA();
         bool hasDrunk();
-        void effect(Creature *who) override;
+        void effect(Life *who) override;
+        std::string getDescription() override;
 };
 
 class PotionWD : public Potion {
@@ -57,7 +62,8 @@ class PotionWD : public Potion {
     public:
         PotionWD();
         bool hasDrunk();
-        void effect(Creature *who) override;
+        void effect(Life *who) override;
+        std::string getDescription() override;
 };
 
 

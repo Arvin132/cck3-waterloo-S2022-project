@@ -12,16 +12,12 @@ Merchant::Merchant(): Enemy(30, 70, 5) {
     rep = 'M';
 }
 
-void Merchant::move() {
-    std::cout << isAgro << std::endl;
+void Merchant::move(int atkMod) {
     if (isAgro) {
         for (int i = recentX - 1; i <= recentX + 1; i++) {
-        std::cout << "merchant wants to attack1" << std::endl;
             for (int j = recentY - 1; j <= recentY + 1; j++) {
-            std::cout << fl->isPlayer(fl->whatCreature(i, j)) << std::endl;
-                if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatCreature(i, j))) {
-                    std::cout << "merchant wants to attack3" << std::endl;
-                    attack(fl->whatCreature(i, j), 0);
+                if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatLife(i, j))) {
+                    attack(fl->whatLife(i, j), atkMod);
                     return;
                 }
             }
@@ -50,7 +46,7 @@ void Merchant::move() {
     recentY = newY;
 }
 
-int Merchant::beAttackedBy(Creature *who, int defModifier) {
+int Merchant::beAttackedBy(Life *who, int defModifier) {
     isAgro = true;
     
     def += defModifier;
