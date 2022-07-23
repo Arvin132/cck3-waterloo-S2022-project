@@ -1,11 +1,15 @@
 #ifndef __CREATURE_H_
 #define __CREATURE_H_
-#include "Subject.h"
+
+#include "life.h"
+#include <string>
+
+
 class Floor;
 
 enum Direction {N=0, E, S, W, NE, NW, SE, SW, Nothing};
 
-class Creature: public Subject {
+class Creature: public Life {
     private:
       void setFloor(Floor *fl);
       void setStartingPosition(int posx, int posy);
@@ -18,14 +22,19 @@ class Creature: public Subject {
 
     public:
       virtual ~Creature();
-      void virtual notifyObservesrs() override;
-      char virtual getRep();
-      int virtual getAtk();
-      void virtual attack(Creature *other, int atkModifier) = 0;
-      int virtual beAttackedBy(Creature *who, int defModifier) = 0;
-      void virtual modifyHP(int amount) = 0;
-      void virtual modifyGold(int amount) = 0;
-      void virtual move() = 0;
+      void notifyObservesrs() override;
+      char getRep() override;
+      int getAtk() override;
+      int getDef() override;
+      int getGold() override;
+      int getHP() override;
+      std::string virtual report() = 0;
+      void virtual modifyHP(int amount) override;
+      void virtual modifyGold(int amount) override;
+      int getRecentX() override;
+      int getRecentY() override;
+      Creature *getCreature() override;
+      void virtual attack(Life *other, int atkModifier);
       friend class Floor;
 };
 

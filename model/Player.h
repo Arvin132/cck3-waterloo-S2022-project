@@ -6,25 +6,21 @@
 #define CCK3_WATERLOO_S2022_PROJECT_PLAYER_H
 #include <iostream>
 #include "creature.h"
+class Item;
 class EventHandler;
 
 class Player: public Creature {
     std::istream *input;
     std::ostream *output;
-    
-    bool finished = false;
+    bool *gameFinished;
     std::string log = "";
-    std::string race;
     public:
-        Player(std::istream *input, std::ostream *output, int hp, int atk, int def, int gold);
-        void virtual attack(Creature *other, int atkModifier) override;
-        int virtual beAttackedBy(Creature *who, int defModifier) override;
-        void virtual modifyHP(int amount) override;
-        void virtual modifyGold(int amount) override;
-        std::string report();
-        bool isFinished();
-        void virtual move() override;
-        friend class EventHandler;
+        Player(std::istream *input, std::ostream *output, bool *gameState, int hp, int atk, int def, int gold);
+        void attack(Life *who, int atkMod);
+        int virtual beAttackedBy(Life *who, int defModifier) override;
+        void beEffectedBy(Item *what) override;
+        std::string report() override;
+        void virtual move(int atkMod) override;
 };
 
 

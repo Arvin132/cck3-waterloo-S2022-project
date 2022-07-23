@@ -13,6 +13,7 @@ class TextDisplay: public Observer {
     TextDisplay();
     void notify(Creature &who) override;
     void notify(Floor &who) override;
+    void notify(Item &who) override;
     friend std::ostream &operator<<(std::ostream &out, TextDisplay td);
 };
 

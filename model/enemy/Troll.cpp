@@ -12,13 +12,13 @@ Troll::Troll(): Enemy(120, 25, 15) {
     rep = 'T';
 }
 
-void Troll::move() {
+void Troll::move(int atkMod) {
     modifyHP(5);
 
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {
         for (int j = recentY - 1; j <= recentY + 1; j++) {
-            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatCreature(i, j))) {
-                attack(fl->whatCreature(i, j), 0);
+            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatLife(i, j))) {
+                attack(fl->whatLife(i, j), atkMod);
                 return;
             }
         }

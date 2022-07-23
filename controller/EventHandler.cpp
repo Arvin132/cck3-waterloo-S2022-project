@@ -12,23 +12,23 @@ using namespace std;
 
 using namespace std;
 
-EventHandler::EventHandler(): tDisplay(new TextDisplay()), currentFloor(nullptr),
-                              p(new Player(&cin, &cout, 100, 50, 10, 10)){}
+EventHandler::EventHandler(): tDisplay(new TextDisplay()), currentFloor(nullptr), PlayerRace("Humen") {}
 
 EventHandler::~EventHandler() {
     delete tDisplay;
-    delete p;
+    delete currentFloor;
 }
 
 void EventHandler::report() {
+    Life *p = currentFloor->getPlayer();
     cout << *tDisplay;
-    cout << left << "Race: " << p->race;
-    cout << " Gold " << p->gold;
+    cout << left << "Race: " << PlayerRace;
+    cout << " Gold " << p->getGold();
     cout << right << " Floor " << floorNum << endl;
-    cout << "HP: " << p->curHp << endl;
-    cout << "Atk: " << p->atk << endl;
-    cout << "Def: " << p->def << endl;
-    cout << "Action: " << p->report() << endl;
+    cout << "HP: " << p->getHP() << endl;
+    cout << "Atk: " << p->getAtk() << endl;
+    cout << "Def: " << p->getDef() << endl;
+    cout << "Action: " << p->getCreature()->report() << endl;
 }
 
 void EventHandler::initFloor(string readFile) {
@@ -36,7 +36,7 @@ void EventHandler::initFloor(string readFile) {
     if (currentFloor != nullptr) {
         delete currentFloor;
     }
-    currentFloor = new Floor(f, p, tDisplay);
+    currentFloor = new Floor(f, new Player(&cin, &cout, &isFinished, 100, 50, 10, 10), tDisplay);
 }
 
 void EventHandler::setup() {
@@ -51,7 +51,7 @@ void EventHandler::nextTurn() {
 }
 
 bool EventHandler::gameFinished() {
-    return p->isFinished();
+    return isFinished;
 }
 
 

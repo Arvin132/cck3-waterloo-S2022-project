@@ -9,7 +9,7 @@
 class Troll: public Enemy {
     public:
         Troll();
-        void move() override;
+        void move(int atkMod) override;
 };
 
 

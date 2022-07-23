@@ -14,11 +14,10 @@ class Enemy: public Creature {
       Enemy(int hp, int atk, int def);
     public:
       virtual ~Enemy();
-      void virtual modifyHP(int amount) override;
-      void virtual modifyGold(int amount) override; 
-      void virtual attack(Creature *other, int atkModifier);
-      int virtual beAttackedBy(Creature *who, int defModifier);
-      virtual void move();
+      int virtual beAttackedBy(Life *who, int defModifier) override;
+      void beEffectedBy(Item  *what) override;
+      virtual void move(int atkMod);
+      std::string report() override;
 };
 
 

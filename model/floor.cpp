@@ -4,10 +4,13 @@
 #include "Subject.h"
 #include "Observer.h"
 #include "creature.h"
+#include "gold.h"
+#include "potion.h"
+
 using namespace std;
 
 Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGrid(vector<vector<Ground>> {}),
-                                           occupied(vector<vector<bool>> {}), living(vector<Creature*> {}) {
+                                           occupied(vector<vector<bool>> {}), living(vector<Life*> {}) {
     observers.emplace_back(intialOb);
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
@@ -36,6 +39,46 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGri
                 case '+' :
                     theGrid[j].emplace_back(Ground::door);
                     break;
+                case '0':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionRH(), i, j);
+                    break;
+                case '1':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionBA(), i, j);
+                    break;
+                case '2':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionBD(), i, j);
+                    break;
+                case '3':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionPH(), i, j);
+                    break;
+                case '4':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionWA(), i, j);
+                    break;
+                case '5':
+                    theGrid[j].emplace_back(Ground::potion);
+                    spawn(new PotionWD(), i, j);
+                    break;
+                case '6':
+                    theGrid[j].emplace_back(Ground::gold);
+                    spawn(new Gold(1), i ,j);
+                    break;
+                case '7':
+                    theGrid[j].emplace_back(Ground::gold);
+                    spawn(new Gold(2), i, j);
+                    break;
+                case '8':
+                    theGrid[j].emplace_back(Ground::gold);
+                    spawn(new Gold(4), i, j);
+                    break;
+                case '9':
+                    theGrid[j].emplace_back(Ground::gold);
+                    spawn(new Gold(6), i, j);
+                    break;
                 default :
                     theGrid[j].emplace_back(Ground::nothing);
                     break;
@@ -50,6 +93,9 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGri
     initChambers();
     cout << chambers.size();
     spawn(p, 10, 5);
+    for (auto it : items) {
+        it->notifyObservesrs();
+    }
 }
 
 Floor::~Floor() { }
@@ -57,7 +103,7 @@ Floor::~Floor() { }
 void Floor::takeTurn() {
     for (auto c : living) {
         if (c) {
-            c->move();
+            c->move(0);
         }
     }
     notifyObservesrs();
@@ -65,6 +111,7 @@ void Floor::takeTurn() {
         c->notifyObservesrs();
     }
 }
+
 
 void Floor::spawn(Creature *c,int posx, int posy) {
     occupied[posy][posx] = true;
@@ -77,19 +124,48 @@ void Floor::spawn(Creature *c,int posx, int posy) {
     c->notifyObservesrs();
 }
 
+void Floor::spawn(Gold *what, int posx, int posy) {
+    theGrid[posy][posx] = Ground::gold;
+    items.emplace_back(what);   
+    for(auto ob : observers) {
+        (*what).attach(ob);
+    }
+
+    what->recentX = posx;
+    what->recentY = posy;
+    what->notifyObservesrs();
+}
+
+void Floor::spawn(Potion *what, int posx, int posy) {
+    theGrid[posy][posx] = Ground::potion;
+    items.emplace_back(what);   
+    for(auto ob : observers) {
+        (*what).attach(ob);
+    }
+    what->recentX = posx;
+    what->recentY = posy;
+    what->fl = this;
+    what->notifyObservesrs();
+}
+
 void Floor::notifyObservesrs() {
     for (auto i : observers) {
         i->notify(*this);
     }
 }
 
+Life *Floor::getPlayer() { return living[0]; }
+
 Ground Floor::getState(int posx, int posy) {
     try {
         return theGrid[posy][posx];
     } catch (...) {
-        return Ground::Vwall;
+        return Ground::nothing;
     }
 }
+
+int Floor::getRecentX() { return recentX; }
+int Floor::getRecentY() { return recentY; }
 
 void Floor::gotMoved(int posx, int posy, Direction d) {
     occupied[posy][posx] = false;
@@ -127,7 +203,7 @@ void Floor::gotMoved(int posx, int posy, Direction d) {
     notifyObservesrs();
 }
 
-Creature *Floor::whatCreature(int posx, int posy) {
+Life *Floor::whatLife(int posx, int posy) {
     for (auto c : living) {
         if (c->getRecentX() == posx && c->getRecentY() == posy) {
             return c;
@@ -135,6 +211,38 @@ Creature *Floor::whatCreature(int posx, int posy) {
     }
     return nullptr;
 }
+
+
+Item *Floor::whatItem(int posx, int posy) {
+    for (auto i : items) {
+        if (i->getRecentX() == posx && i->getRecentY() == posy) {
+            return i;
+        }
+    }
+    return nullptr;
+}
+
+void Floor::Interact(Player *who, Item *what) {
+    what->effect(who);
+    who->beEffectedBy(what);
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        if (*it == what) {
+            recentX = what->getRecentX();
+            recentY = what->getRecentY();
+            theGrid[recentY][recentX] = Ground::empty;
+            notifyObservesrs();
+            items.erase(it);
+            delete what;
+            break;
+        }
+    }
+}
+
+void Floor::replace(Life *what, Life *with) {
+    for (auto it = living.begin(); it != living.end(); ++it) {
+        if (*it == what) {
+            *it = with;
+            break;
 
 int* minVal(int* cur, int* other){
     if (*cur > *other){
@@ -215,6 +323,7 @@ void Floor::initChambers() {
                     chambers.emplace_back(this, *tempMap[h][i]);
                 }
             }
+
         }
     }
 }
@@ -226,11 +335,11 @@ bool Floor::isOccupied(int posx, int posy) {
     return occupied[posy][posx];
 }
 
-bool Floor::isPlayer(Creature *who) {
+bool Floor::isPlayer(Life *who) {
     return (who == living[0]);
 }
 
-void Floor::died(Creature *who) {
+void Floor::died(Life *who) {
     for (auto it = living.begin(); it != living.end(); ++it) {
         if (*it == who) {
             occupied[who->getRecentY()][who->getRecentX()] = false;
@@ -244,6 +353,7 @@ void Floor::died(Creature *who) {
         }
     }
 }
+
 
 Chamber::Chamber(Floor *owner, int label): floor{owner}, label{label}, blocks{std::vector<Block*>()}{}
 

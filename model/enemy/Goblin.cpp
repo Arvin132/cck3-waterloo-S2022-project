@@ -7,9 +7,9 @@
 Goblin::Goblin(): Enemy(70, 5, 10) { rep = 'N';}
 
 
-void Goblin::attack(Creature *other, int atkModifier) {
+void Goblin::attack(Life *other, int atkModifier) {
     atk += atkModifier;
-    other->modifyGold(-5);
+    other->modifyGold(-2);
     other->beAttackedBy(this, 0);
 
     atk -= atkModifier;

@@ -27,11 +27,11 @@ Direction directionOfCommand(int d, int *newX, int *newY) {
     }
 }
 
-void Enemy::move() {
+void Enemy::move(int atkMod) {
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {
         for (int j = recentY - 1; j <= recentY + 1; j++) {
-            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatCreature(i, j))) {
-                attack(fl->whatCreature(i, j), 0);
+            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatLife(i, j))) {
+                attack(fl->whatLife(i, j), atkMod);
                 return;
             }
         }
@@ -59,31 +59,11 @@ void Enemy::move() {
     recentY = newY;
 }
 
-void Enemy::modifyHP(int amount)  {
-    curHp += amount;
-    if (curHp > maxHp) {
-        curHp = maxHp;
-    }
-}
+void Enemy::beEffectedBy(Item *who) {
+    // enemies should not be effected by Items
+} 
 
-void Enemy::modifyGold(int amount) {
-    gold += amount;
-    if (gold < 0) {
-        gold = 0;
-    }
-}
-
-
-
-void Enemy::attack(Creature *other, int atkModifier) {
-    atk += atkModifier;
-    other->beAttackedBy(this, 0);
-
-    atk -= atkModifier;
-}
-
-
-int Enemy::beAttackedBy(Creature *who, int defModifier) {
+int Enemy::beAttackedBy(Life *who, int defModifier) {
 
     def += defModifier;
     double something = 100;
@@ -101,3 +81,5 @@ int Enemy::beAttackedBy(Creature *who, int defModifier) {
     def -= defModifier;
     return damage;
 }
+
+std::string Enemy::report() { return "this is an enemy" ;}
