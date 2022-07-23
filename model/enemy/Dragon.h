@@ -6,6 +6,8 @@
 #define CCK3_WATERLOO_S2022_PROJECT_DRAGON_H
 #include "Enemy.h"
 
+class Creature;
+
 class Dragon: public Enemy {
     public:
         Dragon();

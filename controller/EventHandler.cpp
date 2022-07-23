@@ -5,11 +5,10 @@
 using namespace std;
 
 #include <fstream>
-#include <iomanip>
 #include "eventHandler.h"
 #include "textDisplay.h"
-#include "floor.h"
-#include "Goblin.h"
+#include "../model/floor.h"
+#include "../model/enemy/Goblin.h"
 
 using namespace std;
 

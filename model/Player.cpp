@@ -2,9 +2,8 @@
 // Created by kmajdi on 2022-07-14.
 //
 #include <iostream>
-#include <sstream>
 #include "creature.h"
-#include "player.h"
+#include "Player.h"
 #include "floor.h"
 #include <cmath>
 

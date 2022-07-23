@@ -1,9 +1,8 @@
-#include <iostream>
 #include <string>
-#include <iomanip>
+#include <iostream>
 #include "floor.h"
-#include "subject.h"
-#include "observer.h"
+#include "Subject.h"
+#include "Observer.h"
 #include "creature.h"
 using namespace std;
 
@@ -48,7 +47,8 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb): Subject(), theGri
             notifyObservesrs();
         }
     }
-
+    initChambers();
+    cout << chambers.size();
     spawn(p, 10, 5);
 }
 
@@ -144,7 +144,7 @@ int* minVal(int* cur, int* other){
 }
 
 void Floor::initChambers() {
-    vector<vector<int*>> tempMap  = vector<vector<int*>>();
+    vector<vector<int*>> tempMap = vector<vector<int*>>();
     vector<int*> labels = vector<int*>();
     chambers = vector<Chamber>();
     int* offLabel = new int(200000);
@@ -153,10 +153,10 @@ void Floor::initChambers() {
         tempMap.emplace_back(vector<int*>());
         for (int i = 0; i < width; i++){
             if (theGrid[h][i] == Ground::empty || theGrid[h][i] == Ground::item){
-                if ((h == 0 && i == 0)
-                || (!(h == 0 && i == 0) && (
-                        (h == 0 && *tempMap[h][i-1] == 200000)
-                        || (i == 0 && *tempMap[h-1][i] == 200000)))){
+                if ((h == 0 && i == 0) ||
+                        (!(h == 0 && i == 0) &&
+                            ((h == 0 && *tempMap[h][i-1] == 200000) ||
+                            (i == 0 && *tempMap[h-1][i] == 200000)))){
                     tempMap[h].emplace_back(new int(inLabel));
                     inLabel++;
                 }
@@ -166,25 +166,29 @@ void Floor::initChambers() {
                         if (i != 0 && *tempMap[h - 1][i - 1] < 200000) {
                             tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i - 1]);
                         }
-                        tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i]);
-                        if (i != width - 1) {
+                        if (*tempMap[h - 1][i] < 200000) {
+                            tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i]);
+                        }
+                        if (i != width - 1 && *tempMap[h - 1][i + 1] < 200000) {
                             tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i + 1]);
                         }
                     }
-                    if (i != 0) {
+                    if (i != 0 && *tempMap[h][i - 1] < 200000) {
                         tempMap[h][i] = minVal(tempMap[h][i - 1], tempMap[h][i - 1]);
                     }
 
-                    if (h != 0) {
-                        if (i != 0) {
+                    if (h != 0 && *tempMap[h - 1][i] < 200000) {
+                        if (i != 0 && *tempMap[h - 1][i - 1] < 200000) {
                             *tempMap[h - 1][i - 1] = *minVal(tempMap[h][i], tempMap[h - 1][i - 1]);
                         }
-                        *tempMap[h - 1][i] = *minVal(tempMap[h][i], tempMap[h - 1][i]);
-                        if (i != width - 1) {
+                        if (*tempMap[h - 1][i] < 200000) {
+                            *tempMap[h - 1][i] = *minVal(tempMap[h][i], tempMap[h - 1][i]);
+                        }
+                        if (i != width - 1  && *tempMap[h - 1][i + 1] < 200000) {
                             *tempMap[h - 1][i + 1] = *minVal(tempMap[h][i], tempMap[h - 1][i + 1]);
                         }
                     }
-                    if (i != 0) {
+                    if (i != 0 && *tempMap[h][i - 1] < 200000) {
                         *tempMap[h][i - 1] = *minVal(tempMap[h][i], tempMap[h][i - 1]);
                     }
                     inLabel++;
@@ -208,9 +212,7 @@ void Floor::initChambers() {
                     }
                 }
                 if (!isAdded){
-                    Chamber curChamber(this);
-                    curChamber.setLabel(*tempMap[h][i]);
-                    chambers.emplace_back(this);
+                    chambers.emplace_back(this, *tempMap[h][i]);
                 }
             }
         }
@@ -243,7 +245,7 @@ void Floor::died(Creature *who) {
     }
 }
 
-Chamber::Chamber(Floor *owner): floor{owner}, blocks{std::vector<Block*>()}{}
+Chamber::Chamber(Floor *owner, int label): floor{owner}, label{label}, blocks{std::vector<Block*>()}{}
 
 void Chamber::addBlock(int h, int w, Ground type) {
     Pos pos;
