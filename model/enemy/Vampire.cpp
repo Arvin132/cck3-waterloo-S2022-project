@@ -10,8 +10,7 @@ Vampire::Vampire():Enemy(50, 25, 25) {
 
 void Vampire::attack(Life *other, int atkModifier) {
     atk += atkModifier;
-    other->beAttackedBy(this, 0);
-    curHp += atk / 2;
+    curHp += other->beAttackedBy(this, 0) / 2;
 
     atk -= atkModifier;
 }
