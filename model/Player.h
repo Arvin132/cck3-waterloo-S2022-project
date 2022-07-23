@@ -16,6 +16,7 @@ class Player: public Creature {
     std::string log = "";
     public:
         Player(std::istream *input, std::ostream *output, bool *gameState, int hp, int atk, int def, int gold);
+        Player(Player &other);
         void attack(Life *who, int atkMod) override;
         int  beAttackedBy(Life *who, int defModifier) override;
         void beEffectedBy(Item *what) override;

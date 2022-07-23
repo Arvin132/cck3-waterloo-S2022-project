@@ -9,9 +9,8 @@
 using namespace std;
 
 int main(int args, char *argv[]) {
-	EventHandler e{};
-	e.initFloor(string {"cc3kfloor.txt"}, string {"welcome.txt"});
-	e.setup();
+	EventHandler e(string {"cc3kfloor.txt"}, string {"welcome.txt"}, true);
+	e.initFloor();
 	while(true) {
 		if (e.gameFinished()) break;
 		e.nextTurn();

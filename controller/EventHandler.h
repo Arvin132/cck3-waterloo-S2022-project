@@ -12,12 +12,16 @@ class Floor;
 class EventHandler {
     TextDisplay *tDisplay;
     Floor *currentFloor;
+    std::string readFile;
+    std::string welcomeFile;
+    bool isRandom;
     int floorNum = 1;
     bool isFinished = false;
 public:
-    EventHandler();
+    EventHandler(std::string readFile, std::string welcomeFile, bool isRandom);
     ~EventHandler();
-    void initFloor(std::string readFile, std::string welcomeFile);
+    void initFloor();
+    void nextFloor();
     void setup();
     void nextTurn();
     void report();

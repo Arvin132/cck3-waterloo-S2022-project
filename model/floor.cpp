@@ -11,9 +11,14 @@
 
 using namespace std;
 
-Floor::Floor(std::istream &in, Player *p, Observer *intialOb, string PlayerRace): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
-                                                                                  occupied(vector<vector<bool>> {}), living(vector<Life*> {}) {
-    observers.emplace_back(intialOb);
+Floor::Floor(string PlayerRace): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
+                                 occupied(vector<vector<bool>> {}), living(vector<Life*> {}) {}
+
+Floor::~Floor() { 
+    clearFloor();
+}
+
+void Floor::initFloor(std::istream &in, Player *p) {
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
@@ -99,12 +104,14 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb, string PlayerRace)
     }
 }
 
+
 Floor::~Floor() { }
 
 void Floor::setup() {
     Block *bl = chambers[0].getSpawnPos();
     spawn(new Goblin(), bl->pos.x, bl->pos.y);
 }
+
 
 void Floor::takeTurn() {
     for (auto c : living) {
@@ -407,4 +414,20 @@ int Chamber::getLabel(){
 
 void Chamber::setLabel(int label) {
     this->label = label;
+}
+
+void Floor::clearFloor() {
+    for (auto c : living) {
+        died(c);
+    }
+
+    for (auto it : items) {
+        recentX = it->getRecentX();
+        recentY = it->getRecentY();
+        theGrid[recentY][recentX] = Ground::empty;
+        notifyObservesrs();
+        delete it;
+        break;
+    }
+    items.clear();
 }
