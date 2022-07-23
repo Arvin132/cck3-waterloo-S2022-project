@@ -13,7 +13,8 @@ using namespace std;
 
 using namespace std;
 
-EventHandler::EventHandler(): tDisplay(new TextDisplay()), currentFloor(nullptr) {}
+EventHandler::EventHandler(std::string readFile, std::string welcomeFile, bool isRandom): tDisplay(new TextDisplay()), currentFloor(nullptr),
+                                                                                          readFile(readFile), welcomeFile(welcomeFile), isRandom(isRandom) {}
 
 EventHandler::~EventHandler() {
     delete tDisplay;
@@ -34,7 +35,7 @@ void EventHandler::report() {
 
 
 
-void EventHandler::initFloor(string readFile, string welcomeFile) {
+void EventHandler::initFloor() {
     ifstream f1 {welcomeFile};
     char race = tDisplay->welcomeScreen(f1);
     string PlayerRace = "";
@@ -60,10 +61,20 @@ void EventHandler::initFloor(string readFile, string welcomeFile) {
             isFinished = true;
     }
     ifstream f2 {readFile};
+
     if (currentFloor != nullptr) {
         delete currentFloor;
     }
-    currentFloor = new Floor(f2, p, tDisplay, PlayerRace);
+
+    
+    currentFloor = new Floor(PlayerRace);
+    currentFloor->attach(tDisplay);
+    currentFloor->initFloor(f2, p);
+    if (isRandom) {
+        setup();
+    }
+    f1.close();
+    f2.close();
 }
 
 void EventHandler::setup() {
@@ -73,6 +84,18 @@ void EventHandler::setup() {
 }
 
 void EventHandler::nextTurn() {
+    if  (currentFloor->timeForNextFloor) {
+        Creature *c = currentFloor->getPlayer()->getCreature();
+        Player *p = dynamic_cast<Player*>(c);
+        string pRace = currentFloor->getPlayerRace();
+        delete currentFloor;
+        currentFloor = new Floor(pRace);
+        ifstream f{readFile};
+        currentFloor->initFloor(f, p);
+    }
+    if (isRandom) {
+        setup();
+    }
     currentFloor->takeTurn();
     report();
 }

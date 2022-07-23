@@ -47,8 +47,11 @@ class Floor: public Subject {
     const int heigth = 25;
     void initChambers();
 public:
-    Floor(std::istream &in, Player *p, Observer *intialOb, std::string PlayerRace);
+    bool timeForNextFloor;
+    Floor(std::string PlayerRace);
     ~Floor();
+    void initFloor(std::istream &in, Player *p);
+    void setupFloor();
     int getRecentX() override;
     int getRecentY() override;
     Life *getPlayer();
@@ -67,6 +70,7 @@ public:
     void replace(Life *what, Life *with);
     void gotMoved(int posx, int posy, Direction d);
     void died(Life *who);
+    void clearFloor();
 };
 
 

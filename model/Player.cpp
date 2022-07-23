@@ -15,6 +15,7 @@ Player::Player(std::istream *input, std::ostream *output, bool *gameFinished,
 }
 
 
+
 void Player::attack(Life *other, int atkMod) {
     atk += atkMod;
     char rep = other->getRep();
