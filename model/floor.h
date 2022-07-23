@@ -31,6 +31,7 @@ class Chamber {
 
 public:
     Chamber(Floor *owner, int label);
+    ~Chamber();
     friend class Floor;
 };
 

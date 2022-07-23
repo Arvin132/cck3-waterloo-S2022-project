@@ -93,7 +93,6 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb, string PlayerRace)
         }
     }
     initChambers();
-    cout << chambers.size();
     spawn(p, 10, 5);
     for (auto it : items) {
         it->notifyObservesrs();
@@ -103,8 +102,7 @@ Floor::Floor(std::istream &in, Player *p, Observer *intialOb, string PlayerRace)
 Floor::~Floor() { }
 
 void Floor::setup() {
-    Block* bl = chambers[1].getSpawnPos();
-    cout << bl->pos.x << "X" << bl->pos.y << endl;
+    Block *bl = chambers[0].getSpawnPos();
     spawn(new Goblin(), bl->pos.x, bl->pos.y);
 }
 
@@ -274,12 +272,15 @@ void Floor::initChambers() {
     vector<vector<int*>> tempMap = vector<vector<int*>>();
     vector<int*> labels = vector<int*>();
     chambers = vector<Chamber>();
-    int* offLabel = new int(200000);
+    int *offLabel = new int(200000);
     int inLabel = 0;
     for (int h = 0; h < heigth; h++){
         tempMap.emplace_back(vector<int*>());
         for (int i = 0; i < width; i++){
-            if (theGrid[h][i] == Ground::empty || theGrid[h][i] == Ground::potion || theGrid[h][i] == Ground::gold){
+            if (h == 19 && i == 65){
+                cout << "";
+            }
+            if (theGrid[h][i] == Ground::empty || theGrid[h][i] == Ground::gold || theGrid[h][i] == Ground::potion){
                 if ((h == 0 && i == 0) ||
                         (!(h == 0 && i == 0) &&
                             ((h == 0 && *tempMap[h][i-1] == 200000) ||
@@ -307,12 +308,15 @@ void Floor::initChambers() {
                     if (h != 0 && *tempMap[h - 1][i] < 200000) {
                         if (i != 0 && *tempMap[h - 1][i - 1] < 200000) {
                             *tempMap[h - 1][i - 1] = *minVal(tempMap[h][i], tempMap[h - 1][i - 1]);
+                            *tempMap[h][i] = *minVal(tempMap[h][i], tempMap[h - 1][i - 1]);
                         }
                         if (*tempMap[h - 1][i] < 200000) {
                             *tempMap[h - 1][i] = *minVal(tempMap[h][i], tempMap[h - 1][i]);
+                            *tempMap[h][i] = *minVal(tempMap[h][i], tempMap[h - 1][i]);
                         }
                         if (i != width - 1  && *tempMap[h - 1][i + 1] < 200000) {
                             *tempMap[h - 1][i + 1] = *minVal(tempMap[h][i], tempMap[h - 1][i + 1]);
+                            *tempMap[h][i] = *minVal(tempMap[h][i], tempMap[h - 1][i + 1]);
                         }
                     }
                     if (i != 0 && *tempMap[h][i - 1] < 200000) {
@@ -340,9 +344,9 @@ void Floor::initChambers() {
                 }
                 if (!isAdded){
                     chambers.emplace_back(this, *tempMap[h][i]);
+                    chambers[chambers.size() - 1].addBlock(h, i, theGrid[h][i]);
                 }
             }
-
         }
     }
 }
@@ -389,8 +393,8 @@ void Chamber::addBlock(int h, int w, Ground type) {
 Block *Chamber::getSpawnPos() {
     int r = randomGen(0, blocks.size());
 
-    while(floor->getState(blocks[r]->pos.x, blocks[r]->pos.y) != Ground::empty &&
-          floor->isOccupied(blocks[r]->pos.x, blocks[r]->pos.y)) {
+    while (blocks[r]->type != Ground::empty ||
+           floor->isOccupied(blocks[r]->pos.x, blocks[r]->pos.y)) {
         r = randomGen(0 , blocks.size());
     }
 
