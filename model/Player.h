@@ -16,11 +16,11 @@ class Player: public Creature {
     std::string log = "";
     public:
         Player(std::istream *input, std::ostream *output, bool *gameState, int hp, int atk, int def, int gold);
-        void attack(Life *who, int atkMod);
-        int virtual beAttackedBy(Life *who, int defModifier) override;
+        void attack(Life *who, int atkMod) override;
+        int  beAttackedBy(Life *who, int defModifier) override;
         void beEffectedBy(Item *what) override;
         std::string report() override;
-        void virtual move(int atkMod) override;
+        void move(int atkMod) override;
 };
 
 

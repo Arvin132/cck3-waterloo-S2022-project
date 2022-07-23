@@ -30,7 +30,8 @@ Direction directionOfCommand(int d, int *newX, int *newY) {
 void Enemy::move(int atkMod) {
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {
         for (int j = recentY - 1; j <= recentY + 1; j++) {
-            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatLife(i, j))) {
+            if (fl->isOccupied(i, j) && fl->isPlayer(fl->whatLife(i, j))
+                && (i != recentX || j != recentY)) {
                 attack(fl->whatLife(i, j), atkMod);
                 return;
             }

@@ -3,11 +3,11 @@
 //
 #include <iostream>
 #include "creature.h"
-
 #include "player.h"
 #include "item.h"
 #include "floor.h"
 #include <cmath>
+#include "randomGen.h"
 
 Player::Player(std::istream *input, std::ostream *output, bool *gameFinished,
                int hp, int atk, int def, int gold) : Creature(hp, atk, def, gold), input(input), output(output), gameFinished(gameFinished) {
@@ -26,12 +26,18 @@ void Player::attack(Life *other, int atkMod) {
 
 int Player::beAttackedBy(Life *who, int defModifier) {
     def += defModifier;
+    int r = randomGen(0, 2);
+    int damage = 0;
+    if (r == 0) {
+        double something = 100;
+        damage = ceil((something / (100 + def)) * who->getAtk());
+        std::string damageStr = std::to_string(damage);
+        log = log + (std::string{who->getRep()} + " attacked and dealt " + damageStr + " Damage to PC. ");
+        curHp -= damage;
+    } else if (r == 1) {
+        log = log + (std::string{who->getRep()} + " attacked but missed. ");
+    }
 
-    double something = 100;
-    int damage = ceil((something / (100 + def)) * who->getAtk());
-    std::string damageStr = std::to_string(damage);
-    log = log + (std::string{who->getRep()} + " attacked and dealt " + damageStr + " Damage to PC. ");
-    curHp -= damage;
     if (curHp <= 0) {
         // fear grows on me
         *gameFinished = true;
@@ -137,6 +143,10 @@ void Player::move(int atkMod)  {
         return move(atkMod);
     }
 
+    if (command != "a") {
+
+    } 
+
     if (fl->getState(newX, newY) == Ground::gold) {
         fl->Interact(this, fl->whatItem(newX, newY));
     }
@@ -144,6 +154,16 @@ void Player::move(int atkMod)  {
     fl->gotMoved(recentX, recentY, d);
     recentX = newX;
     recentY = newY;
+    if (command != "a") {
+        for (int i = recentX - 1; i <= recentX + 1 ;i++) {
+            for (int j = recentY - 1; j <= recentY + 1; j++) {
+                if (fl->isOccupied(i, j) && (i != recentX || j != recentY)) {
+                    attack(fl->whatLife(i, j), atkMod);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 void Player::beEffectedBy(Item *what) {
