@@ -17,8 +17,9 @@ EventHandler::EventHandler(std::string readFile, std::string welcomeFile, bool i
                                                                                           readFile(readFile), welcomeFile(welcomeFile), isRandom(isRandom) {}
 
 EventHandler::~EventHandler() {
-    delete tDisplay;
     delete currentFloor;
+    delete tDisplay;
+
 }
 
 void EventHandler::report() {
@@ -84,6 +85,8 @@ void EventHandler::setup() {
 }
 
 void EventHandler::nextTurn() {
+    report();
+    
     if  (currentFloor->timeForNextFloor) {
         Creature *c = currentFloor->getPlayer()->getCreature();
         Player *p = dynamic_cast<Player*>(c);
@@ -92,12 +95,12 @@ void EventHandler::nextTurn() {
         currentFloor = new Floor(pRace);
         ifstream f{readFile};
         currentFloor->initFloor(f, p);
+        if (isRandom) {
+            setup();
+        }
     }
-    if (isRandom) {
-        setup();
-    }
+    
     currentFloor->takeTurn();
-    report();
 }
 
 bool EventHandler::gameFinished() {
