@@ -89,8 +89,12 @@ void Player::move(int atkMod)  {
     *input >> command;
     Direction d = Direction::E;
 
-    if (input->eof() || command == "q") {
+    if (command == "q") {
         *gameFinished = true;
+        return;
+    }
+
+    if (input->fail()) {
         return;
     }
     int newX = recentX;

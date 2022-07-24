@@ -19,8 +19,11 @@ int main(int args, char *argv[]) {
 	}
 
 	e->initFloor();
-	while(true) {
-		if (e->gameFinished()) break;
+	while(!cin.fail()) {
+		if (e->gameFinished()) {
+			e->showScore();
+			break;
+		} 
 		e->nextTurn();
 	}
 
