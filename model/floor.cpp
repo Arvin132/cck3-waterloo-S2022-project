@@ -5,6 +5,13 @@
 #include "Observer.h"
 #include "creature.h"
 #include "Goblin.h"
+#include "Werewolf.h"
+#include "Dragon.h"
+#include "Troll.h"
+#include "Dragon.h"
+#include "Vampire.h"
+#include "Merchant.h"
+#include "Phoenix.h"
 #include "gold.h"
 #include "potion.h"
 #include "randomGen.h"
@@ -105,11 +112,78 @@ void Floor::initFloor(std::istream &in, Player *p) {
 }
 
 
-Floor::~Floor() { }
-
 void Floor::setup() {
-    Block *bl = chambers[0].getSpawnPos();
-    spawn(new Goblin(), bl->pos.x, bl->pos.y);
+    // spawning the enemies
+    for (int i = 0; i < 20; i++) {
+        int r = randomGen(0, 5);
+        Pos place = chambers[r].getSpawnPos();
+        int type = randomGen(0, 18);
+        
+        switch(type) {
+            case 0: case 1: case 2: case 3:
+                spawn(new Werewolf(), place.y, place.x);
+                break;
+            case 4: case 5: case 6:
+                spawn(new Vampire(), place.y, place.x);
+                break;
+            case 7: case 8: case 9: case 10: case 11:
+                spawn(new Goblin(), place.y, place.x);
+                break;
+            case 12: case 13:
+                spawn(new Troll(), place.y, place.x);
+                break;
+            case 14: case 15:
+                spawn(new Phoenix(), place.y, place.x);
+                break;
+            case 16: case 17:
+                spawn(new Merchant(), place.y, place.x);
+                break;
+        }
+    }
+    // spawning the Potions
+    for (int i = 0; i < 10; i++) {
+        int r = randomGen(0, 5);
+        Pos place = chambers[r].getSpawnPos();
+        int type = randomGen(0, 6);
+
+        switch(type) {
+            case 0:
+                spawn(new PotionRH(), place.y, place.x);
+                break;
+            case 1:
+                spawn(new PotionPH(), place.y, place.x);
+                break;
+            case 2:
+                spawn(new PotionBA(), place.y, place.x);
+                break;
+            case 3:
+                spawn(new PotionWA(), place.y, place.x);
+                break;
+            case 4:
+                spawn(new PotionBD(), place.y, place.x);
+                break;
+            case 5:
+                spawn(new PotionWD(), place.y, place.x);
+                break;
+        }
+    }
+
+    //spawning the gold piles
+    for (int i = 0; i < 10; i++) {
+        int r = randomGen(0, 5);
+        Pos place = chambers[r].getSpawnPos();
+        int type = randomGen(0, 8);
+
+        switch(type) {
+            case 0: case 1: case 2: case 3: case 4:
+                spawn(new Gold(1), place.y, place.x);
+            case 5: case 6:
+                spawn(new Gold(2), place.y, place.x);
+            case 7:
+                spawn(new Gold(6), place.y, place.x);
+
+        }
+    }
 }
 
 
@@ -127,6 +201,7 @@ void Floor::takeTurn() {
 
 
 void Floor::spawn(Creature *c, int posx, int posy) {
+    cout << "spawning at x=" << posx << " y=" << posy << endl;
     occupied[posy][posx] = true;
     living.emplace_back(c);
     for(auto ob : observers) {
@@ -397,7 +472,7 @@ void Chamber::addBlock(int h, int w, Ground type) {
     blocks.emplace_back(block);
 }
 
-Block *Chamber::getSpawnPos() {
+Pos Chamber::getSpawnPos() {
     int r = randomGen(0, blocks.size());
 
     while (blocks[r]->type != Ground::empty ||
@@ -405,7 +480,7 @@ Block *Chamber::getSpawnPos() {
         r = randomGen(0 , blocks.size());
     }
 
-    return blocks[r];
+    return blocks[r]->pos;
 }
 
 int Chamber::getLabel(){

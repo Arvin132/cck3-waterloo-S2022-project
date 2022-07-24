@@ -27,11 +27,10 @@ class Chamber {
     void addBlock(int h, int w, Ground type);
     int getLabel();
     void setLabel(int label);
-    Block* getSpawnPos();
+    Pos getSpawnPos();
 
 public:
     Chamber(Floor *owner, int label);
-    ~Chamber();
     friend class Floor;
 };
 
