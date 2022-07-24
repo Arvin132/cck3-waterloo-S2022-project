@@ -15,7 +15,6 @@ struct Pos {
 
 struct Block {
     Pos pos;
-    int *roomLabel;
     Ground type;
 };
 

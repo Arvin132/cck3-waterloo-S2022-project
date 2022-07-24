@@ -277,7 +277,6 @@ int* minVal(int* cur, int* other){
 
 void Floor::initChambers() {
     vector<vector<int*>> tempMap = vector<vector<int*>>();
-    vector<int*> labels = vector<int*>();
     chambers = vector<Chamber>();
     int *offLabel = new int(200000);
     int inLabel = 0;
@@ -346,16 +345,21 @@ void Floor::initChambers() {
                     if (*tempMap[h][i] == chambers[j].getLabel()){
                         chambers[j].addBlock(h, i, theGrid[h][i]);
                         isAdded = true;
+                        delete tempMap[h][i];
                         break;
                     }
                 }
                 if (!isAdded){
                     chambers.emplace_back(this, *tempMap[h][i]);
                     chambers[chambers.size() - 1].addBlock(h, i, theGrid[h][i]);
+                    delete tempMap[h][i];
+                    tempMap[h][i] = nullptr;
                 }
             }
         }
     }
+    delete offLabel;
+    offLabel = nullptr;
 }
 
 bool Floor::isOccupied(int posx, int posy) {
@@ -414,6 +418,12 @@ int Chamber::getLabel(){
 
 void Chamber::setLabel(int label) {
     this->label = label;
+}
+
+Chamber::~Chamber() {
+    for (int h = 0; h < blocks.size(); h++){
+        delete blocks[h];
+    }
 }
 
 void Floor::clearFloor() {
