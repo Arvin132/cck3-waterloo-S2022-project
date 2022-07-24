@@ -204,81 +204,78 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
 
 
 void Floor::setup() {
-    spawn(new PotionBA(), 5, 4);
-    spawn(new PotionBD(), 6, 4);
-    spawn(new PotionWA(), 7, 4);
-    spawn(new PotionWD(), 8, 4);
-    // // spawning the enemies
-    // for (int i = 0; i < 20; i++) {
-    //     int r = randomGen(0, 5);
-    //     Pos place = chambers[r].getSpawnPos();
-    //     int type = randomGen(0, 18);
+    
+    // spawning the enemies
+    for (int i = 0; i < 20; i++) {
+        int r = randomGen(0, 5);
+        Pos place = chambers[r].getSpawnPos();
+        int type = randomGen(0, 18);
         
-    //     switch(type) {
-    //         case 0: case 1: case 2: case 3:
-    //             spawn(new Werewolf(), place.y, place.x);
-    //             break;
-    //         case 4: case 5: case 6:
-    //             spawn(new Vampire(), place.y, place.x);
-    //             break;
-    //         case 7: case 8: case 9: case 10: case 11:
-    //             spawn(new Goblin(), place.y, place.x);
-    //             break;
-    //         case 12: case 13:
-    //             spawn(new Troll(), place.y, place.x);
-    //             break;
-    //         case 14: case 15:
-    //             spawn(new Phoenix(), place.y, place.x);
-    //             break;
-    //         case 16: case 17:
-    //             spawn(new Merchant(), place.y, place.x);
-    //             break;
-    //     }
-    // }
-    // // spawning the Potions
-    // for (int i = 0; i < 10; i++) {
-    //     int r = randomGen(0, 5);
-    //     Pos place = chambers[r].getSpawnPos();
-    //     int type = randomGen(0, 6);
+        switch(type) {
+            case 0: case 1: case 2: case 3:
+                spawn(new Werewolf(), place.y, place.x);
+                break;
+            case 4: case 5: case 6:
+                spawn(new Vampire(), place.y, place.x);
+                break;
+            case 7: case 8: case 9: case 10: case 11:
+                spawn(new Goblin(), place.y, place.x);
+                break;
+            case 12: case 13:
+                spawn(new Troll(), place.y, place.x);
+                break;
+            case 14: case 15:
+                spawn(new Phoenix(), place.y, place.x);
+                break;
+            case 16: case 17:
+                spawn(new Merchant(), place.y, place.x);
+                break;
+        }
+    }
+    // spawning the Potions
+    for (int i = 0; i < 10; i++) {
+        int r = randomGen(0, 5);
+        Pos place = chambers[r].getSpawnPos();
+        int type = randomGen(0, 6);
 
-    //     switch(type) {
-    //         case 0:
-    //             spawn(new PotionRH(), place.y, place.x);
-    //             break;
-    //         case 1:
-    //             spawn(new PotionPH(), place.y, place.x);
-    //             break;
-    //         case 2:
-    //             spawn(new PotionBA(), place.y, place.x);
-    //             break;
-    //         case 3:
-    //             spawn(new PotionWA(), place.y, place.x);
-    //             break;
-    //         case 4:
-    //             spawn(new PotionBD(), place.y, place.x);
-    //             break;
-    //         case 5:
-    //             spawn(new PotionWD(), place.y, place.x);
-    //             break;
-    //     }
-    // }
+        switch(type) {
+            case 0:
+                spawn(new PotionRH(), place.y, place.x);
+                break;
+            case 1:
+                spawn(new PotionPH(), place.y, place.x);
+                break;
+            case 2:
+                spawn(new PotionBA(), place.y, place.x);
+                break;
+            case 3:
+                spawn(new PotionWA(), place.y, place.x);
+                break;
+            case 4:
+                spawn(new PotionBD(), place.y, place.x);
+                break;
+            case 5:
+                spawn(new PotionWD(), place.y, place.x);
+                break;
+        }
+    }
 
-    // //spawning the gold piles
-    // for (int i = 0; i < 10; i++) {
-    //     int r = randomGen(0, 5);
-    //     Pos place = chambers[r].getSpawnPos();
-    //     int type = randomGen(0, 8);
+    //spawning the gold piles
+    for (int i = 0; i < 10; i++) {
+        int r = randomGen(0, 5);
+        Pos place = chambers[r].getSpawnPos();
+        int type = randomGen(0, 8);
 
-    //     switch(type) {
-    //         case 0: case 1: case 2: case 3: case 4:
-    //             spawn(new Gold(1), place.y, place.x);
-    //         case 5: case 6:
-    //             spawn(new Gold(2), place.y, place.x);
-    //         case 7:
-    //             spawn(new Gold(6), place.y, place.x);
+        switch(type) {
+            case 0: case 1: case 2: case 3: case 4:
+                spawn(new Gold(1), place.y, place.x);
+            case 5: case 6:
+                spawn(new Gold(2), place.y, place.x);
+            case 7:
+                spawn(new Gold(6), place.y, place.x);
 
-    //     }
-    // }
+        }
+    }
     
 }
 
@@ -448,6 +445,7 @@ int* minVal(int* cur, int* other){
 
 void Floor::initChambers() {
     vector<vector<int*>> tempMap = vector<vector<int*>>();
+    vector<int*> labels = vector<int*>();
     chambers = vector<Chamber>();
     int *offLabel = new int(200000);
     int inLabel = 0;
@@ -516,21 +514,16 @@ void Floor::initChambers() {
                     if (*tempMap[h][i] == chambers[j].getLabel()){
                         chambers[j].addBlock(h, i, theGrid[h][i]);
                         isAdded = true;
-                        delete tempMap[h][i];
                         break;
                     }
                 }
                 if (!isAdded){
                     chambers.emplace_back(this, *tempMap[h][i]);
                     chambers[chambers.size() - 1].addBlock(h, i, theGrid[h][i]);
-                    delete tempMap[h][i];
-                    tempMap[h][i] = nullptr;
                 }
             }
         }
     }
-    delete offLabel;
-    offLabel = nullptr;
 }
 
 bool Floor::isOccupied(int posx, int posy) {
@@ -589,12 +582,6 @@ int Chamber::getLabel(){
 
 void Chamber::setLabel(int label) {
     this->label = label;
-}
-
-Chamber::~Chamber() {
-    for (int h = 0; h < blocks.size(); h++){
-        delete blocks[h];
-    }
 }
 
 void Floor::clearFloor() {
