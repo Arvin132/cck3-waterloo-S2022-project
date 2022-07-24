@@ -7,8 +7,10 @@
 #include "Enemy.h"
 
 class Goblin : public Enemy {
+    int stolen;
     public:
       Goblin();
+      ~Goblin();
       void attack(Life *other, int atkModifier) override;
 };
 

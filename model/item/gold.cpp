@@ -2,9 +2,9 @@
 #include "creature.h"
 #include <string>
 
-Gold::Gold(int amount): Item() , amount(amount){
+Gold::Gold(int amount): PickUpable() , amount(amount){
     rep = 'G';
-    description = " Picked up " + std::to_string(amount) + " Gold";
+    description = " Picked up " + std::to_string(amount) + " Gold. ";
 } 
 
 void Gold::effect(Life *who) {

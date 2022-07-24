@@ -3,7 +3,9 @@
 #include "item.h"
 class Creature;
 
-class Gold: public Item {
+
+
+class Gold: public PickUpable {
     int amount;
     public:
         Gold(int amount);

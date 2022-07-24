@@ -14,12 +14,13 @@
 #include "Phoenix.h"
 #include "gold.h"
 #include "potion.h"
+#include "specialItem.h"
 #include "randomGen.h"
 
 using namespace std;
 
 Floor::Floor(string PlayerRace): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
-                                 occupied(vector<vector<bool>> {}), living(vector<Life*> {}) {}
+                                 occupied(vector<vector<bool>> {}), living(vector<Life*> {}), timeForNextFloor(false) {}
 
 Floor::~Floor() { 
     clearFloor();
@@ -32,6 +33,56 @@ void Floor::initFloor(std::istream &in, Player *p) {
         occupied.emplace_back(vector<bool> {});
         string s;
         getline(in ,s);
+        for (int i = 0; i < width; i++) {
+            input = s[i];
+            switch (input) {
+                case ' ' :
+                    theGrid[j].emplace_back(Ground::nothing);
+                    break;
+                case '-' :
+                    theGrid[j].emplace_back(Ground::Hwall);
+                    break;
+                case '|' :
+                    theGrid[j].emplace_back(Ground::Vwall);
+                    break;
+                case '.' :
+                    theGrid[j].emplace_back(Ground::empty);
+                    break;
+                case '#' :
+                    theGrid[j].emplace_back(Ground::path);
+                    break;
+                case '+' :
+                    theGrid[j].emplace_back(Ground::door);
+                    break;
+                default :
+                    theGrid[j].emplace_back(Ground::empty);
+                    break;
+            }
+            
+            occupied[j].emplace_back(false);
+
+            recentX = i;
+            recentY = j;
+            notifyObservesrs();
+        }
+    }
+    initChambers();
+    int r = randomGen(0, 5);
+    Pos place = chambers[r].getSpawnPos();
+    spawn(p, place.y, place.x);
+    for (auto it : items) {
+        it->notifyObservesrs();
+    }
+}
+
+void Floor::initSpecificFloor(std::istream &in, Player *p) {
+    char input = ' ';
+    for (int j = 0; j < heigth; j++) {
+        theGrid.emplace_back(vector<Ground> {});
+        occupied.emplace_back(vector<bool> {});
+        string s;
+        getline(in ,s);
+        bool isCre = false;
         for (int i = 0; i < width; i++) {
             input = s[i];
             switch (input) {
@@ -78,34 +129,74 @@ void Floor::initFloor(std::istream &in, Player *p) {
                     spawn(new PotionWD(), i, j);
                     break;
                 case '6':
-                    theGrid[j].emplace_back(Ground::gold);
+                    theGrid[j].emplace_back(Ground::item);
                     spawn(new Gold(1), i ,j);
                     break;
                 case '7':
-                    theGrid[j].emplace_back(Ground::gold);
+                    theGrid[j].emplace_back(Ground::item);
                     spawn(new Gold(2), i, j);
                     break;
                 case '8':
-                    theGrid[j].emplace_back(Ground::gold);
+                    theGrid[j].emplace_back(Ground::item);
                     spawn(new Gold(4), i, j);
                     break;
                 case '9':
-                    theGrid[j].emplace_back(Ground::gold);
+                    theGrid[j].emplace_back(Ground::item);
                     spawn(new Gold(6), i, j);
                     break;
+                case 'N':
+                    theGrid[j].emplace_back(Ground::empty);
+                    spawn(new Goblin(), i, j);
+                    isCre = true;
+                    break;
+                case 'V':
+                    theGrid[j].emplace_back(Ground::empty);
+                    spawn(new Vampire(), i, j);
+                    isCre = true;
+                    break;
+                case 'M':
+                    theGrid[j].emplace_back(Ground::empty);
+                    spawn(new Merchant(), i, j);
+                    isCre = true;
+                    break;
+                case 'W':
+                    theGrid[j].emplace_back(Ground::empty);
+                    spawn(new Werewolf(), i, j);
+                    isCre = true;
+                    break;
+                case 'X':
+                    theGrid[j].emplace_back(Ground::empty);
+                    spawn(new Phoenix(), i, j);
+                    isCre = true;
+                    break;
+                case 'T':
+                    theGrid[j].emplace_back(Ground::empty);
+                    spawn(new Troll(), i, j);
+                    isCre = true;
+                    break;
+                case 'D':
+                    theGrid[j].emplace_back(Ground::empty);
+                    spawn(new Dragon(), i, j);
+                    isCre = true;
+                    break;
                 default :
-                    theGrid[j].emplace_back(Ground::nothing);
+                    theGrid[j].emplace_back(Ground::empty);
                     break;
             }
-            occupied[j].emplace_back(false);
+
+            if (isCre) {
+                occupied[j].emplace_back(true);
+            } else {
+                occupied[j].emplace_back(false);
+            }
 
             recentX = i;
             recentY = j;
             notifyObservesrs();
         }
     }
+
     initChambers();
-    spawn(p, 10, 5);
     for (auto it : items) {
         it->notifyObservesrs();
     }
@@ -184,8 +275,8 @@ void Floor::setup() {
 
         }
     }
+    
 }
-
 
 void Floor::takeTurn() {
     for (auto c : living) {
@@ -197,11 +288,12 @@ void Floor::takeTurn() {
     for (auto c : living) {
         c->notifyObservesrs();
     }
+    for (auto it : items) {
+        it->notifyObservesrs();
+    }
 }
 
-
 void Floor::spawn(Creature *c, int posx, int posy) {
-    cout << "spawning at x=" << posx << " y=" << posy << endl;
     occupied[posy][posx] = true;
     living.emplace_back(c);
     for(auto ob : observers) {
@@ -212,8 +304,8 @@ void Floor::spawn(Creature *c, int posx, int posy) {
     c->notifyObservesrs();
 }
 
-void Floor::spawn(Gold *what, int posx, int posy) {
-    theGrid[posy][posx] = Ground::gold;
+void Floor::spawn(PickUpable *what, int posx, int posy) {
+    theGrid[posy][posx] = Ground::item;
     items.emplace_back(what);   
     for(auto ob : observers) {
         (*what).attach(ob);
@@ -235,6 +327,8 @@ void Floor::spawn(Potion *what, int posx, int posy) {
     what->fl = this;
     what->notifyObservesrs();
 }
+
+void Floor::spawnStairs() { }
 
 void Floor::notifyObservesrs() {
     for (auto i : observers) {
@@ -362,7 +456,7 @@ void Floor::initChambers() {
             if (h == 19 && i == 65){
                 cout << "";
             }
-            if (theGrid[h][i] == Ground::empty || theGrid[h][i] == Ground::gold || theGrid[h][i] == Ground::potion){
+            if (theGrid[h][i] == Ground::empty || theGrid[h][i] == Ground::item || theGrid[h][i] == Ground::potion){
                 if ((h == 0 && i == 0) ||
                         (!(h == 0 && i == 0) &&
                             ((h == 0 && *tempMap[h][i-1] == 200000) ||
@@ -506,3 +600,4 @@ void Floor::clearFloor() {
     }
     items.clear();
 }
+

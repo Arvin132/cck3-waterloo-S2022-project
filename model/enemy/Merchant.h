@@ -10,6 +10,7 @@ class Merchant : public Enemy {
     inline static bool isAgro;
     public:
         Merchant();
+        ~Merchant();
         void move(int atkMod) override;
         int beAttackedBy(Life *who, int defModifier) override;
 };

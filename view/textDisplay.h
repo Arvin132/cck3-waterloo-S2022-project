@@ -5,6 +5,10 @@
 #include <iostream>
 
 
+
+
+
+
 class TextDisplay: public Observer {
     std::vector<std::vector<char>> display;
     const int width = 79;

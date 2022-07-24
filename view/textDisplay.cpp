@@ -2,10 +2,15 @@
 #include "floor.h"
 #include "creature.h"
 #include "item.h"
-
 #include <vector>
 #include <iostream>
 using namespace std;
+
+const std::string YELLOW =  "\033[33m";
+const std::string GREEN = "\033[32m";
+const std::string BLUE = "\033[34m";
+const std::string RED = "\033[31m";
+const std::string RESET =  "\033[0m";
 
 TextDisplay::TextDisplay(): Observer(), display(vector<vector<char>> {}) {
     for (int j = 0; j < heigth; j++) {
@@ -72,7 +77,7 @@ void TextDisplay::notify(Floor &who) {
         case Ground::door:
             display[j][i] = '+';
             break;
-        case Ground::nothing: case Ground::gold: 
+        case Ground::nothing: case Ground::item: 
         case Ground::potion:
             display[j][i] = ' ';
             break;   
@@ -83,7 +88,26 @@ void TextDisplay::notify(Floor &who) {
 std::ostream &operator<<(std::ostream &out, TextDisplay td) {
     for (int j = 0; j < td.heigth; j++) {
         for (int i = 0; i < td.width; i++) {
-            out << td.display[j][i];
+            string colour = RESET;
+            switch (td.display[j][i]){            
+                case 'N': case 'M': case 'V': case 'W':  
+                case 'T': case 'X': case 'D':
+                    colour = RED;
+                    break;
+                case 'G':
+                    colour = YELLOW;
+                    break;
+                case 'P':
+                    colour = BLUE;
+                    break;
+                case '@':
+                    colour = GREEN;
+                    break;
+                default:
+                    colour = RESET;
+                    break;
+            }
+            out << colour << td.display[j][i] << RESET;
         }
         out << endl;
     }
