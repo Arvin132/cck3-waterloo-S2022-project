@@ -105,6 +105,10 @@ bool EventHandler::gameFinished() {
     return isFinished;
 }
 
+void EventHandler::showScore() {
+    cout << "GAME OVER " << endl;
+    cout << "your score is: " << currentFloor->getPlayer()->getGold() << endl;
+}
 
 
 

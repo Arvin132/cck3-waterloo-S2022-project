@@ -6,7 +6,7 @@
 #include "floor.h"
 #include <cmath>
 
-Dragon::Dragon(): Enemy(150, 20, 20) {}
+Dragon::Dragon(): Enemy(150, 20, 20) { rep = 'D';}
 
 void Dragon::move(int atkMod) {
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {

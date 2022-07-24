@@ -89,8 +89,12 @@ void Player::move(int atkMod)  {
     *input >> command;
     Direction d = Direction::E;
 
-    if (input->eof() || command == "q") {
+    if (command == "q") {
         *gameFinished = true;
+        return;
+    }
+
+    if (input->fail()) {
         return;
     }
     int newX = recentX;
@@ -139,7 +143,7 @@ void Player::move(int atkMod)  {
     }
     
     if ((fl->getState(newX, newY) != Ground::empty && fl->getState(newX, newY) != Ground::path
-        && fl->getState(newX, newY) != Ground::door && fl->getState(newX, newY) != Ground::gold) || fl->isOccupied(newX, newY)) {
+        && fl->getState(newX, newY) != Ground::door && fl->getState(newX, newY) != Ground::item) || fl->isOccupied(newX, newY)) {
         *output << "Invalid Move" << std::endl;
         return move(atkMod);
     }
@@ -148,7 +152,7 @@ void Player::move(int atkMod)  {
 
     } 
 
-    if (fl->getState(newX, newY) == Ground::gold) {
+    if (fl->getState(newX, newY) == Ground::item) {
         fl->Interact(this, fl->whatItem(newX, newY));
     }
 

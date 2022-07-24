@@ -5,9 +5,10 @@
 #include "life.h"
 class Gold;
 class Potion;
+class PickUpable;
 
 
-enum Ground {nothing =0, empty, Vwall, Hwall, path, door, potion, gold};
+enum Ground {nothing =0, empty, Vwall, Hwall, path, door, potion, item};
 
 struct Pos {
     int x, y;
@@ -26,11 +27,10 @@ class Chamber {
     void addBlock(int h, int w, Ground type);
     int getLabel();
     void setLabel(int label);
-    Block* getSpawnPos();
+    Pos getSpawnPos();
 
 public:
     Chamber(Floor *owner, int label);
-    ~Chamber();
     friend class Floor;
 };
 
@@ -51,6 +51,7 @@ public:
     Floor(std::string PlayerRace);
     ~Floor();
     void initFloor(std::istream &in, Player *p);
+    void initSpecificFloor(std::istream &in, Player *p);
     void setupFloor();
     int getRecentX() override;
     int getRecentY() override;
@@ -61,8 +62,9 @@ public:
     void takeTurn();
     void notifyObservesrs() override;
     void spawn(Creature *c, int posx, int posy);
-    void spawn(Gold *what, int posx, int posy);
+    void spawn(PickUpable *what, int posx, int posy);
     void spawn(Potion *what, int posx, int posy);
+    void spawnStairs();
     bool isOccupied(int posx, int posy);
     bool isPlayer(Life *who);
     Life *whatLife(int posx, int posy);

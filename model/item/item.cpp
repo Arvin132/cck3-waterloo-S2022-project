@@ -22,3 +22,5 @@ char Item::getRep() {
 std::string Item::getDescription() {
     return description;
 }
+
+PickUpable::PickUpable(): Item() {}

@@ -5,10 +5,13 @@
 #include "math.h"
 #include "Enemy.h"
 #include "randomGen.h"
+#include "gold.h"
 
 Enemy::Enemy(int curHp, int atk, int def): Creature(curHp, atk, def, 0) {}
 
-Enemy::~Enemy() { };
+Enemy::~Enemy() {
+    fl->spawn(new Gold(1), recentX, recentY);
+};
 
 Direction directionOfCommand(int d, int *newX, int *newY) {
     switch (d) {

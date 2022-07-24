@@ -27,6 +27,7 @@ public:
     void report();
     bool gameFinished();
     bool isPlayer(Creature *other);
+    void showScore();
 };
 
 

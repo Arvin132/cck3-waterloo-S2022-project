@@ -22,5 +22,9 @@ class Item: public Subject {
         friend class Floor;
 };
 
+class PickUpable: public Item { 
+    public:
+        PickUpable();
+};
 
 #endif

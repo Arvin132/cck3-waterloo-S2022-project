@@ -9,10 +9,23 @@
 using namespace std;
 
 int main(int args, char *argv[]) {
-	EventHandler e(string {"cc3kfloor.txt"}, string {"welcome.txt"}, true);
-	e.initFloor();
-	while(true) {
-		if (e.gameFinished()) break;
-		e.nextTurn();
+	EventHandler *e;
+	if (args == 1) {
+		e = new EventHandler(string {"cc3kfloor.txt"}, string {"welcome.txt"}, true);
+	} else if (args == 2) {
+		e = new EventHandler(string {argv[1]}, string {"welcome.txt"}, true);
+	} else {
+		e = new EventHandler(string {argv[1]}, string {"welcome.txt"}, true);
 	}
+
+	e->initFloor();
+	while(!cin.fail()) {
+		if (e->gameFinished()) {
+			e->showScore();
+			break;
+		} 
+		e->nextTurn();
+	}
+
+	delete e;
 }

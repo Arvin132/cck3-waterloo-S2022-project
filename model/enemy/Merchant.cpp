@@ -3,6 +3,7 @@
 //
 
 #include "Merchant.h"
+#include "gold.h"
 #include "floor.h"
 #include "randomGen.h"
 
@@ -10,6 +11,10 @@
 
 Merchant::Merchant(): Enemy(30, 70, 5) {
     rep = 'M';
+}
+
+Merchant::~Merchant() {
+    fl->spawn(new Gold(4), recentX, recentY);
 }
 
 void Merchant::move(int atkMod) {
