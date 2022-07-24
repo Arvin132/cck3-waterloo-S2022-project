@@ -204,77 +204,81 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
 
 
 void Floor::setup() {
-    // spawning the enemies
-    for (int i = 0; i < 20; i++) {
-        int r = randomGen(0, 5);
-        Pos place = chambers[r].getSpawnPos();
-        int type = randomGen(0, 18);
+    spawn(new PotionBA(), 5, 4);
+    spawn(new PotionBD(), 6, 4);
+    spawn(new PotionWA(), 7, 4);
+    spawn(new PotionWD(), 8, 4);
+    // // spawning the enemies
+    // for (int i = 0; i < 20; i++) {
+    //     int r = randomGen(0, 5);
+    //     Pos place = chambers[r].getSpawnPos();
+    //     int type = randomGen(0, 18);
         
-        switch(type) {
-            case 0: case 1: case 2: case 3:
-                spawn(new Werewolf(), place.y, place.x);
-                break;
-            case 4: case 5: case 6:
-                spawn(new Vampire(), place.y, place.x);
-                break;
-            case 7: case 8: case 9: case 10: case 11:
-                spawn(new Goblin(), place.y, place.x);
-                break;
-            case 12: case 13:
-                spawn(new Troll(), place.y, place.x);
-                break;
-            case 14: case 15:
-                spawn(new Phoenix(), place.y, place.x);
-                break;
-            case 16: case 17:
-                spawn(new Merchant(), place.y, place.x);
-                break;
-        }
-    }
-    // spawning the Potions
-    for (int i = 0; i < 10; i++) {
-        int r = randomGen(0, 5);
-        Pos place = chambers[r].getSpawnPos();
-        int type = randomGen(0, 6);
+    //     switch(type) {
+    //         case 0: case 1: case 2: case 3:
+    //             spawn(new Werewolf(), place.y, place.x);
+    //             break;
+    //         case 4: case 5: case 6:
+    //             spawn(new Vampire(), place.y, place.x);
+    //             break;
+    //         case 7: case 8: case 9: case 10: case 11:
+    //             spawn(new Goblin(), place.y, place.x);
+    //             break;
+    //         case 12: case 13:
+    //             spawn(new Troll(), place.y, place.x);
+    //             break;
+    //         case 14: case 15:
+    //             spawn(new Phoenix(), place.y, place.x);
+    //             break;
+    //         case 16: case 17:
+    //             spawn(new Merchant(), place.y, place.x);
+    //             break;
+    //     }
+    // }
+    // // spawning the Potions
+    // for (int i = 0; i < 10; i++) {
+    //     int r = randomGen(0, 5);
+    //     Pos place = chambers[r].getSpawnPos();
+    //     int type = randomGen(0, 6);
 
-        switch(type) {
-            case 0:
-                spawn(new PotionRH(), place.y, place.x);
-                break;
-            case 1:
-                spawn(new PotionPH(), place.y, place.x);
-                break;
-            case 2:
-                spawn(new PotionBA(), place.y, place.x);
-                break;
-            case 3:
-                spawn(new PotionWA(), place.y, place.x);
-                break;
-            case 4:
-                spawn(new PotionBD(), place.y, place.x);
-                break;
-            case 5:
-                spawn(new PotionWD(), place.y, place.x);
-                break;
-        }
-    }
+    //     switch(type) {
+    //         case 0:
+    //             spawn(new PotionRH(), place.y, place.x);
+    //             break;
+    //         case 1:
+    //             spawn(new PotionPH(), place.y, place.x);
+    //             break;
+    //         case 2:
+    //             spawn(new PotionBA(), place.y, place.x);
+    //             break;
+    //         case 3:
+    //             spawn(new PotionWA(), place.y, place.x);
+    //             break;
+    //         case 4:
+    //             spawn(new PotionBD(), place.y, place.x);
+    //             break;
+    //         case 5:
+    //             spawn(new PotionWD(), place.y, place.x);
+    //             break;
+    //     }
+    // }
 
-    //spawning the gold piles
-    for (int i = 0; i < 10; i++) {
-        int r = randomGen(0, 5);
-        Pos place = chambers[r].getSpawnPos();
-        int type = randomGen(0, 8);
+    // //spawning the gold piles
+    // for (int i = 0; i < 10; i++) {
+    //     int r = randomGen(0, 5);
+    //     Pos place = chambers[r].getSpawnPos();
+    //     int type = randomGen(0, 8);
 
-        switch(type) {
-            case 0: case 1: case 2: case 3: case 4:
-                spawn(new Gold(1), place.y, place.x);
-            case 5: case 6:
-                spawn(new Gold(2), place.y, place.x);
-            case 7:
-                spawn(new Gold(6), place.y, place.x);
+    //     switch(type) {
+    //         case 0: case 1: case 2: case 3: case 4:
+    //             spawn(new Gold(1), place.y, place.x);
+    //         case 5: case 6:
+    //             spawn(new Gold(2), place.y, place.x);
+    //         case 7:
+    //             spawn(new Gold(6), place.y, place.x);
 
-        }
-    }
+    //     }
+    // }
     
 }
 
@@ -287,9 +291,6 @@ void Floor::takeTurn() {
     notifyObservesrs();
     for (auto c : living) {
         c->notifyObservesrs();
-    }
-    for (auto it : items) {
-        it->notifyObservesrs();
     }
 }
 
@@ -421,6 +422,7 @@ void Floor::Interact(Player *who, Item *what) {
             recentY = what->getRecentY();
             theGrid[recentY][recentX] = Ground::empty;
             notifyObservesrs();
+            *it = nullptr;
             items.erase(it);
             delete what;
             break;
