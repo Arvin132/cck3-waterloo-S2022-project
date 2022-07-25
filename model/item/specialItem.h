@@ -14,20 +14,20 @@ class DragonHoard: public Gold {
 class BarrierSuite: public PickUpable {
     public:
         BarrierSuite();
-        void effect(Life *who) override;
+        int effect(Life *who) override;
 };
 
 class Compass: public PickUpable {
     public:
         Compass();
-        void effect(Life *who) override;
+        int effect(Life *who) override;
 };
 
 class Stairs: public PickUpable {
     bool *nxtFlr;
     public:
         Stairs();
-        void effect(Life *who) override;
+        int effect(Life *who) override;
 
 };
 

@@ -67,7 +67,11 @@ void Floor::initFloor(std::istream &in, Player *p) {
         }
     }
     initChambers();
+    stairsCh = randomGen(0, 5);
     int r = randomGen(0, 5);
+    while (r == stairsCh) {
+        r = randomGen(0, 5);
+    }
     Pos place = chambers[r].getSpawnPos();
     spawn(p, place.y, place.x);
     for (auto it : items) {
@@ -178,6 +182,16 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
                     theGrid[j].emplace_back(Ground::empty);
                     isCre = false;
                     break;
+                case '@':
+                    theGrid[j].emplace_back(Ground::empty);
+                    spawn(p, i, j);
+                    isCre = true;
+                    break;
+                case '/':
+                    theGrid[j].emplace_back(Ground::item);
+                    spawn(new Stairs(), i, j);
+                    isCre = false;
+                    break;
                 default :
                     theGrid[j].emplace_back(Ground::empty);
                     break;
@@ -203,7 +217,7 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
 
 
 void Floor::setup() {
-    
+
     // spawning the enemies
     for (int i = 0; i < 20; i++) {
         int r = randomGen(0, 5);
@@ -231,6 +245,9 @@ void Floor::setup() {
                 break;
         }
     }
+
+    int compassOwnerNum = randomGen(0, living.size());
+    compassOwner = living[compassOwnerNum]; 
     // spawning the Potions
     for (int i = 0; i < 10; i++) {
         int r = randomGen(0, 5);
@@ -318,6 +335,11 @@ void Floor::takeTurn() {
         }
     }
     notifyObservesrs();
+    for (auto c : items) {
+        if (c) {
+            c->notifyObservesrs();
+        }
+    }
     for (auto c : living) {
         c->notifyObservesrs();
     }
@@ -358,7 +380,10 @@ void Floor::spawn(Potion *what, int posx, int posy) {
     what->notifyObservesrs();
 }
 
-void Floor::spawnStairs() { }
+void Floor::spawnStairs() { 
+    Pos place = chambers[stairsCh].getSpawnPos();
+    spawn(new Stairs(), place.y, place.x);
+}
 
 void Floor::notifyObservesrs() {
     for (auto i : observers) {
@@ -383,6 +408,7 @@ string Floor::getPlayerRace() { return PlayerRace; }
 
 void Floor::gotMoved(int posx, int posy, Direction d) {
     occupied[posy][posx] = false;
+
     switch(d) {
         case Direction::N :
             occupied[posy - 1][posx] = true;
@@ -438,15 +464,24 @@ Item *Floor::whatItem(int posx, int posy) {
 
 void Floor::Interact(Player *who, Item *what) {
     who->beEffectedBy(what);
+    int com = 0;
     for (auto it = living.begin(); it != living.end(); ++it) {
         if ((*it)->getCreature() == who) {
-            what->effect(*it);
+            com = what->effect(*it);
             break;
         }
     }
-    
+
+    if (com == 1) {
+        spawnStairs();
+    } else if (com == 2) {
+        timeForNextFloor = true;
+        return;
+    }
+
     for (auto it = items.begin(); it != items.end(); ++it) {
         if (*it == what) {
+            cout << "delteing this item" << endl;
             recentX = what->getRecentX();
             recentY = what->getRecentY();
             theGrid[recentY][recentX] = Ground::empty;
@@ -458,6 +493,8 @@ void Floor::Interact(Player *who, Item *what) {
         }
     }
 }
+
+
 
 void Floor::replace(Life *what, Life *with) {
     for (auto it = living.begin(); it != living.end(); ++it) {
@@ -579,6 +616,23 @@ void Floor::died(Life *who) {
             *it = nullptr;
             living.erase(it);
             delete who;
+            if (who == compassOwner) {
+                Item *spawnedGold = whatItem(recentX, recentY);
+                for (auto it = items.begin(); it != items.end(); ++it) {
+                    if (*it == spawnedGold) {
+                        cout << "delteing this item" << endl;
+                        recentX = spawnedGold->getRecentX();
+                        recentY = spawnedGold->getRecentY();
+                        theGrid[recentY][recentX] = Ground::empty;
+                        notifyObservesrs();
+                        *it = nullptr;
+                        items.erase(it);
+                        delete spawnedGold;
+                        break;
+                    }
+                }
+                spawn(new Compass(), recentX, recentY);
+            }
             break;
         }
     }
@@ -601,7 +655,8 @@ Pos Chamber::getSpawnPos() {
     int r = randomGen(0, blocks.size());
 
     while (blocks[r]->type != Ground::empty ||
-           floor->isOccupied(blocks[r]->pos.x, blocks[r]->pos.y)) {
+           floor->getState(blocks[r]->pos.y, blocks[r]->pos.x) != Ground::empty ||
+           floor->isOccupied(blocks[r]->pos.y, blocks[r]->pos.x)) {
         r = randomGen(0 , blocks.size());
     }
 

@@ -11,7 +11,7 @@ class Item: public Subject {
         Floor *fl;
         char rep;
         std::string description;
-        bool permisson;
+        bool permisson = true;
         Item();
     public:
         virtual ~Item();
@@ -21,7 +21,7 @@ class Item: public Subject {
         int getRecentY() override;
         bool hasPermisson() const;
         virtual std::string getDescription();
-        virtual void effect(Life *who) = 0;
+        virtual int effect(Life *who) = 0;
         friend class Floor;
         friend class Dragon;
 };

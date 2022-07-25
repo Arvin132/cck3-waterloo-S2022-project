@@ -14,7 +14,10 @@ Player::Player(std::istream *input, std::ostream *output, bool *gameFinished,
     rep = '@';
 }
 
-
+Player::Player(const Player &other):Creature(other.maxHp, other.atk, other.def, other.gold), input(other.input)
+                                    , output(other.output), gameFinished(other.gameFinished) {
+    observers.clear();
+}
 
 void Player::attack(Life *other, int atkMod) {
     atk += atkMod;

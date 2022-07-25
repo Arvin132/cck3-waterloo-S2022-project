@@ -9,7 +9,7 @@ class Gold: public PickUpable {
     int amount;
     public:
         Gold(int amount);
-        void effect(Life *who) override;
+        int effect(Life *who) override;
 };
 
 #endif

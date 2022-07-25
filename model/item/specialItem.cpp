@@ -9,21 +9,24 @@ BarrierSuite::BarrierSuite(): PickUpable() {
     description = " has Picked up the Barrier Suite which halves the damage taken. ";
 }
 
-void BarrierSuite::effect(Life *who) {
+int BarrierSuite::effect(Life *who) {
     who->addBarrierSuite();
+    return 0;
 }
 
 Stairs::Stairs(): PickUpable(){
     rep = '/';
 }
 
-void Stairs::effect(Life *who) {
+int Stairs::effect(Life *who) {
+    return 2;
 }
 
 Compass::Compass(): PickUpable() {
     rep = 'C';
+    description = " has Picked up the Compass and revealed the location of Stairs";
 }
 
-void Compass::effect(Life *other) {
-    fl->spawnStairs();
+int Compass::effect(Life *other) {
+    return 1;
 }

@@ -83,21 +83,29 @@ void EventHandler::setup() {
 }
 
 void EventHandler::nextTurn() {
-    report();
     
-    if  (currentFloor->timeForNextFloor) {
+    
+    if (currentFloor->timeForNextFloor) {
         Creature *c = currentFloor->getPlayer()->getCreature();
-        Player *p = dynamic_cast<Player*>(c);
+        Player *p = new Player(&cin, &cout, &isFinished, c->getHP(), c->getAtk(), c->getDef(), c->getGold());
         string pRace = currentFloor->getPlayerRace();
         delete currentFloor;
         currentFloor = new Floor(pRace, true);
+        currentFloor->attach(tDisplay);
         ifstream f{readFile};
         currentFloor->initFloor(f, p);
         if (isRandom) {
             setup();
         }
+        floorNum++;
+        currentFloor->timeForNextFloor = false;
+        if (floorNum == 6) {
+            isFinished = true;
+            return;
+        }
     }
-    
+
+    report();
     currentFloor->takeTurn();
 }
 

@@ -97,10 +97,10 @@ std::ostream &operator<<(std::ostream &out, TextDisplay td) {
                 case 'G':
                     colour = YELLOW;
                     break;
-                case 'P':
+                case 'P': case 'B':
                     colour = BLUE;
                     break;
-                case '@':
+                case '@': case '/': case 'C':
                     colour = GREEN;
                     break;
                 default:

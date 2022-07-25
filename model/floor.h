@@ -6,6 +6,8 @@
 class Gold;
 class Potion;
 class PickUpable;
+class Stairs;
+class Compass;
 
 
 enum Ground {nothing =0, empty, Vwall, Hwall, path, door, potion, item};
@@ -43,10 +45,11 @@ class Floor: public Subject {
     std::vector<Item*> items;
     std::vector<Chamber> chambers;
     bool hasBS;
-    
+    int stairsCh;
 
     const int width = 79;
     const int heigth = 25;
+    Life *compassOwner;
     void initChambers();
 public:
     bool timeForNextFloor;
