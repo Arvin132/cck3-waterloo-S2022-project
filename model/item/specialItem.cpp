@@ -2,6 +2,8 @@
 #include "life.h"
 #include "floor.h"
 
+DragonHoard::DragonHoard(): Gold(6) {}
+
 BarrierSuite::BarrierSuite(): PickUpable() {
     rep = 'B';
 }

@@ -2,12 +2,14 @@
 #define __SPECIAL_ITEM_H__
 #include "item.h"
 #include "potion.h"
+#include "gold.h"
 class Life;
+class Dragon;
 
-class DragonHoard: public PickUpable {
+class DragonHoard: public Gold {
     public:
         DragonHoard();
-        void effect(Life *who) override;
+        friend class Dragon;
 };
 
 class BarrierSuite: public PickUpable {
