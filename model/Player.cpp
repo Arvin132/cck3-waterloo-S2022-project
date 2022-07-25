@@ -32,6 +32,9 @@ int Player::beAttackedBy(Life *who, int defModifier) {
     if (r == 0) {
         double something = 100;
         damage = ceil((something / (100 + def)) * who->getAtk());
+        if (hasBarrierSuite) {
+            damage /= 2;
+        }
         std::string damageStr = std::to_string(damage);
         log = log + (std::string{who->getRep()} + " attacked and dealt " + damageStr + " Damage to PC. ");
         curHp -= damage;
@@ -42,7 +45,6 @@ int Player::beAttackedBy(Life *who, int defModifier) {
     if (curHp <= 0) {
         // fear grows on me
         *gameFinished = true;
-        fl->died(this);
         return damage;
     }
     
@@ -148,12 +150,16 @@ void Player::move(int atkMod)  {
         return move(atkMod);
     }
 
-    if (command != "a") {
-
-    } 
+    
 
     if (fl->getState(newX, newY) == Ground::item) {
-        fl->Interact(this, fl->whatItem(newX, newY));
+        Item *it = fl->whatItem(newX, newY);
+        if (it->hasPermisson()) {
+            fl->Interact(this, it);
+        } else {
+            *output << "Something is not letting you pick up the item" << std::endl;
+            return move(atkMod);
+        }
     }
 
     fl->gotMoved(recentX, recentY, d);
@@ -169,6 +175,10 @@ void Player::move(int atkMod)  {
             }
         }
     }
+}
+
+void Player::addBarrierSuite() {
+    hasBarrierSuite = true;
 }
 
 void Player::beEffectedBy(Item *what) {

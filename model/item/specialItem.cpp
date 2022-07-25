@@ -6,9 +6,11 @@ DragonHoard::DragonHoard(): Gold(6) {}
 
 BarrierSuite::BarrierSuite(): PickUpable() {
     rep = 'B';
+    description = " has Picked up the Barrier Suite which halves the damage taken. ";
 }
 
 void BarrierSuite::effect(Life *who) {
+    who->addBarrierSuite();
 }
 
 Stairs::Stairs(): PickUpable(){

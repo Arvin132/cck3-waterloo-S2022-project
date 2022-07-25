@@ -4,6 +4,7 @@
 #include <string>
 class Floor;
 class Life;
+class Dragon;
 
 class Item: public Subject {
     protected:
@@ -22,6 +23,7 @@ class Item: public Subject {
         virtual std::string getDescription();
         virtual void effect(Life *who) = 0;
         friend class Floor;
+        friend class Dragon;
 };
 
 class PickUpable: public Item { 

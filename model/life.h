@@ -20,7 +20,7 @@ class Life : public Subject {
         int virtual beAttackedBy(Life *who, int defModifier) = 0;
         void virtual beEffectedBy(Item *what) = 0;
         virtual Creature *getCreature() = 0;
-        
+        virtual void addBarrierSuite() = 0;
 };
 
 #endif

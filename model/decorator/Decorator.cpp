@@ -31,6 +31,8 @@ void Decorator::modifyHP(int amount) {
     next->modifyHP(amount);
 }
 
+void Decorator::addBarrierSuite() { next->addBarrierSuite(); }
+
 int Decorator::getRecentX() { return next->getRecentX(); }
 int Decorator::getRecentY() { return next->getRecentY(); }
 

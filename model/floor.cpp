@@ -19,8 +19,8 @@
 
 using namespace std;
 
-Floor::Floor(string PlayerRace): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
-                                 occupied(vector<vector<bool>> {}), living(vector<Life*> {}), timeForNextFloor(false) {}
+Floor::Floor(string PlayerRace, bool hasBS): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
+                                             occupied(vector<vector<bool>> {}), living(vector<Life*> {}), hasBS(hasBS) {}
 
 Floor::~Floor() { 
     clearFloor();
@@ -260,6 +260,24 @@ void Floor::setup() {
     }
 
     //spawning the gold piles
+    if (hasBS) {
+        int r = randomGen(0, 5);
+        Pos place = chambers[r].getSpawnPos();
+        BarrierSuite *bs = new BarrierSuite();
+        spawn(bs, place.y, place.x);
+        for(int i = place.y - 1; i <= place.y + 1; i++) {
+            bool b =false;
+            for (int j = place.x - 1; j <= place.x + 1; j++) {
+                if (theGrid[j][i] == Ground::empty && !(occupied[j][i])) {
+                    b = true;
+                    spawn(new Dragon(bs), i, j);
+                    break;
+                }
+            }
+            if (b) break;
+        }
+    }
+
     for (int i = 0; i < 10; i++) {
         int r = randomGen(0, 5);
         Pos place = chambers[r].getSpawnPos();
@@ -274,7 +292,7 @@ void Floor::setup() {
                 break;
             case 7:
                 DragonHoard *dh = new DragonHoard();
-                spawn(new DragonHoard(), place.y, place.x);
+                spawn(dh, place.y, place.x);
                 for(int i = place.y - 1; i <= place.y + 1; i++) {
                     bool b =false;
                     for (int j = place.x - 1; j <= place.x + 1; j++) {
