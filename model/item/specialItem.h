@@ -9,7 +9,6 @@ class Dragon;
 class DragonHoard: public Gold {
     public:
         DragonHoard();
-        friend class Dragon;
 };
 
 class BarrierSuite: public PickUpable {

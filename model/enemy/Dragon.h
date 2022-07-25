@@ -10,9 +10,9 @@ class DragonHoard;
 class Creature;
 
 class Dragon: public Enemy {
-    DragonHoard *hoard;
+    Item *defending;
     public:
-        Dragon(DragonHoard *hoard);
+        Dragon(Item *defending);
         void move(int atkMod) override;
         int beAttackedBy(Life *who, int defModifier) override;
 };

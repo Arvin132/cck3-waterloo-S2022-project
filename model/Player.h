@@ -14,12 +14,14 @@ class Player: public Creature {
     std::ostream *output;
     bool *gameFinished;
     std::string log = "";
+    bool hasBarrierSuite = false;
     public:
         Player(std::istream *input, std::ostream *output, bool *gameState, int hp, int atk, int def, int gold);
         Player(Player &other);
         void attack(Life *who, int atkMod) override;
         int  beAttackedBy(Life *who, int defModifier) override;
         void beEffectedBy(Item *what) override;
+        void addBarrierSuite() override;
         std::string report() override;
         void move(int atkMod) override;
 };

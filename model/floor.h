@@ -42,6 +42,7 @@ class Floor: public Subject {
     std::vector<Life*> living;
     std::vector<Item*> items;
     std::vector<Chamber> chambers;
+    bool hasBS;
     
 
     const int width = 79;
@@ -49,7 +50,7 @@ class Floor: public Subject {
     void initChambers();
 public:
     bool timeForNextFloor;
-    Floor(std::string PlayerRace);
+    Floor(std::string PlayerRace, bool hasBS);
     ~Floor();
     void initFloor(std::istream &in, Player *p);
     void initSpecificFloor(std::istream &in, Player *p);

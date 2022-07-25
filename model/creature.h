@@ -34,6 +34,7 @@ class Creature: public Life {
       int getRecentY() override;
       Creature *getCreature() override;
       void virtual attack(Life *other, int atkModifier);
+      void virtual addBarrierSuite();
       std::string virtual report() = 0;
       friend class Floor;
 };

@@ -68,7 +68,7 @@ void EventHandler::initFloor() {
     }
 
     
-    currentFloor = new Floor(PlayerRace);
+    currentFloor = new Floor(PlayerRace, true);
     currentFloor->attach(tDisplay);
     currentFloor->initFloor(f2, p);
     if (isRandom) {
@@ -90,7 +90,7 @@ void EventHandler::nextTurn() {
         Player *p = dynamic_cast<Player*>(c);
         string pRace = currentFloor->getPlayerRace();
         delete currentFloor;
-        currentFloor = new Floor(pRace);
+        currentFloor = new Floor(pRace, true);
         ifstream f{readFile};
         currentFloor->initFloor(f, p);
         if (isRandom) {

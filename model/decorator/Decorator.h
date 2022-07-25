@@ -26,6 +26,7 @@ class Decorator: public Life {
       int getHP() override;
       int getRecentX() override;
       int getRecentY() override;
+      void addBarrierSuite() override;
       Creature *getCreature() override;
 };
 

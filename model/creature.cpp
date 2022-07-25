@@ -34,6 +34,7 @@ int Creature::getHP() { return curHp; }
 int Creature::getRecentX() { return recentX; }
 int Creature::getRecentY() { return recentY; }
 
+void Creature::addBarrierSuite() {}
 
 Creature *Creature::getCreature() { return this; }
 

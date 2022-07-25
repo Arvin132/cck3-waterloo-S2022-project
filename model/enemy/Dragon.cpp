@@ -7,9 +7,9 @@
 #include "floor.h"
 #include <cmath>
 
-Dragon::Dragon(DragonHoard *hoard): Enemy(150, 20, 20), hoard(hoard) { 
+Dragon::Dragon(Item *defending): Enemy(150, 20, 20), defending(defending) { 
     rep = 'D';
-    hoard->permisson = true;
+    defending->permisson = false;
 }
 
 void Dragon::move(int atkMod) {
@@ -34,7 +34,7 @@ int Dragon::beAttackedBy(Life *who, int defModifier) {
 
     if (curHp <= 0) {
         // fear grows on me
-        hoard->permisson = true;
+        defending->permisson = true;
         fl->died(this);
         return damage;
     }
