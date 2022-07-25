@@ -54,7 +54,6 @@ public:
     ~Floor();
     void initFloor(std::istream &in, Player *p);
     void initSpecificFloor(std::istream &in, Player *p);
-    void setupFloor();
     int getRecentX() override;
     int getRecentY() override;
     Life *getPlayer();

@@ -14,16 +14,6 @@ PotionRH::PotionRH(): Potion() {
     description = " Drank a potion that restores 10 HP. ";
 }
 
-
-
-string PotionRH::getDescription() {
-    if (hasBeenDrunk) {
-        return description;
-    } else {
-        return " Drank an unknown potion. ";
-    }
-}
-
 void PotionRH::effect(Life *who) {
     hasBeenDrunk = true;
     who->modifyHP(10);
@@ -43,16 +33,6 @@ void PotionPH::effect(Life *who) {
     }
 }
 
-string PotionPH::getDescription() {
-    if (hasBeenDrunk) {
-        return description;
-    } else {
-        return " Drank an unknown potion. ";
-    }
-}
-
-
-
 PotionBA::PotionBA(): Potion() {
     rep = 'P';
     description = " Drank a potion that boosts attack by 5. ";
@@ -62,14 +42,6 @@ void PotionBA::effect(Life *who) {
     hasBeenDrunk = true;
     fl->replace(who , new ModAtk(who, 5));
 } 
-
-string PotionBA::getDescription() {
-    if (hasBeenDrunk) {
-        return description;
-    } else {
-        return " Drank an unknown potion. ";
-    }
-}
 
 PotionWA::PotionWA(): Potion() {
     rep = 'P';
@@ -85,13 +57,6 @@ void PotionWA::effect(Life *who) {
     }
 } 
 
-string PotionWA::getDescription() {
-    if (hasBeenDrunk) {
-        return description;
-    } else {
-        return " Drank an unknown potion. ";
-    }
-}
 
 PotionBD::PotionBD(): Potion() {
     rep = 'P';
@@ -103,13 +68,7 @@ void PotionBD::effect(Life *who) {
     fl->replace(who , new ModDef(who, 5));
 } 
 
-string PotionBD::getDescription() {
-    if (hasBeenDrunk) {
-        return description;
-    } else {
-        return " Drank an unknown potion. ";
-    }
-}
+
 
 PotionWD::PotionWD(): Potion() {
     rep = 'P';
@@ -125,14 +84,3 @@ void PotionWD::effect(Life *who) {
         fl->replace(who , new ModDef(who, -5));
     }
 } 
-
-string PotionWD::getDescription() {
-    if (hasBeenDrunk) {
-        return description;
-    } else {
-        return " Drank an unknown potion. ";
-    }
-}
-
-
-
