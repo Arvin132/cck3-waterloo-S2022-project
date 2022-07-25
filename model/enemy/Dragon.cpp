@@ -3,10 +3,14 @@
 //
 
 #include "Dragon.h"
+#include "specialItem.h"
 #include "floor.h"
 #include <cmath>
 
-Dragon::Dragon(): Enemy(150, 20, 20) { rep = 'D';}
+Dragon::Dragon(DragonHoard *hoard): Enemy(150, 20, 20), hoard(hoard) { 
+    rep = 'D';
+    hoard->permisson = true;
+}
 
 void Dragon::move(int atkMod) {
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {
@@ -30,6 +34,7 @@ int Dragon::beAttackedBy(Life *who, int defModifier) {
 
     if (curHp <= 0) {
         // fear grows on me
+        hoard->permisson = true;
         fl->died(this);
         return damage;
     }

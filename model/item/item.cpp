@@ -15,6 +15,10 @@ void Item::notifyObservesrs() {
 int Item::getRecentX() { return recentX; }
 int Item::getRecentY() { return recentY; }
 
+bool Item::hasPermisson() const{
+    return permisson;
+}
+
 char Item::getRep() {
     return rep; 
 }

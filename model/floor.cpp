@@ -176,8 +176,7 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
                     break;
                 case 'D':
                     theGrid[j].emplace_back(Ground::empty);
-                    spawn(new Dragon(), i, j);
-                    isCre = true;
+                    isCre = false;
                     break;
                 default :
                     theGrid[j].emplace_back(Ground::empty);
@@ -269,10 +268,25 @@ void Floor::setup() {
         switch(type) {
             case 0: case 1: case 2: case 3: case 4:
                 spawn(new Gold(1), place.y, place.x);
+                break;
             case 5: case 6:
                 spawn(new Gold(2), place.y, place.x);
+                break;
             case 7:
-                spawn(new Gold(6), place.y, place.x);
+                DragonHoard *dh = new DragonHoard();
+                spawn(new DragonHoard(), place.y, place.x);
+                for(int i = place.y - 1; i <= place.y + 1; i++) {
+                    bool b =false;
+                    for (int j = place.x - 1; j <= place.x + 1; j++) {
+                        if (theGrid[j][i] == Ground::empty && !(occupied[j][i])) {
+                            b = true;
+                            spawn(new Dragon(dh), i, j);
+                            break;
+                        }
+                    }
+                    if (b) break;
+                }
+                break;
 
         }
     }
