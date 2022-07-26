@@ -222,8 +222,6 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
 
 
 void Floor::setup() {
-
-    spawnStairs();
     // spawning the enemies
     for (int i = 0; i < 20; i++) {
         int r = randomGen(0, 5);

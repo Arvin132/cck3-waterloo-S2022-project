@@ -69,10 +69,9 @@ void EventHandler::initFloor() {
     }      
     currentFloor = make_unique<Floor>(PlayerRace, hasBs);
     currentFloor->attach(*tDisplay);
-    currentFloor->initFloor(f2, p);
     if (isRandom) {
+        currentFloor->initFloor(f2, p);
         setup();
-         currentFloor->initFloor(f2, p);
     } else {
         currentFloor->initSpecificFloor(f2, p);
     }
