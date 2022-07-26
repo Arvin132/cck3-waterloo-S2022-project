@@ -13,13 +13,10 @@ using namespace std;
 
 using namespace std;
 
-EventHandler::EventHandler(std::string readFile, std::string welcomeFile, bool isRandom): tDisplay(new TextDisplay()), currentFloor(nullptr),
+EventHandler::EventHandler(std::string readFile, std::string welcomeFile, bool isRandom): tDisplay(make_unique<TextDisplay> ()), currentFloor(nullptr),
                                                                                           readFile(readFile), welcomeFile(welcomeFile), isRandom(isRandom) {}
 
 EventHandler::~EventHandler() {
-    delete currentFloor;
-    delete tDisplay;
-
 }
 
 void EventHandler::report() {
@@ -40,22 +37,21 @@ void EventHandler::initFloor() {
     ifstream f1 {welcomeFile};
     char race = tDisplay->welcomeScreen(f1);
     string PlayerRace = "";
-    Player *p = nullptr;
+    Player p = Humen(&cin, &cout, &isFinished);
     switch(race) {
         case 'h':
-            p = new Humen(&cin, &cout, &isFinished);
             PlayerRace = "Humen";
             break;
         case 'e':
-            p = new Elf(&cin, &cout, &isFinished);
+            p = Elf(&cin, &cout, &isFinished);
             PlayerRace = "Elf";
             break;
         case 'd':
-            p = new Dwarf(&cin, &cout, &isFinished);
+            p = Dwarf(&cin, &cout, &isFinished);
             PlayerRace = "Dwarf";
             break;
         case 'o':
-            p = new Orc(&cin, &cout, &isFinished);
+            p = Orc(&cin, &cout, &isFinished);
             PlayerRace = "Orc";
             break;
         default:
@@ -63,17 +59,15 @@ void EventHandler::initFloor() {
     }
     ifstream f2 {readFile};
 
-    if (currentFloor != nullptr) {
-        delete currentFloor;
-    }
-
     
-    currentFloor = new Floor(PlayerRace, true);
-    currentFloor->attach(tDisplay);
-    currentFloor->initFloor(f2, p);
-    if (isRandom) {
-        setup();
-    }
+
+                    
+    currentFloor = make_unique<Floor>(PlayerRace, true);
+    currentFloor->attach(*tDisplay);
+    currentFloor->initFloor(f2, move(p));
+    // if (isRandom) {
+    //     setup();
+    // }
     f1.close();
     f2.close();
 }
@@ -87,13 +81,12 @@ void EventHandler::nextTurn() {
     
     if (currentFloor->timeForNextFloor) {
         Creature *c = currentFloor->getPlayer()->getCreature();
-        Player *p = new Player(&cin, &cout, &isFinished, c->getHP(), c->getAtk(), c->getDef(), c->getGold());
+        Player p = Player(&cin, &cout, &isFinished, c->getHP(), c->getAtk(), c->getDef(), c->getGold());
         string pRace = currentFloor->getPlayerRace();
-        delete currentFloor;
-        currentFloor = new Floor(pRace, true);
-        currentFloor->attach(tDisplay);
+        currentFloor = make_unique<Floor>(pRace, true);
+        currentFloor->attach(*tDisplay);
         ifstream f{readFile};
-        currentFloor->initFloor(f, p);
+        currentFloor->initFloor(f, move(p));
         if (isRandom) {
             setup();
         }

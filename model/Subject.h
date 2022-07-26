@@ -17,8 +17,8 @@ class Subject {
       virtual void notifyObservesrs() = 0;
       int virtual getRecentX() = 0;
       int virtual getRecentY() = 0;
-      void attach(Observer *ob);
-      void detach(Observer *ob);
+      void attach(Observer &ob);
+      void detach(Observer &ob);
 };
 
 

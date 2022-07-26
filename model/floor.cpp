@@ -20,13 +20,18 @@
 using namespace std;
 
 Floor::Floor(string PlayerRace, bool hasBS): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
-                                             occupied(vector<vector<bool>> {}), living(vector<Life*> {}), hasBS(hasBS) {}
+                                             occupied(vector<vector<bool>> {}), living(vector<Life*> {}), hasBS(hasBS){}
 
 Floor::~Floor() { 
-    clearFloor();
+    for (auto ch : chambers) {
+        delete ch;
+    }
+    // clearFloor();
+    occupied.clear();
+    theGrid.clear();
 }
 
-void Floor::initFloor(std::istream &in, Player *p) {
+void Floor::initFloor(std::istream &in, Player &&p) {
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
@@ -67,13 +72,14 @@ void Floor::initFloor(std::istream &in, Player *p) {
         }
     }
     initChambers();
-    stairsCh = randomGen(0, 5);
-    int r = randomGen(0, 5);
-    while (r == stairsCh) {
-        r = randomGen(0, 5);
-    }
-    Pos place = chambers[r].getSpawnPos();
-    spawn(p, place.y, place.x);
+    cout << "after init chambers" << endl;
+    // stairsCh = randomGen(0, 5);
+    // int r = randomGen(0, 5);
+    // while (r == stairsCh) {
+    //     r = randomGen(0, 5);
+    // }
+    // Pos place = chambers[r].getSpawnPos();
+    spawn(&p, 4, 5);
     for (auto it : items) {
         it->notifyObservesrs();
     }
@@ -221,7 +227,7 @@ void Floor::setup() {
     // spawning the enemies
     for (int i = 0; i < 20; i++) {
         int r = randomGen(0, 5);
-        Pos place = chambers[r].getSpawnPos();
+        Pos place = chambers[r]->getSpawnPos();
         int type = randomGen(0, 18);
         
         switch(type) {
@@ -251,7 +257,7 @@ void Floor::setup() {
     // spawning the Potions
     for (int i = 0; i < 10; i++) {
         int r = randomGen(0, 5);
-        Pos place = chambers[r].getSpawnPos();
+        Pos place = chambers[r]->getSpawnPos();
         int type = randomGen(0, 6);
 
         switch(type) {
@@ -279,7 +285,7 @@ void Floor::setup() {
     //spawning the gold piles
     if (hasBS) {
         int r = randomGen(0, 5);
-        Pos place = chambers[r].getSpawnPos();
+        Pos place = chambers[r]->getSpawnPos();
         BarrierSuite *bs = new BarrierSuite();
         spawn(bs, place.y, place.x);
         for(int i = place.y - 1; i <= place.y + 1; i++) {
@@ -297,7 +303,7 @@ void Floor::setup() {
 
     for (int i = 0; i < 10; i++) {
         int r = randomGen(0, 5);
-        Pos place = chambers[r].getSpawnPos();
+        Pos place = chambers[r]->getSpawnPos();
         int type = randomGen(0, 8);
 
         switch(type) {
@@ -348,8 +354,8 @@ void Floor::takeTurn() {
 void Floor::spawn(Creature *c, int posx, int posy) {
     occupied[posy][posx] = true;
     living.emplace_back(c);
-    for(auto ob : observers) {
-        (*c).attach(ob);
+    for (auto ob : observers) {
+        (*c).attach(*ob);
     }
     c->setStartingPosition(posx, posy);
     c->setFloor(this);
@@ -360,7 +366,7 @@ void Floor::spawn(PickUpable *what, int posx, int posy) {
     theGrid[posy][posx] = Ground::item;
     items.emplace_back(what);   
     for(auto ob : observers) {
-        (*what).attach(ob);
+        (*what).attach(*ob);
     }
 
     what->recentX = posx;
@@ -372,7 +378,7 @@ void Floor::spawn(Potion *what, int posx, int posy) {
     theGrid[posy][posx] = Ground::potion;
     items.emplace_back(what);   
     for(auto ob : observers) {
-        (*what).attach(ob);
+        (*what).attach(*ob);
     }
     what->recentX = posx;
     what->recentY = posy;
@@ -381,7 +387,7 @@ void Floor::spawn(Potion *what, int posx, int posy) {
 }
 
 void Floor::spawnStairs() { 
-    Pos place = chambers[stairsCh].getSpawnPos();
+    Pos place = chambers[stairsCh]->getSpawnPos();
     spawn(new Stairs(), place.y, place.x);
 }
 
@@ -481,7 +487,6 @@ void Floor::Interact(Player *who, Item *what) {
 
     for (auto it = items.begin(); it != items.end(); ++it) {
         if (*it == what) {
-            cout << "delteing this item" << endl;
             recentX = what->getRecentX();
             recentY = what->getRecentY();
             theGrid[recentY][recentX] = Ground::empty;
@@ -514,8 +519,11 @@ int* minVal(int* cur, int* other){
 
 void Floor::initChambers() {
     vector<vector<int*>> tempMap = vector<vector<int*>>();
-    vector<int*> labels = vector<int*>();
-    chambers = vector<Chamber>();
+    for (auto ch : chambers) {
+        delete ch;
+    }
+    chambers.clear();
+    chambers = vector<Chamber*>();
     int *offLabel = new int(200000);
     int inLabel = 0;
     for (int h = 0; h < heigth; h++){
@@ -533,20 +541,30 @@ void Floor::initChambers() {
                     inLabel++;
                 }
                 else {
-                    tempMap[h].emplace_back(new int(inLabel));
+                    int *tempPointer = new int(inLabel);
+                    tempMap[h].emplace_back(tempPointer);
+                    bool delPointer = false;
                     if (h != 0 && *tempMap[h - 1][i] < 200000) {
                         if (i != 0 && *tempMap[h - 1][i - 1] < 200000) {
+                            delPointer = true;
                             tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i - 1]);
                         }
                         if (*tempMap[h - 1][i] < 200000) {
+                            delPointer = true;
                             tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i]);
                         }
                         if (i != width - 1 && *tempMap[h - 1][i + 1] < 200000) {
+                            delPointer = true;
                             tempMap[h][i] = minVal(tempMap[h][i], tempMap[h - 1][i + 1]);
                         }
                     }
                     if (i != 0 && *tempMap[h][i - 1] < 200000) {
+                        delPointer = true;
                         tempMap[h][i] = minVal(tempMap[h][i - 1], tempMap[h][i - 1]);
+                    }
+
+                    if (delPointer){
+                        delete tempPointer;
                     }
 
                     if (h != 0 && *tempMap[h - 1][i] < 200000) {
@@ -580,19 +598,27 @@ void Floor::initChambers() {
             if (*tempMap[h][i] < 200000){
                 bool isAdded = false;
                 for (int j = 0; j < chambers.size(); j++){
-                    if (*tempMap[h][i] == chambers[j].getLabel()){
-                        chambers[j].addBlock(h, i, theGrid[h][i]);
+                    if (*tempMap[h][i] == chambers[j]->getLabel()){
+                        chambers[j]->addBlock(h, i, theGrid[h][i]);
                         isAdded = true;
+                        cout << "reached here" << endl;
+                        delete tempMap[h][i];
+                        tempMap[h][i] = nullptr;
                         break;
                     }
                 }
                 if (!isAdded){
-                    chambers.emplace_back(this, *tempMap[h][i]);
-                    chambers[chambers.size() - 1].addBlock(h, i, theGrid[h][i]);
+                    chambers.emplace_back(new Chamber(this, *tempMap[h][i]));
+                    chambers[chambers.size() - 1]->addBlock(h, i, theGrid[h][i]);
+                    
+                    delete tempMap[h][i];
+                    tempMap[h][i] = nullptr;
                 }
             }
         }
     }
+    delete offLabel;
+    offLabel = nullptr;
 }
 
 bool Floor::isOccupied(int posx, int posy) {
@@ -620,7 +646,6 @@ void Floor::died(Life *who) {
                 Item *spawnedGold = whatItem(recentX, recentY);
                 for (auto it = items.begin(); it != items.end(); ++it) {
                     if (*it == spawnedGold) {
-                        cout << "delteing this item" << endl;
                         recentX = spawnedGold->getRecentX();
                         recentY = spawnedGold->getRecentY();
                         theGrid[recentY][recentX] = Ground::empty;
@@ -641,6 +666,24 @@ void Floor::died(Life *who) {
 
 Chamber::Chamber(Floor *owner, int label): label{label}, floor{owner}, blocks{std::vector<Block*>()}{}
 
+Chamber::~Chamber() {
+    cout << "calling chamber dtor " << blocks.size() << endl;
+    for (int i = 0; i < blocks.size(); i++) {
+       
+        cout << " Calling dtor of block" << blocks[i]->pos.x << " " << blocks[i]->pos.y << endl;
+        delete blocks[i];
+    }
+    
+}
+
+Chamber::Chamber(const Chamber &other): label(other.label), floor(other.floor), blocks(std::vector<Block*> {}) {
+    for (auto bl : other.blocks) {
+        Block *bl2 = new Block();
+        bl2->pos = bl->pos;
+        bl2->type = bl->type;
+        blocks.emplace_back(bl2);
+    }
+}
 void Chamber::addBlock(int h, int w, Ground type) {
     Pos pos;
     pos.x = h;
@@ -673,14 +716,11 @@ void Chamber::setLabel(int label) {
 
 void Floor::clearFloor() {
     for (auto c : living) {
-        died(c);
+        delete c;
     }
+    living.clear();
 
     for (auto it : items) {
-        recentX = it->getRecentX();
-        recentY = it->getRecentY();
-        theGrid[recentY][recentX] = Ground::empty;
-        notifyObservesrs();
         delete it;
         break;
     }

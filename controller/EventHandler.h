@@ -5,13 +5,14 @@
 #define CCK3_WATERLOO_S2022_PROJECT_EVENTHANDLER_H
 #include <vector>
 #include <string>
+#include <memory>
 #include "Player.h"
 class TextDisplay;
 class Floor;
 
 class EventHandler {
-    TextDisplay *tDisplay;
-    Floor *currentFloor;
+    std::unique_ptr<TextDisplay> tDisplay;
+    std::unique_ptr<Floor> currentFloor;
     std::string readFile;
     std::string welcomeFile;
     bool isRandom;
