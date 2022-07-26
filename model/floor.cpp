@@ -26,12 +26,12 @@ Floor::~Floor() {
     for (auto ch : chambers) {
         delete ch;
     }
-    // clearFloor();
+    clearFloor();
     occupied.clear();
     theGrid.clear();
 }
 
-void Floor::initFloor(std::istream &in, Player &&p) {
+void Floor::initFloor(std::istream &in, Player *p) {
     char input = ' ';
     for (int j = 0; j < heigth; j++) {
         theGrid.emplace_back(vector<Ground> {});
@@ -72,13 +72,13 @@ void Floor::initFloor(std::istream &in, Player &&p) {
         }
     }
     initChambers();
-    // stairsCh = randomGen(0, 5);
-    // int r = randomGen(0, 5);
-    // while (r == stairsCh) {
-    //     r = randomGen(0, 5);
-    // }
-    // Pos place = chambers[r].getSpawnPos();
-    spawn(&p, 4, 5);
+    stairsCh = randomGen(0, 5);
+    int r = randomGen(0, 5);
+    while (r == stairsCh) {
+        r = randomGen(0, 5);
+    }
+    Pos place = chambers[r]->getSpawnPos();
+    spawn(p, place.y, place.x);
     for (auto it : items) {
         it->notifyObservesrs();
     }
@@ -223,8 +223,9 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
 
 void Floor::setup() {
 
+    spawnStairs();
     // spawning the enemies
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 1; i++) {
         int r = randomGen(0, 5);
         Pos place = chambers[r]->getSpawnPos();
         int type = randomGen(0, 18);
@@ -251,8 +252,9 @@ void Floor::setup() {
         }
     }
 
-    int compassOwnerNum = randomGen(0, living.size());
+    int compassOwnerNum = randomGen(1, living.size());
     compassOwner = living[compassOwnerNum];
+
     // spawning the Potions
     for (int i = 0; i < 10; i++) {
         int r = randomGen(0, 5);
@@ -641,7 +643,7 @@ void Floor::died(Life *who) {
             notifyObservesrs();
             *it = nullptr;
             living.erase(it);
-            delete who;
+            
             if (who == compassOwner) {
                 Item *spawnedGold = whatItem(recentX, recentY);
                 for (auto it = items.begin(); it != items.end(); ++it) {
@@ -659,6 +661,7 @@ void Floor::died(Life *who) {
                 spawn(new Compass(), recentX, recentY);
             }
             break;
+            delete who;
         }
     }
 }
@@ -720,7 +723,6 @@ void Floor::clearFloor() {
 
     for (auto it : items) {
         delete it;
-        break;
     }
     items.clear();
 }

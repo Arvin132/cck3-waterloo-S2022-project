@@ -58,7 +58,7 @@ public:
     bool timeForNextFloor;
     Floor(std::string PlayerRace, bool hasBS);
     ~Floor();
-    void initFloor(std::istream &in, Player &&p);
+    void initFloor(std::istream &in, Player *p);
     void initSpecificFloor(std::istream &in, Player *p);
     int getRecentX() override;
     int getRecentY() override;

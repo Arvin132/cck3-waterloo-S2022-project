@@ -36,6 +36,7 @@ int Creature::getRecentY() { return recentY; }
 
 void Creature::addBarrierSuite() {}
 
+bool Creature::hasBarrierEffect() { return false; }
 Creature *Creature::getCreature() { return this; }
 
 void Creature::modifyHP(int amount)  {

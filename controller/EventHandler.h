@@ -17,6 +17,7 @@ class EventHandler {
     std::string welcomeFile;
     bool isRandom;
     int floorNum = 1;
+    int BarrierSuiteFloorNum;
     bool isFinished = false;
 public:
     EventHandler(std::string readFile, std::string welcomeFile, bool isRandom);

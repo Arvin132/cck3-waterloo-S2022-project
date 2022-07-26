@@ -35,6 +35,7 @@ class Creature: public Life {
       Creature *getCreature() override;
       void virtual attack(Life *other, int atkModifier);
       void virtual addBarrierSuite();
+      bool virtual hasBarrierEffect();
       std::string virtual report() = 0;
       friend class Floor;
 };

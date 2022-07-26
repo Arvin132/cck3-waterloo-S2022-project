@@ -184,6 +184,10 @@ void Player::addBarrierSuite() {
     hasBarrierSuite = true;
 }
 
+bool Player::hasBarrierEffect() {
+    return hasBarrierSuite;
+}
+
 void Player::beEffectedBy(Item *what) {
     log += "PC" + what->getDescription();
 }

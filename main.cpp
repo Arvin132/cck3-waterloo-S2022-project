@@ -19,13 +19,13 @@ int main(int args, char *argv[]) {
 	}
 
 	e->initFloor();
-	// while(!cin.fail()) {
-	// 	if (e->gameFinished()) {
-	// 		e->showScore();
-	// 		break;
-	// 	} 
-	// 	e->nextTurn();
-	// }
+	while(!cin.fail()) {
+		if (e->gameFinished()) {
+			e->showScore();
+			break;
+		} 
+		e->nextTurn();
+	}
 
 	delete e;
 }
