@@ -20,10 +20,7 @@ struct Block {
     Pos pos;
     // int *roomLabel;
     Ground type;
-    ~Block() {
-        std::cout << " called the dtor of block " << pos.x << " " << pos.y << std::endl;
-        
-    }
+    ~Block() {}
 };
 
 class Chamber {
