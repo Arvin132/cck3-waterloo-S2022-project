@@ -22,6 +22,7 @@ class Player: public Creature {
         int  beAttackedBy(Life *who, int defModifier) override;
         void beEffectedBy(Item *what) override;
         void addBarrierSuite() override;
+        bool hasBarrierEffect() override;
         std::string report() override;
         void move(int atkMod) override;
 };

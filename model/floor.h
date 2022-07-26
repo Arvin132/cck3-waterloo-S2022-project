@@ -18,8 +18,9 @@ struct Pos {
 
 struct Block {
     Pos pos;
-    int *roomLabel;
+    // int *roomLabel;
     Ground type;
+    ~Block() {}
 };
 
 class Chamber {
@@ -34,6 +35,8 @@ class Chamber {
 
 public:
     Chamber(Floor *owner, int label);
+    Chamber(const Chamber &other);
+    ~Chamber();
     friend class Floor;
 };
 
@@ -43,7 +46,7 @@ class Floor: public Subject {
     std::vector<std::vector<bool>> occupied;
     std::vector<Life*> living;
     std::vector<Item*> items;
-    std::vector<Chamber> chambers;
+    std::vector<Chamber*> chambers;
     bool hasBS;
     int stairsCh;
 
