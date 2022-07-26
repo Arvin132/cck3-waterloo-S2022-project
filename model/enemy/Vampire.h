@@ -9,6 +9,7 @@
 class Vampire: public Enemy {
     public:
         Vampire();
+        ~Vampire();
         void attack(Life *other, int atkModifier) override;
 };
 

@@ -13,6 +13,7 @@ class Dragon: public Enemy {
     Item *defending;
     public:
         Dragon(Item *defending);
+        ~Dragon();
         void move(int atkMod) override;
         int beAttackedBy(Life *who, int defModifier) override;
 };

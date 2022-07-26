@@ -12,6 +12,10 @@ Dragon::Dragon(Item *defending): Enemy(150, 20, 20), defending(defending) {
     defending->permisson = false;
 }
 
+Dragon::~Dragon() {
+    fl->spawn(new Gold(1), recentX, recentY);
+}
+
 void Dragon::move(int atkMod) {
     for (int i = recentX - 1; i <= recentX + 1 ;i++) {
         for (int j = recentY - 1; j <= recentY + 1; j++) {

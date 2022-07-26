@@ -9,6 +9,7 @@
 class Werewolf: public Enemy {
     public:
         Werewolf();
+        ~Werewolf();
 };
 
 

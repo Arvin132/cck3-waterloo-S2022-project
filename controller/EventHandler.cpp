@@ -102,6 +102,7 @@ void EventHandler::nextTurn() {
             p = new Dwarf(&cin, &cout, &isFinished);
         }
         p->modifyHP(c->getHP() - p->getHP());
+        p->modifyGold(c->getGold() - p->getGold());
         if (c->hasBarrierEffect()) {
             p->addBarrierSuite();
         }

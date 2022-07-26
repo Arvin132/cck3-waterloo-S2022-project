@@ -20,7 +20,7 @@
 using namespace std;
 
 Floor::Floor(string PlayerRace, bool hasBS): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
-                                             occupied(vector<vector<bool>> {}), living(vector<Life*> {}), hasBS(hasBS), chambers{vector<Chamber*>()}{}
+                                             occupied(vector<vector<bool>> {}), living(vector<Life*> {}), chambers{vector<Chamber*>()}, hasBS(hasBS){}
 
 Floor::~Floor() {
     for (auto ch : chambers) {
@@ -223,7 +223,7 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
 
 void Floor::setup() {
     // spawning the enemies
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 10; i++) {
         int r = randomGen(0, 5);
         Pos place = chambers[r]->getSpawnPos();
         int type = randomGen(0, 18);
@@ -252,7 +252,7 @@ void Floor::setup() {
 
     int compassOwnerNum = randomGen(1, living.size());
     compassOwner = living[compassOwnerNum];
-
+    cout << "HINT: a " << compassOwner->getRep() << " has the compass " << endl;
     // spawning the Potions
     for (int i = 0; i < 10; i++) {
         int r = randomGen(0, 5);
@@ -643,11 +643,14 @@ void Floor::died(Life *who) {
             notifyObservesrs();
             *it = nullptr;
             living.erase(it);
-            
+            cout << items.size() << endl;
+            delete who;
+            cout << items.size() << endl;
             if (who == compassOwner) {
                 Item *spawnedGold = whatItem(recentX, recentY);
                 for (auto it = items.begin(); it != items.end(); ++it) {
                     if (*it == spawnedGold) {
+                        cout << "found the gold" << endl;
                         recentX = spawnedGold->getRecentX();
                         recentY = spawnedGold->getRecentY();
                         theGrid[recentY][recentX] = Ground::empty;
@@ -661,7 +664,7 @@ void Floor::died(Life *who) {
                 spawn(new Compass(), recentX, recentY);
             }
             break;
-            delete who;
+            
         }
     }
 }

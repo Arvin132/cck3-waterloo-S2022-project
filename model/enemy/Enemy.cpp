@@ -9,9 +9,7 @@
 
 Enemy::Enemy(int curHp, int atk, int def): Creature(curHp, atk, def, 0) {}
 
-Enemy::~Enemy() {
-    fl->spawn(new Gold(1), recentX, recentY);
-};
+Enemy::~Enemy() {}
 
 Direction directionOfCommand(int d, int *newX, int *newY) {
     switch (d) {

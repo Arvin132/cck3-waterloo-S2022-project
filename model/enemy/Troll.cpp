@@ -5,11 +5,16 @@
 #include "Troll.h"
 #include "floor.h"
 #include "randomGen.h"
-
+#include "floor.h"
+#include "gold.h"
 
 
 Troll::Troll(): Enemy(120, 25, 15) {
     rep = 'T';
+}
+
+Troll::~Troll() {
+    fl->spawn(new Gold(1), recentX, recentY);
 }
 
 void Troll::move(int atkMod) {
