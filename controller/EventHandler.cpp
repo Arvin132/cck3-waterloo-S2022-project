@@ -72,6 +72,9 @@ void EventHandler::initFloor() {
     currentFloor->initFloor(f2, p);
     if (isRandom) {
         setup();
+         currentFloor->initFloor(f2, p);
+    } else {
+        currentFloor->initSpecificFloor(f2, p);
     }
     f1.close();
     f2.close();

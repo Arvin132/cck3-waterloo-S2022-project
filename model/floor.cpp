@@ -225,7 +225,7 @@ void Floor::setup() {
 
     spawnStairs();
     // spawning the enemies
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 20; i++) {
         int r = randomGen(0, 5);
         Pos place = chambers[r]->getSpawnPos();
         int type = randomGen(0, 18);
