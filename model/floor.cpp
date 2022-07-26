@@ -537,7 +537,9 @@ void Floor::initChambers() {
                         (!(h == 0 && i == 0) &&
                             ((h == 0 && *tempMap[h][i-1] == 200000) ||
                             (i == 0 && *tempMap[h-1][i] == 200000)))){
-                    tempMap[h].emplace_back(new int(inLabel));
+                    *tempPointer = inLabel;
+                    tempMap[h].emplace_back(tempPointer);
+                    labels.emplace_back(tempPointer);
                     inLabel++;
                 }
                 else {
@@ -585,6 +587,7 @@ void Floor::initChambers() {
                     }
                     if (i != 0 && *tempMap[h][i - 1] < 200000) {
                         *tempMap[h][i - 1] = *minVal(tempMap[h][i], tempMap[h][i - 1]);
+                        *tempMap[h][i] = *minVal(tempMap[h][i], tempMap[h][i - 1]);
                     }
                     inLabel++;
                 }
@@ -615,7 +618,6 @@ void Floor::initChambers() {
         }
     }
     delete offLabel;
-    offLabel = nullptr;
     for (int h = 0; h < labels.size(); h++){
         delete labels[h];
     }
