@@ -643,14 +643,11 @@ void Floor::died(Life *who) {
             notifyObservesrs();
             *it = nullptr;
             living.erase(it);
-            cout << items.size() << endl;
             delete who;
-            cout << items.size() << endl;
             if (who == compassOwner) {
                 Item *spawnedGold = whatItem(recentX, recentY);
                 for (auto it = items.begin(); it != items.end(); ++it) {
                     if (*it == spawnedGold) {
-                        cout << "found the gold" << endl;
                         recentX = spawnedGold->getRecentX();
                         recentY = spawnedGold->getRecentY();
                         theGrid[recentY][recentX] = Ground::empty;

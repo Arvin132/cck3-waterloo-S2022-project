@@ -46,13 +46,13 @@ void EventHandler::initFloor() {
         delete p;
         p = new Elf(&cin, &cout, &isFinished);
         PlayerRace = "Elf";
-    } else if (race == 'd') {
-        delete p;
-        p = new Dwarf(&cin, &cout, &isFinished);
-        PlayerRace = "Orc";
     } else if (race == 'o') {
         delete p;
         p = new Orc(&cin, &cout, &isFinished);
+        PlayerRace = "Orc";
+    } else if (race == 'd') {
+        delete p;
+        p = new Dwarf(&cin, &cout, &isFinished);
         PlayerRace = "Dwarf";
     } else {
         delete p;
@@ -101,6 +101,7 @@ void EventHandler::nextTurn() {
             delete p;
             p = new Dwarf(&cin, &cout, &isFinished);
         }
+        
         p->modifyHP(c->getHP() - p->getHP());
         p->modifyGold(c->getGold() - p->getGold());
         if (c->hasBarrierEffect()) {
