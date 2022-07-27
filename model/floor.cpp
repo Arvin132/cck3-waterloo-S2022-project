@@ -223,7 +223,7 @@ void Floor::initSpecificFloor(std::istream &in, Player *p) {
 
 void Floor::setup() {
     // spawning the enemies
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 20; i++) {
         int r = randomGen(0, 5);
         Pos place = chambers[r]->getSpawnPos();
         int type = randomGen(0, 18);
