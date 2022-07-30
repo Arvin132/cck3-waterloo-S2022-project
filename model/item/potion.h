@@ -12,7 +12,7 @@ class Potion : public Item {
 
 class PotionRH : public Potion {
     
-    inline static bool hasBeenDrunk;
+    static bool hasBeenDrunk;
     public:
         PotionRH();
         bool hasDrunk();
@@ -21,7 +21,7 @@ class PotionRH : public Potion {
 };
 
 class PotionBA : public Potion {
-    inline static bool hasBeenDrunk;
+    static bool hasBeenDrunk;
     public:
         PotionBA();
         bool hasDrunk();
@@ -30,7 +30,7 @@ class PotionBA : public Potion {
 };
 
 class PotionBD : public Potion {
-    inline static bool hasBeenDrunk;
+    static bool hasBeenDrunk;
     public:
         PotionBD();
         bool hasDrunk();
@@ -39,7 +39,7 @@ class PotionBD : public Potion {
 };
 
 class PotionPH : public Potion {
-    inline static bool hasBeenDrunk;
+    static bool hasBeenDrunk;
     public:
         PotionPH();
         bool hasDrunk();
@@ -49,7 +49,7 @@ class PotionPH : public Potion {
 
 
 class PotionWA : public Potion {
-    inline static bool hasBeenDrunk;
+    static bool hasBeenDrunk;
     public:
         PotionWA();
         bool hasDrunk();
@@ -58,7 +58,7 @@ class PotionWA : public Potion {
 };
 
 class PotionWD : public Potion {
-    inline static bool hasBeenDrunk;
+    static bool hasBeenDrunk;
     public:
         PotionWD();
         bool hasDrunk();

@@ -7,7 +7,7 @@
 #include "Enemy.h"
 
 class Merchant : public Enemy {
-    inline static bool isAgro;
+    static bool isAgro;
     public:
         Merchant();
         ~Merchant();

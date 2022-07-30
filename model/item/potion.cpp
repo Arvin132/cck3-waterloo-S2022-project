@@ -4,6 +4,12 @@
 #include "effect.h"
 
 using namespace std;
+bool PotionRH::hasBeenDrunk;
+bool PotionPH::hasBeenDrunk;
+bool PotionBA::hasBeenDrunk;
+bool PotionWA::hasBeenDrunk;
+bool PotionBD::hasBeenDrunk;
+bool PotionWD::hasBeenDrunk;
 
 Potion::Potion(): Item() { }
 

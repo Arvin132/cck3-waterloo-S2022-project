@@ -7,7 +7,7 @@
 #include "floor.h"
 #include "randomGen.h"
 
-
+bool Merchant::isAgro;
 
 Merchant::Merchant(): Enemy(30, 70, 5) {
     rep = 'M';
