@@ -20,7 +20,7 @@ class EventHandler {
     int BarrierSuiteFloorNum;
     bool isFinished = false;
 public:
-    EventHandler(std::string readFile, std::string welcomeFile, bool isRandom);
+    EventHandler(std::string readFile, std::string welcomeFile);
     ~EventHandler();
     void initFloor();
     void nextFloor();

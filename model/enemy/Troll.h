@@ -11,6 +11,7 @@ class Troll: public Enemy {
         Troll();
         ~Troll();
         void move(int atkMod) override;
+        std::string getInfo() override;
 };
 
 

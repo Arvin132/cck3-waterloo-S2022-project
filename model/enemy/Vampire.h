@@ -11,6 +11,7 @@ class Vampire: public Enemy {
         Vampire();
         ~Vampire();
         void attack(Life *other, int atkModifier) override;
+        std::string getInfo() override;
 };
 
 

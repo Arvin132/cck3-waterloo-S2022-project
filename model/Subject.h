@@ -5,6 +5,7 @@
 #ifndef CCK3_WATERLOO_S2022_PROJECT_SUBJECT_H
 #define CCK3_WATERLOO_S2022_PROJECT_SUBJECT_H
 #include <vector>
+#include <string>
 class Observer;
 
 class Subject {
@@ -15,8 +16,8 @@ class Subject {
     public:
       virtual ~Subject();
       virtual void notifyObservesrs() = 0;
-      int virtual getRecentX() = 0;
-      int virtual getRecentY() = 0;
+      virtual int getRecentX();
+      virtual int getRecentY();
       void attach(Observer &ob);
       void detach(Observer &ob);
 };

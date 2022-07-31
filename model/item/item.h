@@ -11,16 +11,16 @@ class Item: public Subject {
         Floor *fl;
         char rep;
         std::string description;
+        std::string information;
         bool permisson = true;
         Item();
     public:
         virtual ~Item();
         void notifyObservesrs() override;
         char getRep();
-        int getRecentX() override;
-        int getRecentY() override;
         bool hasPermisson() const;
         virtual std::string getDescription();
+        std::string getInfo();
         virtual int effect(Life *who) = 0;
         friend class Floor;
         friend class Dragon;

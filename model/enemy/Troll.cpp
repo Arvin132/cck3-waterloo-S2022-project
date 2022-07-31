@@ -51,3 +51,8 @@ void Troll::move(int atkMod) {
     recentX = newX;
     recentY = newY;
 }
+
+std::string Troll::getInfo() {
+    return " a Troll. HP: " + std::to_string(curHp) + " DEF: " + std::to_string(def) + " ATK: " + std::to_string(atk) + 
+    ". has HP regeneration.";
+}

@@ -34,6 +34,9 @@ void Decorator::modifyHP(int amount) {
 void Decorator::addBarrierSuite() { next->addBarrierSuite(); }
 
 int Decorator::getRecentX() { return next->getRecentX(); }
+
 int Decorator::getRecentY() { return next->getRecentY(); }
+
+std::string Decorator::getInfo() { return next->getInfo(); }
 
 Creature *Decorator::getCreature() { return next->getCreature(); }

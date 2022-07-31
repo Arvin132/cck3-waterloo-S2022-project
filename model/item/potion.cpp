@@ -18,6 +18,7 @@ Potion::~Potion() { }
 PotionRH::PotionRH(): Potion() {
     rep = 'P';
     description = " Drank a potion that restores 10 HP. ";
+    information = " a potion that restores 10 HP. ";
 }
 
 int PotionRH::effect(Life *who) {
@@ -36,7 +37,8 @@ string PotionRH::getDescription() {
 
 PotionPH::PotionPH(): Potion() {
     rep = 'P';
-    description = " Drank a potion that Damges 10 HP. ";
+    description = " Drank a potion that damges 10 HP. ";
+    information = " a potion that damges 10 HP. ";
 }
 
 int PotionPH::effect(Life *who) {
@@ -60,6 +62,7 @@ string PotionPH::getDescription() {
 PotionBA::PotionBA(): Potion() {
     rep = 'P';
     description = " Drank a potion that boosts attack by 5. ";
+    information = " a potion that boosts attack by 5. ";
 }
 
 int PotionBA::effect(Life *who) {
@@ -79,6 +82,7 @@ string PotionBA::getDescription() {
 PotionWA::PotionWA(): Potion() {
     rep = 'P';
     description = " Drank a potion that decreases attack by 5. ";
+    information = " a potion that decreases attack by 5. ";
 }
 
 int PotionWA::effect(Life *who) {
@@ -102,6 +106,7 @@ string PotionWA::getDescription() {
 PotionBD::PotionBD(): Potion() {
     rep = 'P';
     description = " Drank a potion that boosts defense by 5. ";
+    information = " a potion that boosts defense by 5. ";
 }
 
 int PotionBD::effect(Life *who) {
@@ -120,7 +125,8 @@ string PotionBD::getDescription() {
 
 PotionWD::PotionWD(): Potion() {
     rep = 'P';
-    description = " Drank a potion that boosts defense by 5. ";
+    description = " Drank a potion that decreases defense by 5. ";
+    information = " a potion that decreases defense by 5. ";
 }
 
 int PotionWD::effect(Life *who) {

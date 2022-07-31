@@ -47,9 +47,9 @@ class Floor: public Subject {
     std::vector<Life*> living;
     std::vector<Item*> items;
     std::vector<Chamber*> chambers;
+    
     bool hasBS;
     int stairsCh;
-
     const int width = 79;
     const int heigth = 25;
     Life *compassOwner;
@@ -59,9 +59,6 @@ public:
     Floor(std::string PlayerRace, bool hasBS);
     ~Floor();
     void initFloor(std::istream &in, Player *p);
-    void initSpecificFloor(std::istream &in, Player *p);
-    int getRecentX() override;
-    int getRecentY() override;
     Life *getPlayer();
     std::string getPlayerRace();
     Ground getState(int posx, int posy);

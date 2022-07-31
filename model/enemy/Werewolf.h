@@ -10,6 +10,7 @@ class Werewolf: public Enemy {
     public:
         Werewolf();
         ~Werewolf();
+        std::string getInfo() override;
 };
 
 

@@ -10,6 +10,7 @@ class Phoenix: public Enemy {
     public:
         Phoenix();
         ~Phoenix();
+        std::string getInfo() override;
 };
 
 

@@ -70,3 +70,11 @@ int Merchant::beAttackedBy(Life *who, int defModifier) {
     def -= defModifier;
     return damage;
 }
+
+std::string Merchant::getInfo() {
+    std::string someStr =  " a Merchant. HP: " + std::to_string(curHp) + " DEF: " + std::to_string(def) + " ATK: " + std::to_string(atk) + ".";
+    if (isAgro) {
+        someStr += " He is Agrresive";
+    }
+    return someStr;
+}

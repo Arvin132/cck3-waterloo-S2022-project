@@ -13,6 +13,7 @@ class Merchant : public Enemy {
         ~Merchant();
         void move(int atkMod) override;
         int beAttackedBy(Life *who, int defModifier) override;
+        std::string getInfo() override;
 };
 
 

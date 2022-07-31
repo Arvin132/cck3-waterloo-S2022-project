@@ -14,9 +14,9 @@ using namespace std;
 
 using namespace std;
 
-EventHandler::EventHandler(std::string readFile, std::string welcomeFile, bool isRandom): tDisplay(make_unique<TextDisplay> ()), currentFloor(nullptr),
-                                                                                          readFile(readFile), welcomeFile(welcomeFile), isRandom(isRandom),
-                                                                                          BarrierSuiteFloorNum(randomGen(1, 6)) {}
+EventHandler::EventHandler(std::string readFile, std::string welcomeFile): tDisplay(make_unique<TextDisplay> ()), currentFloor(nullptr),
+                                                                           readFile(readFile), welcomeFile(welcomeFile),
+                                                                           BarrierSuiteFloorNum(randomGen(1, 6)) {}
 
 EventHandler::~EventHandler() {
 }
@@ -66,18 +66,14 @@ void EventHandler::initFloor() {
     bool hasBs = false;
     if (BarrierSuiteFloorNum == 1) {
         hasBs = true;
-    }      
+    }
+    
     currentFloor = make_unique<Floor>(PlayerRace, hasBs);
     currentFloor->attach(*tDisplay);
-    if (isRandom) {
-        currentFloor->initFloor(f2, p);
-        setup();
-    } else {
-        currentFloor->initSpecificFloor(f2, p);
-    }
+    currentFloor->initFloor(f2, p);
+    setup();
     f1.close();
     f2.close();
-    
 }
 
 void EventHandler::setup() {

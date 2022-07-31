@@ -20,3 +20,8 @@ void Goblin::attack(Life *other, int atkModifier) {
 
     atk -= atkModifier;
 }
+
+std::string Goblin::getInfo() {
+    return " a Goblin. HP: " + std::to_string(curHp) + " DEF: " + std::to_string(def) + " ATK: " + std::to_string(atk) 
+    + ". has gold stealing.";
+}

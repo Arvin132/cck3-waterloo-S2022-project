@@ -34,7 +34,6 @@ int Dragon::beAttackedBy(Life *who, int defModifier) {
     int damage = ceil((something / (100 + def)) * who->getAtk());
 
     curHp -= damage;
-    std::cout << "got attacked for " << damage << " Damage" << std::endl;
 
     if (curHp <= 0) {
         // fear grows on me
@@ -45,4 +44,8 @@ int Dragon::beAttackedBy(Life *who, int defModifier) {
 
     def -= defModifier;
     return damage;
+}
+
+std::string Dragon::getInfo() {
+    return " a Dragon. HP: " + std::to_string(curHp) + " DEF: " + std::to_string(def) + " ATK: " + std::to_string(atk) + ". ";
 }

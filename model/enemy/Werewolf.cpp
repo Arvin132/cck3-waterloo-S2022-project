@@ -13,3 +13,7 @@ Werewolf::Werewolf(): Enemy(120, 30, 5) {
 Werewolf::~Werewolf() {
     fl->spawn(new Gold(1), recentX, recentY);
 }
+
+std::string Werewolf::getInfo() {
+    return " a Werewolf. HP: " + std::to_string(curHp) + " DEF: " + std::to_string(def) + " ATK: " + std::to_string(atk) + ".";
+}

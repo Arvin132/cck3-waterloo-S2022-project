@@ -24,6 +24,7 @@ class Player: public Creature {
         void addBarrierSuite() override;
         bool hasBarrierEffect() override;
         std::string report() override;
+        std::string getInfo() override;
         void move(int atkMod) override;
 };
 

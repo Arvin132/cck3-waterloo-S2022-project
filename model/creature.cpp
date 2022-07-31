@@ -2,8 +2,7 @@
 #include "Observer.h"
 #include "Subject.h"
 
-Creature::Creature(int hp, int atk, int def, int gold): Life(), maxHp(hp), atk(atk), def(def)
-                                                        , gold(gold) { 
+Creature::Creature(int hp, int atk, int def, int gold): Life(), maxHp(hp), atk(atk), def(def), gold(gold) {
     curHp = maxHp;
 }
 
@@ -31,12 +30,10 @@ int Creature::getGold() { return gold; }
 
 int Creature::getHP() { return curHp; }
 
-int Creature::getRecentX() { return recentX; }
-int Creature::getRecentY() { return recentY; }
-
 void Creature::addBarrierSuite() {}
 
 bool Creature::hasBarrierEffect() { return false; }
+
 Creature *Creature::getCreature() { return this; }
 
 void Creature::modifyHP(int amount)  {

@@ -14,6 +14,7 @@ class Life : public Subject {
         int virtual getDef() = 0;
         int virtual getGold() = 0;
         int virtual getHP() = 0;
+        virtual std::string getInfo() = 0;
         void virtual modifyHP(int amount) = 0;
         void virtual modifyGold(int amount) = 0;
         void virtual move(int atkMod) = 0;

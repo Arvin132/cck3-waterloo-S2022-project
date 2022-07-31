@@ -12,6 +12,7 @@ class Goblin : public Enemy {
       Goblin();
       ~Goblin();
       void attack(Life *other, int atkModifier) override;
+      std::string getInfo() override;
 };
 
 

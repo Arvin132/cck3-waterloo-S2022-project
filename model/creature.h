@@ -30,8 +30,6 @@ class Creature: public Life {
       int getHP() override;
       void virtual modifyHP(int amount) override;
       void virtual modifyGold(int amount) override;
-      int getRecentX() override;
-      int getRecentY() override;
       Creature *getCreature() override;
       void virtual attack(Life *other, int atkModifier);
       void virtual addBarrierSuite();

@@ -139,6 +139,34 @@ void Player::move(int atkMod)  {
             *output << "No Potion is in that Direction for you to consume " << std::endl;
             return move(atkMod);
         }
+    } else if (command == "v") {
+        *input >> command;
+        d = whatDir(command, newX, newY);
+
+        if (d == Direction::Nothing) {
+            *output << "Please Give valid input" << std::endl;
+            return move(atkMod);
+        }
+
+        if (fl->isOccupied(newX, newY)) {
+            Life *what = fl->whatLife(newX, newY);
+            *output << "Player sees" << what->getInfo() << std::endl;
+            return move(atkMod);
+        } else if (fl->getState(newX, newY) == Ground::potion || fl->getState(newX, newY) == Ground::item) {
+            Item *what = fl->whatItem(newX, newY);
+            *output << "Player sees" << what->getInfo() << std::endl;
+            return move(atkMod);
+        } else if (fl->getState(newX, newY) == Ground::Hwall || fl->getState(newX, newY) == Ground::Vwall || fl->getState(newX, newY) == Ground::nothing) {
+            *output << "Player sees a Wall" << std::endl;
+            return move(atkMod);
+        } else if (fl->getState(newX, newY) == Ground::door) {
+            *output << "Player sees a Door" << std::endl;
+            return move(atkMod);
+        } else { 
+            *output << "Player sees empty Ground" << std::endl;
+            return move(atkMod);
+        }
+
     } else {
         d = whatDir(command, newX, newY);
         if (d == Direction::Nothing) {
@@ -182,6 +210,10 @@ void Player::move(int atkMod)  {
 
 void Player::addBarrierSuite() {
     hasBarrierSuite = true;
+}
+
+std::string Player::getInfo() {
+    return " the PC.";
 }
 
 bool Player::hasBarrierEffect() {

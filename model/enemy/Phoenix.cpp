@@ -13,3 +13,7 @@ Phoenix::Phoenix():Enemy(50, 35, 20) {
 Phoenix::~Phoenix() {
     fl->spawn(new Gold(1), recentX, recentY);
 }
+
+std::string Phoenix::getInfo() {
+    return " a Dragon. HP: " + std::to_string(curHp) + " DEF: " + std::to_string(def) + " ATK: " + std::to_string(atk) + ". ";
+}
