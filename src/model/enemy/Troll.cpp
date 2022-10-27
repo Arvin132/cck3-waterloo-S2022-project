@@ -3,10 +3,9 @@
 //
 
 #include "Troll.h"
-#include "floor.h"
-#include "randomGen.h"
-#include "floor.h"
-#include "gold.h"
+#include "../floor.h"
+#include "../randomGen.h"
+#include "../item/gold.h"
 
 
 Troll::Troll(): Enemy(120, 25, 15) {

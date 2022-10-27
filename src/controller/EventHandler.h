@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "Player.h"
+#include "../model/Player.h"
 class TextDisplay;
 class Floor;
 

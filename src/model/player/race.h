@@ -1,6 +1,6 @@
 #ifndef __RACE_H__
 #define __RACE_H__
-#include "player.h"
+#include "../player.h"
 
 class Humen: public Player {
     public:

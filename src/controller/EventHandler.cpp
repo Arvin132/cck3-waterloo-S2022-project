@@ -6,11 +6,11 @@ using namespace std;
 
 #include <fstream>
 #include "eventHandler.h"
-#include "textDisplay.h"
-#include "floor.h"
-#include "Goblin.h"
-#include "race.h"
-#include "randomGen.h"
+#include "../view/textDisplay.h"
+#include "../model/floor.h"
+#include "../model/enemy/Goblin.h"
+#include "../model/player/race.h"
+#include "../model/randomGen.h"
 
 using namespace std;
 

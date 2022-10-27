@@ -3,9 +3,9 @@
 //
 
 #include "Merchant.h"
-#include "gold.h"
-#include "floor.h"
-#include "randomGen.h"
+#include "../item/gold.h"
+#include "../floor.h"
+#include "../randomGen.h"
 
 bool Merchant::isAgro;
 

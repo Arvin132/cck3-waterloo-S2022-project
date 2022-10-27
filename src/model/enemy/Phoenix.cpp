@@ -3,8 +3,8 @@
 //
 
 #include "Phoenix.h"
-#include "floor.h"
-#include "gold.h"
+#include "../floor.h"
+#include "../item/gold.h"
 
 Phoenix::Phoenix():Enemy(50, 35, 20) {
     rep = 'X';

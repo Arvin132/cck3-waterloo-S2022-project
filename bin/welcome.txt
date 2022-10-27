@@ -1,0 +1,14 @@
+------------------------------------------------------------------------------------------
+|		                     welcome to CC3K	  				 |
+|				by a29asgha and kmajidi					 |
+|				   CS246 final project					 |
+|					Summer 2022					 |
+|											 |
+|	Please enter one of the following to choose your race and start the game.	 |			
+|                                                                                        |
+|	-H Humen : HP: 140 ATK: 20 DEF: 20 				                 |
+|	-E Elf :   HP: 140 ATK: 30 DEF: 10 : Negative potions have positive effects      |
+|	-O Orc:    HP: 180 ATK: 30 DEF: 25 : Gold gained from loot is halved             |
+|	-D Dwarf:  HP: 100 ATK: 20 DEF: 30 : Gold gained from loot is doubled            |
+|				                                                 	 |
+------------------------------------------------------------------------------------------

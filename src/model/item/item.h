@@ -1,6 +1,6 @@
 #ifndef __ITEM_H__
 #define __ITEM_H__
-#include "subject.h"
+#include "../subject.h"
 #include <string>
 class Floor;
 class Life;

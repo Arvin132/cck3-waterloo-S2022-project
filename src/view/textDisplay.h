@@ -1,13 +1,8 @@
 #ifndef __TEXT_D__
 #define __TEXT_D__
-#include "Observer.h"
+#include "../model/Observer.h"
 #include <vector>
 #include <iostream>
-
-
-
-
-
 
 class TextDisplay: public Observer {
     std::vector<std::vector<char>> display;

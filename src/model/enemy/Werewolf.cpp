@@ -3,8 +3,8 @@
 //
 
 #include "Werewolf.h"
-#include "floor.h"
-#include "gold.h"
+#include "../floor.h"
+#include "../item/gold.h"
 
 Werewolf::Werewolf(): Enemy(120, 30, 5) {
     rep = 'W';

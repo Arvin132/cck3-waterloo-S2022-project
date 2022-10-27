@@ -1,27 +1,59 @@
-CXX			:= g++
-CXXFLAGS	:= -std=c++14 -Wall -Wextra -Werror=vla
+# Pre-compiler and Compiler flags
+CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
+PRE_FLAGS := -MMD -MP
 
-EXEC		:= sorcery
-SRCS_DIR	:= ./src
-BUILD_DIR	:= ./build
-SRCS 		:= $(shell find $(SRCS_DIR) -name *.cpp)
-OBJS		:= $(SRCS:$(SRCS_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-DEPS		:= $(OBJS:.o=.d)
+# Project directory structure
+BIN := bin
+SRC := src
+LIB := lib
+INC := include
+MAINFILE := $(SRC)/main.cpp
 
-DIR_GUARD	= @mkdir -p $(@D)
+# Build directories and output
+TARGET := $(BIN)/main
+BUILD := build
 
-$(EXEC): $(OBJS)
-	$(DIR_GUARD)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
+# Library search directories and flags
+EXT_LIB :=
+LDFLAGS :=
+LDPATHS := $(addprefix -L,$(LIB) $(EXT_LIB))
 
-$(BUILD_DIR)/%.o: $(SRCS_DIR)/%.cpp
-	$(DIR_GUARD)
-	$(CXX) $(CXXFLAGS) -c $< -MMD -o $@
+# Include directories
+INC_DIRS := $(INC) $(shell find $(SRC) -type d) 
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
--include $(DEPS)
+# Construct build output and dependency filenames
+SRCS := $(shell find $(SRC) -name *.cpp)
+OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
+DEPS := $(OBJS:.o=.d)
 
+# Run task
+run: build
+	@echo "🚀 Executing..."
+	./$(TARGET) $(ARGS)
+
+# Build task
+build: clean all
+
+# Main task
+all: $(TARGET)
+
+# Task producing target from built files
+$(TARGET): $(OBJS)
+	@echo "🚧 Building..."
+	mkdir -p $(dir $@)
+	$(CXX) $(OBJS) -o $@ $(LDPATHS) $(LDFLAGS)
+
+# Compile all cpp files
+$(BUILD)/%.o: $(SRC)/%.cpp
+	mkdir -p $(dir $@)
+	$(CXX) $(CXX_FLAGS) $(PRE_FLAGS) $(INC_FLAGS) -c -o $@ $< $(LDPATHS) $(LDFLAGS)
+
+# Clean task
 .PHONY: clean
-
 clean:
-	$(RM) -r $(BUILD_DIR)
-	$(RM) $(EXEC)
+	@echo "🧹 Clearing..."
+	rm -rf build
+
+# Include all dependencies
+-include $(DEPS)

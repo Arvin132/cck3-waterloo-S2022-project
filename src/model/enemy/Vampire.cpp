@@ -3,8 +3,8 @@
 //
 
 #include "Vampire.h"
-#include "floor.h"
-#include "gold.h"
+#include "../floor.h"
+#include "../item/gold.h"
 
 Vampire::Vampire():Enemy(50, 25, 25) {
     rep = 'V';

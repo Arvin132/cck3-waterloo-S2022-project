@@ -3,8 +3,8 @@
 //
 
 #include "Goblin.h"
-#include "gold.h"
-#include "floor.h"
+#include "../item/gold.h"
+#include "../floor.h"
 
 Goblin::Goblin(): Enemy(70, 5, 10), stolen(0) { rep = 'N';}
 

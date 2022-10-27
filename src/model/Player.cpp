@@ -4,7 +4,7 @@
 #include <iostream>
 #include "creature.h"
 #include "player.h"
-#include "item.h"
+#include "item/item.h"
 #include "floor.h"
 #include <cmath>
 #include "randomGen.h"
