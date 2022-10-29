@@ -64,16 +64,18 @@ void EventHandler::initFloor() {
     
 
     bool hasBs = false;
-    if (BarrierSuiteFloorNum == 1) {
+    if (BarrierSuiteFloorNum == floorNum) {
         hasBs = true;
     }
     
     currentFloor = make_unique<Floor>(PlayerRace, hasBs);
     currentFloor->attach(*tDisplay);
     currentFloor->initFloor(f2, p);
+    floorNum++;
     setup();
     f1.close();
     f2.close();
+
 }
 
 void EventHandler::setup() {

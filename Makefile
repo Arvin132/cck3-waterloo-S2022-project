@@ -33,7 +33,7 @@ run: build
 	./$(TARGET) $(ARGS)
 
 # Build task
-build: clean all
+build: all
 
 # Main task
 all: $(TARGET)
