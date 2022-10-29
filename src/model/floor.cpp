@@ -20,7 +20,8 @@
 using namespace std;
 
 Floor::Floor(string PlayerRace, bool hasBS): Subject(), PlayerRace(PlayerRace), theGrid(vector<vector<Ground>> {}),
-                                             occupied(vector<vector<bool>> {}), living(vector<Life*> {}), chambers{vector<Chamber*>()}, hasBS(hasBS){}
+                                             occupied(vector<vector<bool>> {}), living(vector<Life*> {}),
+                                             chambers{vector<Chamber*>()}, hasBS(hasBS), hints(vector<string>()) {}
 
 Floor::~Floor() {
     for (auto ch : chambers) {
@@ -115,7 +116,7 @@ void Floor::setup() {
 
     int compassOwnerNum = randomGen(1, living.size());
     compassOwner = living[compassOwnerNum];
-    cout << "HINT: a " << compassOwner->getRep() << " has the compass " << endl;
+    hints.emplace_back("HINT: a " + string(1, compassOwner->getRep()) + " has the compass ");
     // spawning the Potions
     for (int i = 0; i < 10; i++) {
         int r = randomGen(0, 5);
@@ -190,10 +191,8 @@ void Floor::setup() {
                     if (b) break;
                 }
                 break;
-
         }
     }
-
 }
 
 void Floor::takeTurn() {

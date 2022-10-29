@@ -10,7 +10,16 @@ class Stairs;
 class Compass;
 
 
-enum Ground {nothing =0, empty, Vwall, Hwall, path, door, potion, item};
+enum Ground {
+    nothing =0,
+    empty,
+    Vwall,
+    Hwall, 
+    path, 
+    door, 
+    potion, 
+    item
+};
 
 struct Pos {
     int x, y;
@@ -47,7 +56,6 @@ class Floor: public Subject {
     std::vector<Life*> living;
     std::vector<Item*> items;
     std::vector<Chamber*> chambers;
-    
     bool hasBS;
     int stairsCh;
     const int width = 79;
@@ -55,6 +63,7 @@ class Floor: public Subject {
     Life *compassOwner;
     void initChambers();
 public:
+    std::vector<std::string> hints;
     bool timeForNextFloor;
     Floor(std::string PlayerRace, bool hasBS);
     ~Floor();

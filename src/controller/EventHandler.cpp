@@ -31,6 +31,12 @@ void EventHandler::report() {
     cout << "Atk: " << p->getAtk() << endl;
     cout << "Def: " << p->getDef() << endl;
     cout << "Action: " << p->getCreature()->report() << endl;
+    if (!currentFloor->hints.empty()) {
+        cout << "HINTS:" << endl;
+        for (auto hint: currentFloor->hints) {
+            cout << hint << endl;
+        }
+    }
 }
 
 
@@ -78,51 +84,57 @@ void EventHandler::initFloor() {
 
 }
 
+
+void EventHandler::nextFloor() {
+    Creature *c = currentFloor->getPlayer()->getCreature();
+    Player *p  = new Humen(&cin, &cout, &isFinished);
+    string pRace = currentFloor->getPlayerRace();
+    if (pRace == "Humen") {
+        
+    } else if (pRace == "Orc") {
+        delete p;
+        p = new Orc(&cin, &cout, &isFinished);
+    } else if (pRace == "Elf") {
+        delete p;
+        p = new Elf(&cin, &cout, &isFinished);
+    } else if (pRace == "Dwarf") {
+        delete p;
+        p = new Dwarf(&cin, &cout, &isFinished);
+    }
+    
+    p->modifyHP(c->getHP() - p->getHP());
+    p->modifyGold(c->getGold() - p->getGold());
+    if (c->hasBarrierEffect()) {
+        p->addBarrierSuite();
+    }
+    floorNum++;
+    bool hasBs = false;
+    if (BarrierSuiteFloorNum == floorNum) {
+        hasBs = true;
+    }
+    currentFloor = make_unique<Floor>(pRace, hasBs);
+    currentFloor->attach(*tDisplay);
+    ifstream f{readFile};
+    currentFloor->initFloor(f, p);
+    if (isRandom) {
+        setup();
+    }
+    
+    currentFloor->timeForNextFloor = false;
+    if (floorNum == 6) {
+        isFinished = true;
+        return;
+    }
+}
+
+
 void EventHandler::setup() {
     currentFloor->setup();
 }
 
 void EventHandler::nextTurn() {
     if (currentFloor->timeForNextFloor) {
-        Creature *c = currentFloor->getPlayer()->getCreature();
-        Player *p  = new Humen(&cin, &cout, &isFinished);
-        string pRace = currentFloor->getPlayerRace();
-        if (pRace == "Humen") {
-           
-        } else if (pRace == "Orc") {
-            delete p;
-            p = new Orc(&cin, &cout, &isFinished);
-        } else if (pRace == "Elf") {
-            delete p;
-            p = new Elf(&cin, &cout, &isFinished);
-        } else if (pRace == "Dwarf") {
-            delete p;
-            p = new Dwarf(&cin, &cout, &isFinished);
-        }
-        
-        p->modifyHP(c->getHP() - p->getHP());
-        p->modifyGold(c->getGold() - p->getGold());
-        if (c->hasBarrierEffect()) {
-            p->addBarrierSuite();
-        }
-        floorNum++;
-        bool hasBs = false;
-        if (BarrierSuiteFloorNum == floorNum) {
-            hasBs = true;
-        }
-        currentFloor = make_unique<Floor>(pRace, hasBs);
-        currentFloor->attach(*tDisplay);
-        ifstream f{readFile};
-        currentFloor->initFloor(f, p);
-        if (isRandom) {
-            setup();
-        }
-        
-        currentFloor->timeForNextFloor = false;
-        if (floorNum == 6) {
-            isFinished = true;
-            return;
-        }
+        nextFloor();
     }
 
     report();

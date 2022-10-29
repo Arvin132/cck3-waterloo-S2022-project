@@ -19,11 +19,11 @@ class EventHandler {
     int floorNum = 1;
     int BarrierSuiteFloorNum;
     bool isFinished = false;
+    void nextFloor();
 public:
     EventHandler(std::string readFile, std::string welcomeFile);
     ~EventHandler();
     void initFloor();
-    void nextFloor();
     void setup();
     void nextTurn();
     void report();
