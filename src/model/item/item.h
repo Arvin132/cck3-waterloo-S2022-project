@@ -17,10 +17,10 @@ class Item: public Subject {
     public:
         virtual ~Item();
         void notifyObservesrs() override;
-        char getRep();
+        char getRep() const;
         bool hasPermisson() const;
-        virtual std::string getDescription();
-        std::string getInfo();
+        virtual std::string getDescription() const; // used for showing the effect of the potion when using them 
+        virtual std::string getInfo() const; // used for showing the effect of the potion when looking at them
         virtual int effect(Life *who) = 0;
         friend class Floor;
         friend class Dragon;

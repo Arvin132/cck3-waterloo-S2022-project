@@ -27,9 +27,13 @@ int PotionRH::effect(Life *who) {
     return 0;
 }
 
-string PotionRH::getDescription() {
+string PotionRH::getDescription() const {
+    return description;
+}
+
+string PotionRH::getInfo() const {
     if (hasBeenDrunk) {
-        return description;
+        return information;
     } else {
         return " an unknown Potion. ";
     }
@@ -38,7 +42,7 @@ string PotionRH::getDescription() {
 PotionPH::PotionPH(): Potion() {
     rep = 'P';
     description = " Drank a potion that damges 10 HP. ";
-    information = " a potion that damges 10 HP. ";
+    information = " a Potion that poison for 10 HP. ";
 }
 
 int PotionPH::effect(Life *who) {
@@ -51,13 +55,18 @@ int PotionPH::effect(Life *who) {
     return 0;
 }
 
-string PotionPH::getDescription() {
+string PotionPH::getDescription() const {
+    return description;
+}
+
+string PotionPH::getInfo() const {
     if (hasBeenDrunk) {
-        return description;
+        return information;
     } else {
         return " an unknown Potion. ";
     }
 }
+
 
 PotionBA::PotionBA(): Potion() {
     rep = 'P';
@@ -71,13 +80,18 @@ int PotionBA::effect(Life *who) {
     return 0;
 } 
 
-string PotionBA::getDescription() {
+string PotionBA::getDescription() const {
+    return description;
+}
+
+string PotionBA::getInfo() const {
     if (hasBeenDrunk) {
-        return description;
+        return information;
     } else {
         return " an unknown Potion. ";
     }
 }
+
 
 PotionWA::PotionWA(): Potion() {
     rep = 'P';
@@ -95,9 +109,14 @@ int PotionWA::effect(Life *who) {
     return 0;
 } 
 
-string PotionWA::getDescription() {
+string PotionWA::getDescription() const {
+    return description;
+}
+
+
+string PotionWA::getInfo() const {
     if (hasBeenDrunk) {
-        return description;
+        return information;
     } else {
         return " an unknown Potion. ";
     }
@@ -115,9 +134,14 @@ int PotionBD::effect(Life *who) {
     return 0;
 } 
 
-string PotionBD::getDescription() {
+string PotionBD::getDescription() const {
+    return description;
+}
+
+
+string PotionBD::getInfo() const {
     if (hasBeenDrunk) {
-        return description;
+        return information;
     } else {
         return " an unknown Potion. ";
     }
@@ -140,9 +164,14 @@ int PotionWD::effect(Life *who) {
     return 0;
 } 
 
-string PotionWD::getDescription() {
+string PotionWD::getDescription() const {
+    return description;
+}
+
+
+string PotionWD::getInfo() const {
     if (hasBeenDrunk) {
-        return description;
+        return information;
     } else {
         return " an unknown Potion. ";
     }

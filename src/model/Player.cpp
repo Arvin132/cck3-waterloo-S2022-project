@@ -122,6 +122,9 @@ void Player::move(int atkMod)  {
             *output << "No creature in the specified position to attack " << std::endl;
             return move(atkMod);
         }
+
+
+
     } else if (command == "u") {
         *input >> command;
         d = whatDir(command, newX, newY);
@@ -139,6 +142,9 @@ void Player::move(int atkMod)  {
             *output << "No Potion is in that Direction for you to consume " << std::endl;
             return move(atkMod);
         }
+
+
+
     } else if (command == "v") {
         *input >> command;
         d = whatDir(command, newX, newY);
@@ -166,6 +172,8 @@ void Player::move(int atkMod)  {
             *output << "Player sees empty Ground" << std::endl;
             return move(atkMod);
         }
+
+
 
     } else {
         d = whatDir(command, newX, newY);

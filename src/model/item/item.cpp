@@ -16,15 +16,15 @@ bool Item::hasPermisson() const{
     return permisson;
 }
 
-char Item::getRep() {
+char Item::getRep() const {
     return rep; 
 }
 
-std::string Item::getDescription() {
+std::string Item::getDescription() const {
     return description;
 }
 
-std::string Item::getInfo() {
+std::string Item::getInfo() const {
     if (permisson) {
         return information;
     } else {

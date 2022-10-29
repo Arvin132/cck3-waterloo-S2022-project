@@ -15,5 +15,5 @@ Phoenix::~Phoenix() {
 }
 
 std::string Phoenix::getInfo() {
-    return " a Dragon. HP: " + std::to_string(curHp) + " DEF: " + std::to_string(def) + " ATK: " + std::to_string(atk) + ". ";
+    return " a Phoenix. HP: " + std::to_string(curHp) + " DEF: " + std::to_string(def) + " ATK: " + std::to_string(atk) + ". ";
 }

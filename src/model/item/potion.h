@@ -17,7 +17,8 @@ class PotionRH : public Potion {
         PotionRH();
         bool hasDrunk();
         int effect(Life *who) override;
-        std::string getDescription() override;
+        std::string getDescription() const override;
+        std::string getInfo() const override;
 };
 
 class PotionBA : public Potion {
@@ -26,7 +27,8 @@ class PotionBA : public Potion {
         PotionBA();
         bool hasDrunk();
         int effect(Life *who) override;
-        std::string getDescription() override;
+        std::string getDescription() const override;
+        std::string getInfo() const override;
 };
 
 class PotionBD : public Potion {
@@ -35,7 +37,8 @@ class PotionBD : public Potion {
         PotionBD();
         bool hasDrunk();
         int effect(Life *who) override;
-        std::string getDescription() override;
+        std::string getDescription() const override;
+        std::string getInfo() const override;
 };
 
 class PotionPH : public Potion {
@@ -44,7 +47,8 @@ class PotionPH : public Potion {
         PotionPH();
         bool hasDrunk();
         int effect(Life *who) override;
-        std::string getDescription() override;
+        std::string getDescription() const override;
+        std::string getInfo() const override;
 };
 
 
@@ -54,7 +58,8 @@ class PotionWA : public Potion {
         PotionWA();
         bool hasDrunk();
         int effect(Life *who) override;
-        std::string getDescription() override;
+        std::string getDescription() const override;
+        std::string getInfo() const override;
 };
 
 class PotionWD : public Potion {
@@ -63,7 +68,8 @@ class PotionWD : public Potion {
         PotionWD();
         bool hasDrunk();
         int effect(Life *who) override;
-        std::string getDescription() override;
+        std::string getDescription() const override;
+        std::string getInfo() const override;
 };
 
 
