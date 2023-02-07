@@ -26,5 +26,5 @@ on windows:
 
 ### Collaborators
 
-Arvin Asgharian Rezaee
-Kiarash Majdi
+   - Arvin Asgharian Rezaee
+   - Kiarash Majdi
